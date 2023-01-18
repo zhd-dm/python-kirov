@@ -20,7 +20,7 @@ async def get_data(parent_name: str, entity_name: str, type_method: str) -> list
         }
     )
 
-def get_columns(parent_name: str, entity_name: str) -> list:
+def get_columns(parent_name: str, entity_name: str) -> list[str]:
     str = '{}.{}'.format(parent_name, entity_name)
     match str:
         case 'crm.deal':
@@ -39,3 +39,17 @@ def get_columns(parent_name: str, entity_name: str) -> list:
             return []
         case _:
             return []
+
+def get_list_columns(entity, columns: list[str]) -> list:
+    list = []
+    for key in columns:
+        if key == entity[key]:
+            list.append(entity[key])
+    
+    return list
+
+def get_clear_table_query(table_name: str) -> str:
+    return 'TRUNCATE TABLE {}'.format(table_name)
+
+def insert_data_query(table_name: str, columns: list[str]) -> str:
+    return 'INSERT INTO {} ({}) VALUES(%s)'.format(table_name, *columns)

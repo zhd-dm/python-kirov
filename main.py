@@ -1,5 +1,5 @@
 import asyncio
-from utils import connect_db, get_data, get_columns
+from utils import connect_db, get_data, get_columns, get_list_columns, get_clear_table_query, insert_data_query
 from config import host, db, username, password
 
 entity_name = 'deal'
@@ -13,17 +13,14 @@ cursor = None
 
 table_name = entity_name + 's'
 
-clear_table_query = 'TRUNCATE TABLE {}'.format(table_name)
-insert_data_query = 'INSERT INTO {} ({}, {}, {}) VALUES(%s, %s, %s)'.format(table_name, columns[0], columns[1], columns[2])
-
 async def main():
     try:
         conn = connect_db(host, db, username, password)
         cursor = conn.cursor()
-        cursor.execute(clear_table_query)
+        cursor.execute(get_clear_table_query(table_name))                
 
         for entity in await get_data(parent_name, entity_name, type_method):
-            cursor.execute(insert_data_query, (entity['ID'], entity['TITLE'], entity['STAGE_ID']))
+            cursor.execute(insert_data_query(table_name, columns), (get_list_columns(entity, columns)))
 
     except Exception as error:
         print(error)
