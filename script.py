@@ -2,20 +2,23 @@ import psycopg2
 from fast_bitrix24 import BitrixAsync
 import asyncio
 from config import host, db, username, password, webhook
+from utils import get_columns
 
 bx = BitrixAsync(webhook)
 
 entity_name = 'deal'
 parent_entity = 'crm'
 type_method = 'list'
-column_names = ['id', 'title', 'type_id']
+columns = ['id', 'title', 'type_id']
+# columns = get_columns(parent_entity, entity_name)
 
-async def get_data():
+async def get_data() -> list | dict:
     return await bx.get_all(
         '{}.{}.{}'.format(parent_entity, entity_name, type_method),
-        params={
+        params = {
             'select': ['*', 'UF_*']
-    })
+        }
+    )
 
 conn = None
 cursor = None
@@ -23,7 +26,7 @@ cursor = None
 table_name = entity_name + 's'
 
 clear_table_query = 'TRUNCATE TABLE {}'.format(table_name)
-insert_data_query = 'INSERT INTO {} ({}, {}, {}) VALUES(%s, %s, %s)'.format(table_name, column_names[0], column_names[1], column_names[2])
+insert_data_query = 'INSERT INTO {} ({}, {}, {}) VALUES(%s, %s, %s)'.format(table_name, columns[0], columns[1], columns[2])
 
 async def main():
     try:
