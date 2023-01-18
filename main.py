@@ -1,24 +1,12 @@
-import psycopg2
-from fast_bitrix24 import BitrixAsync
 import asyncio
-from config import host, db, username, password, webhook
-from utils import get_columns
-
-bx = BitrixAsync(webhook)
+from utils import connect_db, get_data, get_columns
+from config import host, db, username, password
 
 entity_name = 'deal'
-parent_entity = 'crm'
+parent_name = 'crm'
 type_method = 'list'
-columns = ['id', 'title', 'type_id']
-# columns = get_columns(parent_entity, entity_name)
 
-async def get_data() -> list | dict:
-    return await bx.get_all(
-        '{}.{}.{}'.format(parent_entity, entity_name, type_method),
-        params = {
-            'select': ['*', 'UF_*']
-        }
-    )
+columns = get_columns(parent_name, entity_name)
 
 conn = None
 cursor = None
@@ -30,17 +18,11 @@ insert_data_query = 'INSERT INTO {} ({}, {}, {}) VALUES(%s, %s, %s)'.format(tabl
 
 async def main():
     try:
-        conn = psycopg2.connect(
-            host = host,
-            dbname = db,
-            user = username,
-            password = password
-        )
-
+        conn = connect_db(host, db, username, password)
         cursor = conn.cursor()
         cursor.execute(clear_table_query)
 
-        for entity in await get_data():
+        for entity in await get_data(parent_name, entity_name, type_method):
             cursor.execute(insert_data_query, (entity['ID'], entity['TITLE'], entity['STAGE_ID']))
 
     except Exception as error:
