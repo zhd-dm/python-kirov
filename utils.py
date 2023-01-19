@@ -14,7 +14,7 @@ def connect_db(host: str, db: str, username: str, password: str):
 
 async def get_data(parent_name: str, entity_name: str, type_method: str) -> list | dict:
     return await bx.get_all(
-        '{}.{}.{}'.format(parent_name, entity_name, type_method),
+        '{0}.{1}.{2}'.format(parent_name, entity_name, type_method),
         params = {
             'select': ['*', 'UF_*']
         }
@@ -48,8 +48,16 @@ def get_list_columns(entity, columns: list[str]) -> list:
     
     return list
 
+def create_table_query(table_name: str) -> str:
+    return """
+        CREATE TABLE {}
+        (ID integer, TITLE varchar)
+    """.format(table_name)
+
 def get_clear_table_query(table_name: str) -> str:
     return 'TRUNCATE TABLE {}'.format(table_name)
 
-def insert_data_query(table_name: str, columns: list[str]) -> str:
-    return 'INSERT INTO {} ({}) VALUES(%s)'.format(table_name, *columns)
+def insert_data_query(table_name: str, id: str, title: str, type_id: str, stage_id: str, probability: str, currency_id: str, opportunity: str, is_manual_opportunity: str) -> str:
+    return """
+        INSERT INTO {0} ({1}, {2}, {3}, {4}, {5}, {6}, {7}, {8}) VALUES(%s, %s, %s, %s, %s, %s, %s, %s)
+    """.format(table_name, id, title, type_id, stage_id, probability, currency_id, opportunity, is_manual_opportunity)
