@@ -5,7 +5,8 @@ from sqlalchemy import create_engine
 # Local imports
 from config import settings
 from utils import get_engine, get_entities, get_data
-from queries import insert_data_to_deal_table, truncate_deal_table_query
+from queries import insert_data_to_deal_table, truncate_table_query
+from models import Deal
 
 engine = get_engine(
     settings['user'],
@@ -20,7 +21,7 @@ async def main():
         field_config: dict[str, str] = fields['entity_config']
         data = await get_data(field_config)
         print('Очистка таблицы {}'.format(field_config['entity_name']))
-        truncate_deal_table_query(engine)
+        truncate_table_query(Deal, engine)
 
         try:
             for entity in data:

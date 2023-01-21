@@ -22,9 +22,9 @@ def insert_data_to_deal_table(engine, data: list | dict) -> None:
     session.close()
 
 
-def truncate_deal_table_query(engine) -> None:
+def truncate_table_query(entity: Deal, engine) -> None:
     SessionLocal = sessionmaker(bind = engine)
     session = SessionLocal()
-    session.query(Deal).delete()
+    session.query(entity).delete()
     session.commit()
     session.close()
