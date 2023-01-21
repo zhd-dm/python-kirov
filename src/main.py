@@ -1,15 +1,11 @@
 import asyncio
 import time
-from sqlalchemy import create_engine,  MetaData, Table, Column, Integer, Text, Float, Date, String, Enum
-from sqlalchemy.dialects.postgresql import ENUM
+from sqlalchemy import create_engine
 
 # Local imports
 from config import settings
-from utils import get_engine, connect_db, get_entities, get_data
-from queries import create_all_tables_query
-
-conn = None
-cursor = None
+from utils import get_engine, get_entities, get_data
+from queries import insert_data_to_deal_table, truncate_deal_table_query
 
 engine = get_engine(
     settings['user'],
@@ -19,20 +15,22 @@ engine = get_engine(
     settings['db']
 )
 
-connection = engine.connect()
-metadata = MetaData()
-
 async def main():
-    create_all_tables_query(metadata)
+    for fields in get_entities():
+        field_config: dict[str, str] = fields['entity_config']
+        data = await get_data(field_config)
+        print('Truncate {} table'.format(field_config['entity_name']))
+        truncate_deal_table_query(engine)
 
-    metadata.create_all(engine)
+        # for entity in data:
+        #     try:
+        #         print('Insert data to {}...'.format(field_config['entity_name']))
+        #         insert_data_to_deal_table(engine, entity)
+        #         print('Data inserted!')
 
-    # for entity in get_entities():
-    #     data = await get_data(entity['entity_config'])
-    #     time.sleep(1)
-    #     print(data)
+        #     except Exception as error:
+        #         print(error)
     
-
     # try:
         # for entity in get_entities():
         #     entity_config: dict[str, str] = entity['entity_config']

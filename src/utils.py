@@ -8,14 +8,6 @@ from fields import catalog_document_element_list, catalog_document_list, catalog
 
 bx = BitrixAsync(webhook)
 
-def connect_db(host: str, db: str, user: str, password: str):
-    return psycopg2.connect(
-            host = host,
-            dbname = db,
-            user = user,
-            password = password
-        )
-
 def get_engine(user: str, password: str, host: str, port: int, db: str):
     url = f'postgresql://{user}:{password}@{host}:{port}/{db}'
 
@@ -25,8 +17,8 @@ def get_engine(user: str, password: str, host: str, port: int, db: str):
     engine = create_engine(url)
     return engine
 
-async def get_data(entity_config: dict[str, str]) -> list | dict:
-    method = '{0}.{1}.{2}'.format(entity_config['parent_name'], entity_config['entity_name'], entity_config['type_method'])
+async def get_data(field_config: dict[str, str]) -> list | dict:
+    method = '{0}.{1}.{2}'.format(field_config['parent_name'], field_config['entity_name'], field_config['type_method'])
     print(f'Method name -> {method}')
 
     return await bx.get_all(
