@@ -22,7 +22,77 @@ db_data_types = {
 # ключ = имя поля
 # значение = тип данных в БД
 
-crm_deal_list = {
+catalog_document_element_list: dict[str, str | dict[str, str]] = {
+    'entity_config': {
+        'parent_name': 'catalog',
+        'entity_name': 'document.element',
+        'type_method': 'list'
+    },
+    'documentElements': {
+        'amount': 'double',
+        'elementId': 'int',
+        'storeTo': 'int'
+    }
+}
+
+catalog_document_list: dict[str, str | dict[str, str]] = {
+    'entity_config': {
+        'parent_name': 'catalog',
+        'entity_name': 'document',
+        'type_method': 'list'
+    },
+    'documents': {
+        'id': 'int'
+    }
+}
+
+catalog_storeProduct_getFields: dict[str, str | dict[str, str]] = {
+    'entity_config': {
+        'parent_name': 'catalog',
+        'entity_name': 'storeProduct',
+        'type_method': 'getFields'
+    },
+    'storeProduct': {
+        'amount': 'double',
+        'productId': 'int',
+        'quantityReserved': 'double',
+        'storeId': 'int'
+    }
+}
+
+catalog_store_getFields: dict[str, str | dict[str, str]] = {
+    'entity_config': {
+        'parent_name': 'catalog',
+        'entity_name': 'store',
+        'type_method': 'getFields'
+    },
+    'id': 'int',
+    'title': 'text'
+}
+
+crm_catalog_fields: dict[str, str | dict[str, str]] = {
+    'entity_config': {
+        'parent_name': 'crm',
+        'entity_name': 'catalog',
+        'type_method': 'fields'
+    },
+    'NAME': 'text'
+}
+
+crm_productrow_fields: dict[str, str | dict[str, str]] = {
+    'entity_config': {
+        'parent_name': 'crm',
+        'entity_name': 'productrow',
+        'type_method': 'fields'
+    },
+    'ID': 'int',
+    'OWNER_ID': 'int',
+    'PRODUCT_ID': 'int',
+    'PRODUCT_NAME': 'text',
+    'QUANTITY': 'double'
+}
+
+crm_deal_list: dict[str, str | dict[str, str]] = {
     'entity_config': {
         'parent_name': 'crm',
         'entity_name': 'deal',
@@ -30,103 +100,23 @@ crm_deal_list = {
     },
     'ID': 'int',
     'TITLE': 'text',
-    'TYPE_ID': 'text',
     'STAGE_ID': 'text',
-    'PROBABILITY': 'int',
     'CURRENCY_ID': 'text',
     'OPPORTUNITY': 'double',
-    'IS_MANUAL_OPPORTUNITY': 'char',
-    'TAX_VALUE': 'double',
-    'LEAD_ID': 'int',
-    'COMPANY_ID': 'int',
-    'CONTACT_ID': 'int',
-    'QUOTE_ID': 'int',
-    'BEGINDATE': 'date',
     'CLOSEDATE': 'date',
-    'ASSIGNED_BY_ID': 'int',
-    'CREATED_BY_ID': 'int',
-    'MODIFY_BY_ID': 'int',
-    'DATE_CREATE': 'datetime',
-    'DATE_MODIFY': 'datetime',
-    'OPENED': 'char',
     'CLOSED': 'char',
-    'COMMENTS': 'text',
-    'ADDITIONAL_INFO': 'text',
-    'LOCATION_ID': 'text',
-    'CATEGORY_ID': 'int',
-    'STAGE_SEMANTIC_ID': 'text',
-    'IS_NEW': 'char',
-    'IS_RECURRING': 'char',
-    'IS_RETURN_CUSTOMER': 'char',
-    'IS_REPEATED_APPROACH': 'char',
-    'SOURCE_ID': 'text',
-    'SOURCE_DESCRIPTION': 'text',
-    'ORIGINATOR_ID': 'text',
-    'ORIGIN_ID': 'text',
-    'MOVED_BY_ID': 'int',
-    'MOVED_TIME': 'datetime',
-    'LAST_ACTIVITY_BY': 'int',
-    'LAST_ACTIVITY_TIME': 'datetime',
-    'UTM_SOURCE': 'text',
-    'UTM_MEDIUM': 'text',
-    'UTM_CAMPAIGN': 'text',
-    'UTM_CONTENT': 'text',
-    'UTM_TERM': 'text',
-    'UF_CRM_1666118023704': 'datetime',
-    'UF_CRM_1666119216208': 'double',
-    'UF_CRM_1666119240052': 'double',
-    'UF_CRM_1666119353457': 'text',
-    'UF_CRM_1666120288828': 'text',
-    'UF_CRM_1666120332899': 'text',
-    'UF_CRM_1666200361034': 'text',
-    'UF_CRM_1666200989142': 'date',
-    'UF_CRM_1666202129472': 'text',
-    'UF_CRM_1666202209357': 'text',
-    'UF_CRM_1666208550741': 'text',
-    'UF_CRM_1666544978722': 'json',
-    'UF_CRM_1667025237906': 'date',
-    'UF_CRM_1667025463555': 'date',
-    'UF_CRM_1667031652264': 'text',
-    'UF_CRM_1667033316900': 'boolean',
-    'UF_CRM_1667033331447': 'boolean',
-    'UF_CRM_1667033409583': 'boolean',
-    'UF_CRM_1667033547250': 'date',
-    'UF_CRM_1667033711110': 'text',
-    'UF_CRM_1667033790074': 'date',
-    'UF_CRM_1667033923725': 'date',
-    'UF_CRM_1667036480193': 'date',
-    'UF_CRM_1667039525695': 'text',
-    'UF_CRM_1667121821888': 'boolean',
-    'UF_CRM_1667137971483': 'json',
-    'UF_CRM_1667141762018': 'enum',
-    'UF_CRM_1667234020471': 'json',
-    'UF_CRM_1667234147184': 'date',
-    'UF_CRM_1667234463744': 'date',
-    'UF_CRM_1667241281800': 'enum',
-    'UF_CRM_1667241421357': 'enum',
-    'UF_CRM_1667241457846': 'enum',
-    'UF_CRM_1667747649538': 'money',
-    'UF_CRM_1667748724755': 'money',
-    'UF_CRM_1667749538970': 'double',
-    'UF_CRM_1667759611577': 'text',
-    'UF_CRM_1668857275565': 'enum',
-    'UF_CRM_IBLOCK_ID': 'int',
-    'UF_CRM_ACTIVE': 'boolean',
-    'UF_CRM_XML_ID': 'text',
-    'UF_CRM_TIMESTAMP_X': 'datetime',
-    'UF_CRM_ACTIVE_FROM': 'datetime',
-    'UF_CRM_ACTIVE_TO': 'datetime',
-    'UF_CRM_PREVIEW_PICTURE': 'json',
-    'UF_CRM_DETAIL_PICTURE': 'json',
-    'UF_CRM_SORT': 'int',
-    'UF_CRM_MODIFIED_BY': 'text',
-    'UF_CRM_CREATED_BY': 'text',
-    'UF_CRM_CODE': 'text',
-    'UF_CRM_NAME': 'text',
-    'UF_CRM_BP_PUBLISHED': 'boolean',
-    'UF_CRM_PREVIEW_TEXT': 'text',
-    'UF_CRM_DETAIL_TEXT': 'text',
-    'UF_CRM_PREVIEW_TEXT_TYPE': 'enum',
-    'UF_CRM_DETAIL_TEXT_TYPE': 'enum',
-    'UF_CRM_DEAL_UID': 'text'
+    'UF_CRM_1668857275565': 'enum'
+}
+
+crm_product_list: dict[str, str | dict[str, str]] = {
+    'entity_config': {
+        'parent_name': 'crm',
+        'entity_name': 'product',
+        'type_method': 'list'
+    },
+    'ID': 'int',
+    'NAME': 'text',
+    # 'PROPERTY_119': 'json' {'valueId': '123', 'value': 'aaa'}
+    'PROPERTY_119': 'int', # valueId
+    'PROPERTY_119_VALUE': 'char' # value 
 }

@@ -4,7 +4,7 @@ from sqlalchemy import create_engine
 
 # Local imports
 from config import webhook
-from fields import crm_deal_list
+from fields import catalog_document_element_list, catalog_document_list, catalog_storeProduct_getFields, catalog_store_getFields, crm_catalog_fields, crm_productrow_fields, crm_deal_list, crm_product_list
 
 bx = BitrixAsync(webhook)
 
@@ -38,13 +38,14 @@ async def get_data(entity_config: dict[str, str]) -> list | dict:
 
 def get_entities() -> list[dict[str, str | dict[str, str]]]:
     return [
+        catalog_document_element_list,
+        catalog_document_list,
+        catalog_storeProduct_getFields,
+        catalog_store_getFields,
+        crm_catalog_fields,
+        crm_productrow_fields,
         crm_deal_list,
-        # crm_invoice_list,
-        # crm_product_list,
-        # crm_company_list,
-        # crm_contact_list,
-        # catalog_document_list,
-        # catalog_document_element_list
+        crm_product_list
     ]
 
 def get_list_columns(entity, columns: list[str]) -> list:
