@@ -1,32 +1,41 @@
 import asyncio
-from utils import connect_db, get_entities, get_data
-from config import host, db, username, password
+from sqlalchemy import create_engine,  MetaData, Table
+
+# Local imports
+from config import settings
+from utils import get_engine, connect_db, get_entities, get_data
+from queries import create_table_query
 
 conn = None
 cursor = None
 
+# metadata = MetaData()
+
 async def main():
-    try:
-        conn = connect_db(host, db, username, password)
-        print('=== DB Connected ===')
-        cursor = conn.cursor()
 
-        # cursor.execute(create_table_query(table_name))
-        # cursor.execute(get_clear_table_query(table_name))
+    engine = get_engine(
+        settings['user'],
+        settings['password'],
+        settings['host'],
+        settings['port'],
+        settings['db']
+    )
 
-        for entity in get_entities():
-            data = await get_data(entity['entity_config'])
+    for entity in get_entities():
+        data = await get_data(entity['entity_config'])
+        print(data)
+    
 
-    except Exception as error:
-        print(error)
+    # try:
+        # for entity in get_entities():
+        #     entity_config: dict[str, str] = entity['entity_config']
+        #     # data = await get_data(entity_config)
+        #     table_name = entity_config['entity_name']
+        #     entity.pop('entity_config')
+        #     table = create_table_query(metadata, table_name, entity)
+        #     metadata.create_all()
 
-    finally:
-        if conn is not None:
-            conn.commit()
-            conn.close()
-        if cursor is not None:
-            cursor.close()
-        
-        print('=== DB Disconnected ===')
+    # except Exception as error:
+    #     print(error)
 
 asyncio.run(main())
