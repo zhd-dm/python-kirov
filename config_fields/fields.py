@@ -1,3 +1,22 @@
+import datetime
+
+# словарь типов данных БД и к какому типу Python они относятся
+# ключ = тип данных БД
+# значение = тип данных Python
+
+db_data_types = {
+    'int': int,
+    'text': str,
+    'char': str,
+    'double': float,
+    'date': datetime.date,
+    'datetime': datetime.datetime,
+    'boolean': bool,
+    'enum': '?',
+    'money': '?',
+    'json': '?'
+}
+
 # словарь полей, где entity_config - конфиг запрашиваемой сущности
 # остальные поля:
 # ключ = имя поля
