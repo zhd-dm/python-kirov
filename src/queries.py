@@ -1,4 +1,3 @@
-from sqlalchemy import MetaData, Table, Column, String, Integer, Float, Text, Date, DateTime, Boolean, Enum
 from sqlalchemy.dialects.postgresql import ENUM
 from sqlalchemy.orm import sessionmaker
 

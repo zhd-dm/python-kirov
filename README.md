@@ -16,13 +16,13 @@
 
 ## Base methods
 
-### connect_db
-`connect_db(host: str, db: str, username: str, password: str) -> connection`
+### get_engine
+`get_engine(user: str, password: str, host: str, port: int, db: str) -> Engine`
 
 ### async get_data
 `get_data(entity_config: dict[str, str]) -> list | dict`
 
 ### get_entities()
-`get_entities() -> list[dict[str, str]]`
+`get_entities() -> list[dict[str, str | dict[str, str]]]`
 
 

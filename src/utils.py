@@ -1,4 +1,3 @@
-import psycopg2
 from fast_bitrix24 import BitrixAsync
 from sqlalchemy import create_engine
 
@@ -39,11 +38,3 @@ def get_entities() -> list[dict[str, str | dict[str, str]]]:
         crm_deal_list,
         # crm_product_list
     ]
-
-def get_list_columns(entity, columns: list[str]) -> list:
-    list = []
-    for key in columns:
-        if key == entity[key]:
-            list.append(entity[key])
-    
-    return list
