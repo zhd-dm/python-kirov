@@ -19,28 +19,21 @@ async def main():
     for fields in get_entities():
         field_config: dict[str, str] = fields['entity_config']
         data = await get_data(field_config)
-        print('Truncate {} table'.format(field_config['entity_name']))
+        print('Очистка таблицы {}'.format(field_config['entity_name']))
         truncate_deal_table_query(engine)
 
-        # for entity in data:
-        #     try:
-        #         print('Insert data to {}...'.format(field_config['entity_name']))
-        #         insert_data_to_deal_table(engine, entity)
-        #         print('Data inserted!')
+        try:
+            for entity in data:
+                print('ID вносимой записи - {}'.format(entity['ID']))
+                if (entity['CLOSEDATE']) == '':
+                    (entity['CLOSEDATE']) = None
+                
+                insert_data_to_deal_table(engine, entity)
 
-        #     except Exception as error:
-        #         print(error)
-    
-    # try:
-        # for entity in get_entities():
-        #     entity_config: dict[str, str] = entity['entity_config']
-        #     # data = await get_data(entity_config)
-        #     table_name = entity_config['entity_name']
-        #     entity.pop('entity_config')
-        #     table = create_table_query(metadata, table_name, entity)
-        #     metadata.create_all()
+            print('Записи в количестве {} успешно внесены!'.format(data.__len__()))
 
-    # except Exception as error:
-    #     print(error)
+        except Exception as error:
+            print(error)
+
 
 asyncio.run(main())
