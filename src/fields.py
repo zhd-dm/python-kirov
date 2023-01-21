@@ -22,7 +22,7 @@ db_data_types = {
 # ключ = имя поля
 # значение = тип данных в БД
 
-crm_deal_list_fields = {
+crm_deal_list = {
     'entity_config': {
         'parent_name': 'crm',
         'entity_name': 'deal',
