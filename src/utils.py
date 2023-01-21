@@ -27,7 +27,7 @@ def get_engine(user: str, password: str, host: str, port: int, db: str):
 
 async def get_data(entity_config: dict[str, str]) -> list | dict:
     method = '{0}.{1}.{2}'.format(entity_config['parent_name'], entity_config['entity_name'], entity_config['type_method'])
-    print('Method name -> {}'.format(method))
+    print(f'Method name -> {method}')
 
     return await bx.get_all(
         method,
@@ -38,14 +38,14 @@ async def get_data(entity_config: dict[str, str]) -> list | dict:
 
 def get_entities() -> list[dict[str, str | dict[str, str]]]:
     return [
-        catalog_document_element_list,
-        catalog_document_list,
-        catalog_storeProduct_getFields,
-        catalog_store_getFields,
-        crm_catalog_fields,
-        crm_productrow_fields,
+        # catalog_document_element_list,
+        # catalog_document_list,
+        # catalog_storeProduct_getFields,
+        # catalog_store_getFields,
+        # crm_catalog_fields,
+        # crm_productrow_fields,
         crm_deal_list,
-        crm_product_list
+        # crm_product_list
     ]
 
 def get_list_columns(entity, columns: list[str]) -> list:

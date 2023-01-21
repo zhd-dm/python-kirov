@@ -1,29 +1,36 @@
 import asyncio
-from sqlalchemy import create_engine,  MetaData, Table
+import time
+from sqlalchemy import create_engine,  MetaData, Table, Column, Integer, Text, Float, Date, String, Enum
+from sqlalchemy.dialects.postgresql import ENUM
 
 # Local imports
 from config import settings
 from utils import get_engine, connect_db, get_entities, get_data
-from queries import create_table_query
+from queries import create_all_tables_query
 
 conn = None
 cursor = None
 
-# metadata = MetaData()
+engine = get_engine(
+    settings['user'],
+    settings['password'],
+    settings['host'],
+    settings['port'],
+    settings['db']
+)
+
+connection = engine.connect()
+metadata = MetaData()
 
 async def main():
+    create_all_tables_query(metadata)
 
-    engine = get_engine(
-        settings['user'],
-        settings['password'],
-        settings['host'],
-        settings['port'],
-        settings['db']
-    )
+    metadata.create_all(engine)
 
-    for entity in get_entities():
-        data = await get_data(entity['entity_config'])
-        print(data)
+    # for entity in get_entities():
+    #     data = await get_data(entity['entity_config'])
+    #     time.sleep(1)
+    #     print(data)
     
 
     # try:
