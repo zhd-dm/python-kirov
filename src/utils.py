@@ -21,9 +21,7 @@ async def get_data(field_config: dict[str, str]) -> list | dict:
 
     return await bx.get_all(
         method,
-        params = {
-            'select': ['*', 'UF_*']
-        }
+        params = field_config['params']
     )
 
 def get_entities() -> list[dict[str, str | dict[str, str]]]:

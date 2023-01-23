@@ -16,10 +16,10 @@
 
 ## Base methods
 
-### get_engine
+### get_engine()
 `get_engine(user: str, password: str, host: str, port: int, db: str) -> Engine`
 
-### async get_data
+### async get_data()
 `get_data(entity_config: dict[str, str]) -> list | dict`
 
 ### get_entities()

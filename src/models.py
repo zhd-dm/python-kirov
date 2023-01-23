@@ -18,8 +18,9 @@ Base = declarative_base()
 
 class DocumentElement(Base):
     __tablename__ = 'document_element'
+    temp_id = Column(Integer, primary_key = True)
     amount = Column(Float)
-    elementId = Column(Integer, primary_key = True)
+    elementId = Column(Integer)
     storeTo = Column(Integer)
 
 class Deal(Base):

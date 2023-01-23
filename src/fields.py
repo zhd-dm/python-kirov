@@ -39,11 +39,9 @@ catalog_document_element_list: dict[str, str | dict[str, str]] = {
             'select': ['*', 'UF_*']
         }
     },
-    'documentElements': {
-        'amount': 'double',
-        'elementId': 'int',
-        'storeTo': 'int'
-    }
+    'amount': 'double',
+    'elementId': 'int',
+    'storeTo': 'int'
 }
 
 catalog_document_list: dict[str, str | dict[str, str]] = {

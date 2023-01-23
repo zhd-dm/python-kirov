@@ -1,7 +1,7 @@
 from models import DocumentElement, Deal
 
-def insert_data_to_tables(session, data: list | dict) -> None:
-    match data['entity_config']['entity_name']:
+def insert_data_to_tables(session, data, entity_name: str) -> None:
+    match entity_name:
         case 'document.element':
             insert_data_to_document_element_table(session, data)
         case 'deal':
@@ -21,13 +21,12 @@ def insert_data_to_deal_table(session, data: list | dict) -> None:
     session.add(deal)
 
 def insert_data_to_document_element_table(session, data: list | dict) -> None:
-    document_elements: dict = data['documentElements']
-    document_element = DocumentElement(
-        amount = document_elements['amount'],
-        elementId = document_elements['elementId'],
-        storeTo = document_elements['storeTo']
+    data = DocumentElement(
+        amount = data['amount'],
+        elementId = data['elementId'],
+        storeTo = data['storeTo']
     )
-    session.add(document_element)
+    session.add(data)
 
 
 def truncate_table_query(session, entity) -> None:

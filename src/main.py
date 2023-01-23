@@ -1,12 +1,12 @@
 import asyncio
 import time
-from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
 
 # Local imports
 from config import settings
 from utils import get_engine, get_entities, get_data
-from queries import insert_data_to_deal_table, truncate_table_query
-from models import Deal
+from queries import insert_data_to_tables, truncate_table_query
+from models import DocumentElement, Deal
 
 engine = get_engine(
     settings['user'],
@@ -16,25 +16,32 @@ engine = get_engine(
     settings['db']
 )
 
-async def main():
-    for fields in get_entities():
-        field_config: dict[str, str] = fields['entity_config']
-        data = await get_data(field_config)
-        print('Очистка таблицы {}'.format(field_config['entity_name']))
-        truncate_table_query(Deal, engine)
+SessionLocal = sessionmaker(bind = engine)
+session = SessionLocal()
 
-        try:
+async def main():
+    # Костыль для очистки таблиц поочередно
+    # После добавления новой сущности - добавить очистку ниже
+    truncate_table_query(session, DocumentElement)
+    truncate_table_query(session, Deal)
+
+    try:
+        for fields in get_entities():
+            field_config: dict[str, str] = fields['entity_config']
+            data = await get_data(field_config)
             for entity in data:
-                print('ID вносимой записи - {}'.format(entity['ID']))
-                if (entity['CLOSEDATE']) == '':
+                # Костыль для сделок
+                if (field_config['entity_name'] == 'deal' and entity['CLOSEDATE']) == '':
                     (entity['CLOSEDATE']) = None
                 
-                insert_data_to_deal_table(engine, entity)
+                insert_data_to_tables(session, entity, field_config['entity_name'])
 
-            print('Записи в количестве {} успешно внесены!'.format(data.__len__()))
+    except Exception as error:
+        print(error)
 
-        except Exception as error:
-            print(error)
+    finally:
+        session.commit()
+        session.close()
 
 
 asyncio.run(main())
