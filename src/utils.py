@@ -28,7 +28,7 @@ def get_entities() -> list[dict[str, str | dict[str, str]]]:
     # Обязательный конфиг-массив для получения метода и списков полей
     return [
         catalog_document_element_list,
-        # catalog_document_list,
+        catalog_document_list,
         # catalog_storeProduct_getFields,
         # catalog_store_getFields,
         # crm_catalog_fields,

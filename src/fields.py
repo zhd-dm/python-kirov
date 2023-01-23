@@ -48,11 +48,12 @@ catalog_document_list: dict[str, str | dict[str, str]] = {
     'entity_config': {
         'parent_name': 'catalog',
         'entity_name': 'document',
-        'type_method': 'list'
+        'type_method': 'list',
+        'params': {
+            'select': ['*', 'UF_*']
+        }
     },
-    'documents': {
-        'id': 'int'
-    }
+    'id': 'int'
 }
 
 catalog_storeProduct_getFields: dict[str, str | dict[str, str]] = {

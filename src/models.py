@@ -1,3 +1,5 @@
+# При добавлении новой сущности нужно создать класс этой сущности
+
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Table, Column, Integer, String, Float, Text, Date, Enum
 from sqlalchemy.dialects.postgresql import ENUM
@@ -22,6 +24,10 @@ class DocumentElement(Base):
     amount = Column(Float)
     elementId = Column(Integer)
     storeTo = Column(Integer)
+
+class Document(Base):
+    __tablename__ = 'document'
+    id = Column(Integer, primary_key = True)
 
 class Deal(Base):
     __tablename__ = 'deal'
