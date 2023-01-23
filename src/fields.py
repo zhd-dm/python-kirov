@@ -60,7 +60,10 @@ catalog_storeProduct_getFields: dict[str, str | dict[str, str]] = {
     'entity_config': {
         'parent_name': 'catalog',
         'entity_name': 'storeProduct',
-        'type_method': 'getFields'
+        'type_method': 'getFields',
+        'params': {
+            'select': ['*', 'UF_*']
+        }
     },
     'storeProduct': {
         'amount': 'double',
@@ -74,17 +77,25 @@ catalog_store_getFields: dict[str, str | dict[str, str]] = {
     'entity_config': {
         'parent_name': 'catalog',
         'entity_name': 'store',
-        'type_method': 'getFields'
+        'type_method': 'getFields',
+        'params': {
+            'select': ['*', 'UF_*']
+        }
     },
-    'id': 'int',
-    'title': 'text'
+    'store': {
+        'id': 'int',
+        'title': 'text'
+    }
 }
 
 crm_catalog_fields: dict[str, str | dict[str, str]] = {
     'entity_config': {
         'parent_name': 'crm',
         'entity_name': 'catalog',
-        'type_method': 'fields'
+        'type_method': 'fields',
+        'params': {
+            'select': ['*', 'UF_*']
+        }
     },
     'NAME': 'text'
 }

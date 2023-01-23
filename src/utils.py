@@ -24,15 +24,15 @@ async def get_data(field_config: dict[str, str]) -> list | dict:
         params = field_config['params']
     )
 
-def get_entities() -> list[dict[str, str | dict[str, str]]]:
+def get_fields_config() -> list[dict[str, str | dict[str, str]]]:
     # Обязательный конфиг-массив для получения метода и списков полей
     return [
-        catalog_document_element_list,
-        catalog_document_list,
+        # catalog_document_element_list,
+        # catalog_document_list,
         # catalog_storeProduct_getFields,
         # catalog_store_getFields,
-        # crm_catalog_fields,
+        crm_catalog_fields,
         # crm_productrow_fields,
-        crm_deal_list,
+        # crm_deal_list,
         # crm_product_list
     ]

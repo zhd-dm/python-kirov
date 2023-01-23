@@ -29,6 +29,23 @@ class Document(Base):
     __tablename__ = 'document'
     id = Column(Integer, primary_key = True)
 
+class StoreProduct(Base):
+    __tablename__ = 'store_product'
+    amount = Column(Float)
+    productId = Column(Integer, primary_key = True)
+    quantityReserved = Column(Float)
+    storeId = Column(Integer)
+
+class Store(Base):
+    __tablename__ = 'store'
+    id = Column(Integer, primary_key = True)
+    title = Column(Text)
+
+class Catalog(Base):
+    __tablename__ = 'catalog'
+    temp_id = Column(Integer, primary_key = True)
+    name = Column(Text)
+
 class Deal(Base):
     __tablename__ = 'deal'
     id = Column(Integer, primary_key = True)
