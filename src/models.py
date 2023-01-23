@@ -1,7 +1,6 @@
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Table, Column, Integer, String, Float, Text, Date, Enum
 from sqlalchemy.dialects.postgresql import ENUM
-from sqlalchemy.orm import sessionmaker
 
 # Local imports
 from utils import get_engine
@@ -15,11 +14,15 @@ engine = get_engine(
     settings['db']
 )
 
-SessionLocal = sessionmaker()
 Base = declarative_base()
 
+class DocumentElement(Base):
+    __tablename__ = 'document_element'
+    amount = Column(Float)
+    elementId = Column(Integer, primary_key = True)
+    storeTo = Column(Integer)
+
 class Deal(Base):
-    uf_crm_1668857275565_enum = ENUM('211', '209', name='uf_crm_1668857275565_enum')
     __tablename__ = 'deal'
     id = Column(Integer, primary_key = True)
     title = Column(Text)
@@ -28,6 +31,7 @@ class Deal(Base):
     opportunity = Column(Float)
     closedate = Column(Date)
     closed = Column(String)
+    uf_crm_1668857275565_enum = ENUM('211', '209', name='uf_crm_1668857275565_enum')
     uf_crm_1668857275565 = Column(uf_crm_1668857275565_enum)
 
 Base.metadata.create_all(bind = engine)

@@ -18,6 +18,14 @@ db_data_types = {
 }
 
 # словарь полей, где entity_config - конфиг запрашиваемой сущности
+#
+# entity_config {
+#   parent_name - имя родительского метода
+#   entity_name - имя сущности
+#   type_method - тип метода сущности
+#   params - params которые будут отправлены с запросом
+# }
+#
 # остальные поля:
 # ключ = имя поля
 # значение = тип данных в БД
@@ -26,7 +34,10 @@ catalog_document_element_list: dict[str, str | dict[str, str]] = {
     'entity_config': {
         'parent_name': 'catalog',
         'entity_name': 'document.element',
-        'type_method': 'list'
+        'type_method': 'list',
+        'params': {
+            'select': ['*', 'UF_*']
+        }
     },
     'documentElements': {
         'amount': 'double',
@@ -96,7 +107,10 @@ crm_deal_list: dict[str, str | dict[str, str]] = {
     'entity_config': {
         'parent_name': 'crm',
         'entity_name': 'deal',
-        'type_method': 'list'
+        'type_method': 'list',
+        'params': {
+            'select': ['*', 'UF_*']
+        }
     },
     'ID': 'int',
     'TITLE': 'text',

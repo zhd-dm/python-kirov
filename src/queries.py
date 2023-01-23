@@ -1,11 +1,13 @@
-from sqlalchemy.dialects.postgresql import ENUM
-from sqlalchemy.orm import sessionmaker
+from models import DocumentElement, Deal
 
-from models import Deal
+def insert_data_to_tables(session, data: list | dict) -> None:
+    match data['entity_config']['entity_name']:
+        case 'document.element':
+            insert_data_to_document_element_table(session, data)
+        case 'deal':
+            insert_data_to_deal_table(session, data)
 
-def insert_data_to_deal_table(engine, data: list | dict) -> None:
-    SessionLocal = sessionmaker(bind = engine)
-    session = SessionLocal()
+def insert_data_to_deal_table(session, data: list | dict) -> None:
     deal = Deal(
         id = data['ID'],
         title = data['TITLE'],
@@ -16,15 +18,17 @@ def insert_data_to_deal_table(engine, data: list | dict) -> None:
         closed = data['CLOSED'],
         uf_crm_1668857275565 = data['UF_CRM_1668857275565']
     )
-
     session.add(deal)
-    session.commit()
-    session.close()
+
+def insert_data_to_document_element_table(session, data: list | dict) -> None:
+    document_elements: dict = data['documentElements']
+    document_element = DocumentElement(
+        amount = document_elements['amount'],
+        elementId = document_elements['elementId'],
+        storeTo = document_elements['storeTo']
+    )
+    session.add(document_element)
 
 
-def truncate_table_query(entity: Deal, engine) -> None:
-    SessionLocal = sessionmaker(bind = engine)
-    session = SessionLocal()
+def truncate_table_query(session, entity) -> None:
     session.query(entity).delete()
-    session.commit()
-    session.close()
