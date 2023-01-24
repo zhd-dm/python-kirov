@@ -18,6 +18,18 @@ engine = get_engine(
 
 Base = declarative_base()
 
+class Deal(Base):
+    __tablename__ = 'deal'
+    id = Column(Integer, primary_key = True)
+    title = Column(Text)
+    stage_id = Column(Text)
+    currency_id = Column(Text)
+    opportunity = Column(Float)
+    closedate = Column(Date)
+    closed = Column(String)
+    uf_crm_1668857275565_enum = ENUM('211', '209', name='uf_crm_1668857275565_enum')
+    uf_crm_1668857275565 = Column(uf_crm_1668857275565_enum)
+
 class DocumentElement(Base):
     __tablename__ = 'document_element'
     temp_id = Column(Integer, primary_key = True)
@@ -46,16 +58,19 @@ class Catalog(Base):
     temp_id = Column(Integer, primary_key = True)
     name = Column(Text)
 
-class Deal(Base):
-    __tablename__ = 'deal'
+class ProductRow(Base):
+    __tablename__ = 'productrow'
     id = Column(Integer, primary_key = True)
-    title = Column(Text)
-    stage_id = Column(Text)
-    currency_id = Column(Text)
-    opportunity = Column(Float)
-    closedate = Column(Date)
-    closed = Column(String)
-    uf_crm_1668857275565_enum = ENUM('211', '209', name='uf_crm_1668857275565_enum')
-    uf_crm_1668857275565 = Column(uf_crm_1668857275565_enum)
+    owner_id = Column(Integer)
+    product_id = Column(Integer)
+    product_name = Column(Text)
+    quantity = Column(Float)
+
+class Product(Base):
+    __tablename__ = 'product'
+    id = Column(Integer, primary_key = True)
+    name = Column(Text)
+    property_119_id = Column(Integer)
+    property_119_value = Column(String)
 
 Base.metadata.create_all(bind = engine)

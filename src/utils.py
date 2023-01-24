@@ -3,7 +3,6 @@ from sqlalchemy import create_engine
 
 # Local imports
 from config import webhook
-from fields import catalog_document_element_list, catalog_document_list, catalog_storeProduct_getFields, catalog_store_getFields, crm_catalog_fields, crm_productrow_fields, crm_deal_list, crm_product_list
 
 def get_engine(user: str, password: str, host: str, port: int, db: str):
     url = f'postgresql://{user}:{password}@{host}:{port}/{db}'
@@ -31,8 +30,8 @@ def get_fields_config() -> list[dict[str, str | dict[str, str]]]:
         # catalog_document_list,
         # catalog_storeProduct_getFields,
         # catalog_store_getFields,
-        crm_catalog_fields,
-        # crm_productrow_fields,
+        # crm_catalog_fields,
+        # crm_productrow_fields(deals),
         # crm_deal_list,
         # crm_product_list
     ]

@@ -30,6 +30,25 @@ db_data_types = {
 # ключ = имя поля
 # значение = тип данных в БД
 
+crm_deal_list: dict[str, str | dict[str, str]] = {
+    'entity_config': {
+        'parent_name': 'crm',
+        'entity_name': 'deal',
+        'type_method': 'list',
+        'params': {
+            'select': ['*', 'UF_*']
+        }
+    },
+    'ID': 'int',
+    'TITLE': 'text',
+    'STAGE_ID': 'text',
+    'CURRENCY_ID': 'text',
+    'OPPORTUNITY': 'double',
+    'CLOSEDATE': 'date',
+    'CLOSED': 'char',
+    'UF_CRM_1668857275565': 'enum'
+}
+
 catalog_document_element_list: dict[str, str | dict[str, str]] = {
     'entity_config': {
         'parent_name': 'catalog',
@@ -56,11 +75,11 @@ catalog_document_list: dict[str, str | dict[str, str]] = {
     'id': 'int'
 }
 
-catalog_storeProduct_getFields: dict[str, str | dict[str, str]] = {
+catalog_storeProduct_list: dict[str, str | dict[str, str]] = {
     'entity_config': {
         'parent_name': 'catalog',
-        'entity_name': 'storeProduct',
-        'type_method': 'getFields',
+        'entity_name': 'storeproduct',
+        'type_method': 'list',
         'params': {
             'select': ['*', 'UF_*']
         }
@@ -73,26 +92,24 @@ catalog_storeProduct_getFields: dict[str, str | dict[str, str]] = {
     }
 }
 
-catalog_store_getFields: dict[str, str | dict[str, str]] = {
+catalog_store_list: dict[str, str | dict[str, str]] = {
     'entity_config': {
         'parent_name': 'catalog',
         'entity_name': 'store',
-        'type_method': 'getFields',
+        'type_method': 'list',
         'params': {
             'select': ['*', 'UF_*']
         }
     },
-    'store': {
-        'id': 'int',
-        'title': 'text'
-    }
+    'id': 'int',
+    'title': 'text'
 }
 
-crm_catalog_fields: dict[str, str | dict[str, str]] = {
+catalog_catalog_list: dict[str, str | dict[str, str]] = {
     'entity_config': {
-        'parent_name': 'crm',
+        'parent_name': 'catalog',
         'entity_name': 'catalog',
-        'type_method': 'fields',
+        'type_method': 'list',
         'params': {
             'select': ['*', 'UF_*']
         }
@@ -100,43 +117,31 @@ crm_catalog_fields: dict[str, str | dict[str, str]] = {
     'NAME': 'text'
 }
 
-crm_productrow_fields: dict[str, str | dict[str, str]] = {
-    'entity_config': {
-        'parent_name': 'crm',
-        'entity_name': 'productrow',
-        'type_method': 'fields'
-    },
-    'ID': 'int',
-    'OWNER_ID': 'int',
-    'PRODUCT_ID': 'int',
-    'PRODUCT_NAME': 'text',
-    'QUANTITY': 'double'
-}
-
-crm_deal_list: dict[str, str | dict[str, str]] = {
-    'entity_config': {
-        'parent_name': 'crm',
-        'entity_name': 'deal',
-        'type_method': 'list',
-        'params': {
-            'select': ['*', 'UF_*']
-        }
-    },
-    'ID': 'int',
-    'TITLE': 'text',
-    'STAGE_ID': 'text',
-    'CURRENCY_ID': 'text',
-    'OPPORTUNITY': 'double',
-    'CLOSEDATE': 'date',
-    'CLOSED': 'char',
-    'UF_CRM_1668857275565': 'enum'
-}
+def crm_productrow_fields(deals) -> dict[str, str | dict[str, str]]:
+    return {
+        'entity_config': {
+            'parent_name': 'crm',
+            'entity_name': 'productrow',
+            'type_method': 'list',
+            'params': {
+                'filter': {'OWNER_TYPE': 'D', 'OWNER_ID': [deal['ID'] for deal in deals]}
+            }
+        },
+        'ID': 'int',
+        'OWNER_ID': 'int',
+        'PRODUCT_ID': 'int',
+        'PRODUCT_NAME': 'text',
+        'QUANTITY': 'double'
+    }
 
 crm_product_list: dict[str, str | dict[str, str]] = {
     'entity_config': {
         'parent_name': 'crm',
         'entity_name': 'product',
-        'type_method': 'list'
+        'type_method': 'list',
+        'params': {
+            'select': ['*', 'UF_*']
+        }
     },
     'ID': 'int',
     'NAME': 'text',
