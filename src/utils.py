@@ -3,20 +3,19 @@ import sqlalchemy
 from sqlalchemy.engine import Engine
 from sqlalchemy.orm import Session
 from sqlalchemy import create_engine
+from sqlalchemy_utils import database_exists
 
 # Local imports
-from config import webhook
+from config import webhook, settings
 
 from fields import crm_deal_list, catalog_document_element_list, catalog_document_list, catalog_storeproduct_list
 from fields import catalog_store_list, catalog_catalog_list, crm_productrow_fields, crm_product_list
 
-def get_engine(user: str, password: str, host: str, port: int, db: str):
-    url = f'postgresql://{user}:{password}@{host}:{port}/{db}'
+def get_db_url() -> str:
+    return 'postgresql://{0}:{1}@{2}:{3}/{4}'.format(settings['user'], settings['password'], settings['host'], settings['port'], settings['db'])
 
-    # if not db_exist(url):
-    #     create_db(url)
-
-    engine = create_engine(url)
+def get_engine() -> Engine:
+    engine = create_engine(get_db_url())
     return engine
 
 async def get_data(field_config: dict[str, str]) -> list | dict:
@@ -47,6 +46,9 @@ def get_entity_config(entity: dict) -> dict:
 
 def get_entity_name(entity: dict) -> dict:
     return entity['entity_config']['entity_name']
+
+def is_exist_db(db_url: str) -> bool:
+    return database_exists(db_url)
 
 def is_empty_table(session: Session, table) -> bool:
     return session.query(table).count() == 0

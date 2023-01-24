@@ -7,15 +7,8 @@ from sqlalchemy.dialects.postgresql import ENUM
 
 # Local imports
 from utils import get_engine
-from config import settings
 
-engine = get_engine(
-    settings['user'],
-    settings['password'],
-    settings['host'],
-    settings['port'],
-    settings['db']
-)
+engine = get_engine()
 
 Base = declarative_base()
 

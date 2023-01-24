@@ -1,11 +1,11 @@
 from types import FunctionType
 import sqlalchemy
+from sqlalchemy_utils import database_exists
 from sqlalchemy.orm import sessionmaker, close_all_sessions
 
 # Local imports
-from config import settings
 from tables_const import TABLES
-from utils import get_engine
+from utils import get_engine, get_db_url, is_exist_db
 
 def a():
     return
@@ -20,13 +20,7 @@ c = 1
 # print(type(b))
 # print(type(c))
 
-engine = get_engine(
-    settings['user'],
-    settings['password'],
-    settings['host'],
-    settings['port'],
-    settings['db']
-)
+engine = get_engine()
 
 SessionLocal = sessionmaker(bind = engine)
 session = SessionLocal()
@@ -49,7 +43,8 @@ try:
         # print(is_exist_table(tablename), tablename)
         # print(is_empty_table(table), tablename)
         # print(in_full_record_table(table, 113))
-        print(records_in_table(table))
+        # print(records_in_table(table))
+        print(is_exist_db(get_db_url()))
 
 except Exception as error:
     print(error)
