@@ -43,8 +43,9 @@ class Document(Base):
 
 class StoreProduct(Base):
     __tablename__ = 'store_product'
+    temp_id = Column(Integer, primary_key = True)
     amount = Column(Float)
-    productId = Column(Integer, primary_key = True)
+    productId = Column(Integer)
     quantityReserved = Column(Float)
     storeId = Column(Integer)
 

@@ -11,7 +11,7 @@ def insert_data_to_tables(session, data, entity_name: str) -> None:
             insert_data_to_document_element_table(session, data)
         case 'document':
             insert_data_to_document_table(session, data)
-        case 'storeProduct':
+        case 'storeproduct':
             insert_data_to_storeproduct_table(session, data)
         case 'store':
             insert_data_to_store_table(session, data)
