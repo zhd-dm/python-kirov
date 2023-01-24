@@ -75,7 +75,7 @@ catalog_document_list: dict[str, str | dict[str, str]] = {
     'id': 'int'
 }
 
-catalog_storeProduct_list: dict[str, str | dict[str, str]] = {
+catalog_storeproduct_list: dict[str, str | dict[str, str]] = {
     'entity_config': {
         'parent_name': 'catalog',
         'entity_name': 'storeproduct',

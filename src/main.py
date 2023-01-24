@@ -5,11 +5,11 @@ from sqlalchemy.orm import close_all_sessions
 
 # Local imports
 from config import settings
-from utils import get_engine, get_data
+from utils import get_engine, get_data, get_entity_config, get_entity_name
 from queries import insert_data_to_tables, truncate_table_query
 from models import Deal, DocumentElement, Document, StoreProduct, Store, Catalog, ProductRow, Product
 
-from fields import crm_deal_list, catalog_document_element_list, catalog_document_list, catalog_storeProduct_list
+from fields import crm_deal_list, catalog_document_element_list, catalog_document_list, catalog_storeproduct_list
 from fields import catalog_store_list, catalog_catalog_list, crm_productrow_fields, crm_product_list
 
 engine = get_engine(
@@ -23,17 +23,24 @@ engine = get_engine(
 SessionLocal = sessionmaker(bind = engine)
 session = SessionLocal()
 
+def data_insert_loop(data, entity_name: str) -> None:
+    for entity in data:
+        if (entity_name == 'deal' and entity['CLOSEDATE'] == ''):
+            (entity['CLOSEDATE']) = None
+
+        if (entity_name == 'product' and entity['PROPERTY_119'] == None):
+            entity['PROPERTY_119'] = {
+                'valueId': None,
+                'value': None
+            }
+
+        insert_data_to_tables(session, entity, entity_name)
+
 async def main():
     # Костыль для очистки таблиц поочередно
-    # После добавления новой сущности - добавить очистку ниже
-    truncate_table_query(session, Deal)
-    truncate_table_query(session, DocumentElement)
-    truncate_table_query(session, Document)
-    truncate_table_query(session, StoreProduct)
-    truncate_table_query(session, Store)
-    truncate_table_query(session, Catalog)
-    truncate_table_query(session, ProductRow)
-    truncate_table_query(session, Product)
+    # После добавления новой сущности - добавить в массив эту сущность
+    TABLES = [Deal, DocumentElement, Document, StoreProduct, Store, Catalog, ProductRow, Product]
+    truncate_table_query(session, TABLES)
 
     try:
         data = []
@@ -41,12 +48,8 @@ async def main():
         #
         # deals
         #
-        entity_config = crm_deal_list['entity_config']
-        deals = await get_data(crm_deal_list['entity_config'])
-        for deal in deals:
-            if (deal['CLOSEDATE'] == ''):
-                (deal['CLOSEDATE']) = None
-            insert_data_to_tables(session, deal, entity_config['entity_name'])
+        deals = await get_data(get_entity_config(crm_deal_list))
+        data_insert_loop(deals, get_entity_name(crm_deal_list))
         data.append(deals)
         time.sleep(1)
         #
@@ -54,10 +57,8 @@ async def main():
         #
         # document_elements
         #
-        entity_config = catalog_document_element_list['entity_config']
-        document_elements = await get_data(catalog_document_element_list['entity_config'])
-        for document_element in document_elements:
-            insert_data_to_tables(session, document_element, entity_config['entity_name'])
+        document_elements = await get_data(get_entity_config(catalog_document_element_list))
+        data_insert_loop(document_elements, get_entity_name(catalog_document_element_list))
         data.append(document_elements)
         time.sleep(1)
         #
@@ -65,10 +66,8 @@ async def main():
         #
         # documents
         #
-        entity_config = catalog_document_list['entity_config']
-        documents = await get_data(entity_config)
-        for document in documents:
-            insert_data_to_tables(session, document, entity_config['entity_name'])
+        documents = await get_data(get_entity_config(catalog_document_list))
+        data_insert_loop(documents, get_entity_name(catalog_document_list))
         data.append(documents)
         time.sleep(1)
         #
@@ -76,10 +75,8 @@ async def main():
         #
         # storeproduct
         #
-        entity_config = catalog_storeProduct_list['entity_config']
-        storeproducts = await get_data(entity_config)
-        for storeproduct in storeproducts:
-            insert_data_to_tables(session, storeproduct, entity_config['entity_name'])
+        storeproducts = await get_data(get_entity_config(catalog_storeproduct_list))
+        data_insert_loop(storeproducts, get_entity_name(catalog_storeproduct_list))
         data.append(storeproducts)
         time.sleep(1)
         #
@@ -87,10 +84,8 @@ async def main():
         #
         # store
         #
-        entity_config = catalog_store_list['entity_config']
-        stores = await get_data(entity_config)
-        for store in stores:
-            insert_data_to_tables(session, store, entity_config['entity_name'])
+        stores = await get_data(get_entity_config(catalog_store_list))
+        data_insert_loop(stores, get_entity_name(catalog_store_list))
         data.append(stores)
         time.sleep(1)
         #
@@ -98,10 +93,8 @@ async def main():
         #
         # catalog
         #
-        entity_config = catalog_catalog_list['entity_config']
-        catalogs = await get_data(entity_config)
-        for catalog in catalogs:
-            insert_data_to_tables(session, catalog, entity_config['entity_name'])
+        catalogs = await get_data(get_entity_config(catalog_catalog_list))
+        data_insert_loop(catalogs, get_entity_name(catalog_catalog_list))
         data.append(catalogs)
         time.sleep(1)
         #
@@ -109,10 +102,8 @@ async def main():
         #
         # productrow
         #
-        entity_config = crm_productrow_fields(data[0])['entity_config']
-        productrows = await get_data(entity_config)
-        for pruductrow in productrows:
-            insert_data_to_tables(session, pruductrow, entity_config['entity_name'])
+        productrows = await get_data(get_entity_config(crm_productrow_fields(data[0])))
+        data_insert_loop(productrows, get_entity_name(crm_productrow_fields(data[0])))
         data.append(productrows)
         time.sleep(1)
         #
@@ -120,15 +111,8 @@ async def main():
         #
         # product
         #
-        entity_config = crm_product_list['entity_config']
-        products = await get_data(entity_config)
-        for product in products:
-            if (product['PROPERTY_119'] == None):
-                product['PROPERTY_119'] = {
-                    'valueId': None,
-                    'value': None
-                }
-            insert_data_to_tables(session, product, entity_config['entity_name'])
+        products = await get_data(get_entity_config(crm_product_list))
+        data_insert_loop(products, get_entity_name(crm_product_list))
         data.append(products)
         time.sleep(1)
         #

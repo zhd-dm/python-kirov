@@ -35,3 +35,9 @@ def get_fields_config() -> list[dict[str, str | dict[str, str]]]:
         # crm_deal_list,
         # crm_product_list
     ]
+    
+def get_entity_config(entity) -> dict:
+    return entity['entity_config']
+
+def get_entity_name(entity) -> dict:
+    return entity['entity_config']['entity_name']

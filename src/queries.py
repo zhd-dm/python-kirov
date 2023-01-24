@@ -90,5 +90,6 @@ def insert_data_to_product_table(session, data: list | dict) -> None:
     )
     session.add(data)
 
-def truncate_table_query(session, entity) -> None:
-    session.query(entity).delete()
+def truncate_table_query(session, tables) -> None:
+    for entity in tables:
+        session.query(entity).delete()
