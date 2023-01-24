@@ -6,8 +6,8 @@ from sqlalchemy.orm import close_all_sessions
 # Local imports
 from config import settings
 from tables_const import TABLES
-from utils import get_engine, get_data, get_entity_config, get_entity_name, get_fields_config
-from queries import insert_data_to_tables, truncate_table_query
+from utils import get_engine, get_data, get_entity_config, get_entity_name
+from queries import truncate_table_query, data_insert_loop
 
 from fields import crm_deal_list, catalog_document_element_list, catalog_document_list, catalog_storeproduct_list
 from fields import catalog_store_list, catalog_catalog_list, crm_productrow_fields, crm_product_list
@@ -22,19 +22,6 @@ engine = get_engine(
 
 SessionLocal = sessionmaker(bind = engine)
 session = SessionLocal()
-
-def data_insert_loop(data, entity_name: str) -> None:
-    for entity in data:
-        if (entity_name == 'deal' and entity['CLOSEDATE'] == ''):
-            (entity['CLOSEDATE']) = None
-
-        if (entity_name == 'product' and entity['PROPERTY_119'] == None):
-            entity['PROPERTY_119'] = {
-                'valueId': None,
-                'value': None
-            }
-
-        insert_data_to_tables(session, entity, entity_name)
 
 async def main():
     # Костыль для очистки таблиц поочередно
@@ -56,7 +43,7 @@ async def main():
         # deals
         #
         deals = await get_data(get_entity_config(crm_deal_list))
-        data_insert_loop(deals, get_entity_name(crm_deal_list))
+        data_insert_loop(session, deals, get_entity_name(crm_deal_list))
         data.append(deals)
         time.sleep(1)
         #
@@ -65,7 +52,7 @@ async def main():
         # document_elements
         #
         document_elements = await get_data(get_entity_config(catalog_document_element_list))
-        data_insert_loop(document_elements, get_entity_name(catalog_document_element_list))
+        data_insert_loop(session, document_elements, get_entity_name(catalog_document_element_list))
         data.append(document_elements)
         time.sleep(1)
         #
@@ -74,7 +61,7 @@ async def main():
         # documents
         #
         documents = await get_data(get_entity_config(catalog_document_list))
-        data_insert_loop(documents, get_entity_name(catalog_document_list))
+        data_insert_loop(session, documents, get_entity_name(catalog_document_list))
         data.append(documents)
         time.sleep(1)
         #
@@ -83,7 +70,7 @@ async def main():
         # storeproduct
         #
         storeproducts = await get_data(get_entity_config(catalog_storeproduct_list))
-        data_insert_loop(storeproducts, get_entity_name(catalog_storeproduct_list))
+        data_insert_loop(session, storeproducts, get_entity_name(catalog_storeproduct_list))
         data.append(storeproducts)
         time.sleep(1)
         #
@@ -92,7 +79,7 @@ async def main():
         # store
         #
         stores = await get_data(get_entity_config(catalog_store_list))
-        data_insert_loop(stores, get_entity_name(catalog_store_list))
+        data_insert_loop(session, stores, get_entity_name(catalog_store_list))
         data.append(stores)
         time.sleep(1)
         #
@@ -101,7 +88,7 @@ async def main():
         # catalog
         #
         catalogs = await get_data(get_entity_config(catalog_catalog_list))
-        data_insert_loop(catalogs, get_entity_name(catalog_catalog_list))
+        data_insert_loop(session, catalogs, get_entity_name(catalog_catalog_list))
         data.append(catalogs)
         time.sleep(1)
         #
@@ -110,7 +97,7 @@ async def main():
         # productrow
         #
         productrows = await get_data(get_entity_config(crm_productrow_fields(data[0])))
-        data_insert_loop(productrows, get_entity_name(crm_productrow_fields(data[0])))
+        data_insert_loop(session, productrows, get_entity_name(crm_productrow_fields(data[0])))
         data.append(productrows)
         time.sleep(1)
         #
@@ -119,7 +106,7 @@ async def main():
         # product
         #
         products = await get_data(get_entity_config(crm_product_list))
-        data_insert_loop(products, get_entity_name(crm_product_list))
+        data_insert_loop(session, products, get_entity_name(crm_product_list))
         data.append(products)
         time.sleep(1)
         #

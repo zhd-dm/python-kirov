@@ -53,3 +53,9 @@ def is_empty_table(session: Session, table) -> bool:
 
 def is_exist_table(engine: Engine, tablename: str) -> bool:
     return sqlalchemy.inspect(engine).has_table(tablename)
+
+def in_full_record_table(session: Session, table, number_of_records: int) -> bool:
+    return session.query(table).count() == number_of_records
+
+def records_in_table(session: Session, table) -> int:
+    return session.query(table).count()

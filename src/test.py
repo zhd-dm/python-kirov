@@ -37,10 +37,19 @@ def is_empty_table(table) -> bool:
 def is_exist_table(tablename: str) -> bool:
     return sqlalchemy.inspect(engine).has_table(tablename)
 
+def in_full_record_table(table, number_of_records: int) -> bool:
+    return session.query(table).count() == number_of_records
+
+def records_in_table(table) -> int:
+    return session.query(table).count()
+
 try:
     for table in TABLES:
         tablename = table.__tablename__
-        print(tablename, is_exist_table(tablename))
+        # print(is_exist_table(tablename), tablename)
+        # print(is_empty_table(table), tablename)
+        # print(in_full_record_table(table, 113))
+        print(records_in_table(table))
 
 except Exception as error:
     print(error)

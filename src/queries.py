@@ -5,6 +5,19 @@ from sqlalchemy.orm import Session
 
 from generate_tables import Deal, DocumentElement, Document, StoreProduct, Store, Catalog, ProductRow, Product
 
+def data_insert_loop(session: Session, data, entity_name: str) -> None:
+    for entity in data:
+        if (entity_name == 'deal' and entity['CLOSEDATE'] == ''):
+            (entity['CLOSEDATE']) = None
+
+        if (entity_name == 'product' and entity['PROPERTY_119'] == None):
+            entity['PROPERTY_119'] = {
+                'valueId': None,
+                'value': None
+            }
+
+        insert_data_to_tables(session, entity, entity_name)
+
 def insert_data_to_tables(session, data, entity_name: str) -> None:
     match entity_name:
         case 'deal':
