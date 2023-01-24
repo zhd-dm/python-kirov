@@ -1,6 +1,6 @@
 from types import FunctionType
-from sqlalchemy.orm import sessionmaker
-from sqlalchemy.orm import close_all_sessions
+import sqlalchemy
+from sqlalchemy.orm import sessionmaker, close_all_sessions
 
 # Local imports
 from config import settings
@@ -31,9 +31,16 @@ engine = get_engine(
 SessionLocal = sessionmaker(bind = engine)
 session = SessionLocal()
 
+def is_empty_table(table) -> bool:
+    return session.query(table).count() == 0
+
+def is_exist_table(tablename: str) -> bool:
+    return sqlalchemy.inspect(engine).has_table(tablename)
+
 try:
     for table in TABLES:
-        print(table.__tablename__, session.query(table).count())
+        tablename = table.__tablename__
+        print(tablename, is_exist_table(tablename))
 
 except Exception as error:
     print(error)

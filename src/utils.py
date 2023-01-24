@@ -1,4 +1,6 @@
 from fast_bitrix24 import BitrixAsync
+import sqlalchemy
+from sqlalchemy.engine import Engine
 from sqlalchemy.orm import Session
 from sqlalchemy import create_engine
 
@@ -48,3 +50,6 @@ def get_entity_name(entity: dict) -> dict:
 
 def is_empty_table(session: Session, table) -> bool:
     return session.query(table).count() == 0
+
+def is_exist_table(engine: Engine, tablename: str) -> bool:
+    return sqlalchemy.inspect(engine).has_table(tablename)
