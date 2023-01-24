@@ -1,6 +1,7 @@
 import asyncio
 import time
 from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm import close_all_sessions
 
 # Local imports
 from config import settings
@@ -139,6 +140,6 @@ async def main():
     finally:
         session.commit()
         session.close()
-
+        close_all_sessions()
 
 asyncio.run(main())

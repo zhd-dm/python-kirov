@@ -84,7 +84,7 @@ def insert_data_to_productrow_table(session, data: list | dict) -> None:
 def insert_data_to_product_table(session, data: list | dict) -> None:
     data = Product(
         id = data['ID'],
-        name = '__', # нет поля NAME в crm.product.list
+        name = None, # нет поля NAME в crm.product.list
         property_119_id = data['PROPERTY_119']['valueId'],
         property_119_value = data['PROPERTY_119']['value']
     )

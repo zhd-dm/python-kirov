@@ -1,5 +1,6 @@
 # При добавлении новой сущности нужно создать класс этой сущности
 
+from sqlalchemy.orm import close_all_sessions
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Table, Column, Integer, String, Float, Text, Date, Enum
 from sqlalchemy.dialects.postgresql import ENUM
@@ -75,3 +76,5 @@ class Product(Base):
     property_119_value = Column(String)
 
 Base.metadata.create_all(bind = engine)
+
+close_all_sessions()
