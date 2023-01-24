@@ -1,4 +1,5 @@
 from fast_bitrix24 import BitrixAsync
+from sqlalchemy.orm import Session
 from sqlalchemy import create_engine
 
 # Local imports
@@ -44,3 +45,6 @@ def get_entity_config(entity: dict) -> dict:
 
 def get_entity_name(entity: dict) -> dict:
     return entity['entity_config']['entity_name']
+
+def is_empty_table(session: Session, table) -> bool:
+    return session.query(table).count() == 0
