@@ -1,7 +1,7 @@
 # При добавлении новых сущностей, нужно создать новую функцию для INSERT данных этой сущности
 # Также нужно в match..case добавить вызов этой функции 
 
-from models import Deal, DocumentElement, Document, StoreProduct, Store, Catalog, ProductRow, Product
+from generate_tables import Deal, DocumentElement, Document, StoreProduct, Store, Catalog, ProductRow, Product
 
 def insert_data_to_tables(session, data, entity_name: str) -> None:
     match entity_name:

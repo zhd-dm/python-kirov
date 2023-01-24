@@ -5,9 +5,9 @@ from sqlalchemy.orm import close_all_sessions
 
 # Local imports
 from config import settings
-from utils import get_engine, get_data, get_entity_config, get_entity_name
+from tables_const import TABLES
+from utils import get_engine, get_data, get_entity_config, get_entity_name, get_fields_config
 from queries import insert_data_to_tables, truncate_table_query
-from models import Deal, DocumentElement, Document, StoreProduct, Store, Catalog, ProductRow, Product
 
 from fields import crm_deal_list, catalog_document_element_list, catalog_document_list, catalog_storeproduct_list
 from fields import catalog_store_list, catalog_catalog_list, crm_productrow_fields, crm_product_list
@@ -39,11 +39,18 @@ def data_insert_loop(data, entity_name: str) -> None:
 async def main():
     # Костыль для очистки таблиц поочередно
     # После добавления новой сущности - добавить в массив эту сущность
-    TABLES = [Deal, DocumentElement, Document, StoreProduct, Store, Catalog, ProductRow, Product]
     truncate_table_query(session, TABLES)
 
     try:
         data = []
+
+        # async def get_data_loop(entities, fields):
+        #     for entity in entities:
+        #         entity = await get_data(get_entity_config(fields))
+        #         data_insert_loop(deals, get_entity_name(fields))
+        #         data.append(entity)
+        #         time.sleep(1)
+
         # ============================================================ #
         #
         # deals

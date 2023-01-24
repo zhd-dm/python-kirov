@@ -117,7 +117,7 @@ catalog_catalog_list: dict[str, str | dict[str, str]] = {
     'NAME': 'text'
 }
 
-def crm_productrow_fields(deals) -> dict[str, str | dict[str, str]]:
+def crm_productrow_fields(deals: list) -> dict[str, str | dict[str, str]]:
     return {
         'entity_config': {
             'parent_name': 'crm',

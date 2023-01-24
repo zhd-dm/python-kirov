@@ -4,6 +4,9 @@ from sqlalchemy import create_engine
 # Local imports
 from config import webhook
 
+from fields import crm_deal_list, catalog_document_element_list, catalog_document_list, catalog_storeproduct_list
+from fields import catalog_store_list, catalog_catalog_list, crm_productrow_fields, crm_product_list
+
 def get_engine(user: str, password: str, host: str, port: int, db: str):
     url = f'postgresql://{user}:{password}@{host}:{port}/{db}'
 
@@ -23,21 +26,21 @@ async def get_data(field_config: dict[str, str]) -> list | dict:
         params = field_config['params']
     )
 
-def get_fields_config() -> list[dict[str, str | dict[str, str]]]:
+def get_fields_config(deals: list) -> list[dict[str, str | dict[str, str]]]:
     # Обязательный конфиг-массив для получения метода и списков полей
     return [
-        # catalog_document_element_list,
-        # catalog_document_list,
-        # catalog_storeProduct_getFields,
-        # catalog_store_getFields,
-        # crm_catalog_fields,
-        # crm_productrow_fields(deals),
-        # crm_deal_list,
-        # crm_product_list
+        crm_deal_list,
+        catalog_document_element_list,
+        catalog_document_list,
+        catalog_storeproduct_list,
+        catalog_store_list,
+        catalog_catalog_list,
+        crm_productrow_fields(deals),
+        crm_product_list
     ]
     
-def get_entity_config(entity) -> dict:
+def get_entity_config(entity: dict) -> dict:
     return entity['entity_config']
 
-def get_entity_name(entity) -> dict:
+def get_entity_name(entity: dict) -> dict:
     return entity['entity_config']['entity_name']
