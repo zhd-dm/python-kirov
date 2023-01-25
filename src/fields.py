@@ -1,5 +1,28 @@
 import datetime
 
+class DbDataTypes():
+    def __init__(
+        self,
+        int: str,
+        text: str,
+        char: str,
+        double: float,
+        date: datetime.date,
+        datetime: datetime.datetime,
+        boolean: bool,
+        # enum: ?,
+        # money: ?,
+        # json: ?
+    ):
+        self.int = int
+        self.text = text
+        self.char = char
+        self.double = double
+        self.date = date
+        self.datetime = datetime
+        self.boolean = boolean
+
+
 # словарь типов данных БД и к какому типу Python они относятся
 # ключ = тип данных БД
 # значение = тип данных Python
@@ -16,6 +39,154 @@ db_data_types = {
     'money': '?',
     'json': '?'
 }
+
+class FieldParams():
+    def __init__(
+        self,
+        param_obj: dict
+    ):
+        self.param_obj = param_obj
+
+class EntityConfig():
+    def __init__(
+        self,
+        parent_name: str,
+        entity_name: str,
+        type_method: str,
+        params: FieldParams,
+        columns: dict
+    ):
+        self.parent_name = parent_name
+        self.entity_name = entity_name
+        self.type_method = type_method
+        self.params = params
+        self.columns = columns
+
+# class test(EntityConfig):
+#     pass
+
+# test(
+#     'crm',
+#     'deal',
+#     'list',
+#     { 'select': ['*', 'UF_*'] },
+#     {
+#         'ID': 'int',
+#         'TITLE': 'text',
+#         'STAGE_ID': 'text',
+#         'CURRENCY_ID': 'text',
+#         'OPPORTUNITY': 'double',
+#         'CLOSEDATE': 'date',
+#         'CLOSED': 'char',
+#         'UF_CRM_1668857275565': 'enum'
+#     }
+# )
+
+CrmDealList = EntityConfig(
+    'crm',
+    'deal',
+    'list',
+    { 'select': ['*', 'UF_*'] },
+    {
+        'ID': 'int',
+        'TITLE': 'text',
+        'STAGE_ID': 'text',
+        'CURRENCY_ID': 'text',
+        'OPPORTUNITY': 'double',
+        'CLOSEDATE': 'date',
+        'CLOSED': 'char',
+        'UF_CRM_1668857275565': 'enum'
+    }
+)
+
+CatalogDocumentElementList = EntityConfig(
+    'catalog',
+    'document.element',
+    'list',
+    { 'select': ['*', 'UF_*'] },
+    {
+        'ID': 'int',
+        'TITLE': 'text',
+        'STAGE_ID': 'text',
+        'CURRENCY_ID': 'text',
+        'OPPORTUNITY': 'double',
+        'CLOSEDATE': 'date',
+        'CLOSED': 'char',
+        'UF_CRM_1668857275565': 'enum'
+    }
+)
+
+CatalogDocumentList = EntityConfig(
+    'catalog',
+    'document',
+    'list',
+    { 'select': ['*', 'UF_*'] },
+    {
+        'id': 'int'
+    }
+)
+
+CatalogStoreproductList = EntityConfig(
+    'catalog',
+    'storeproduct',
+    'list',
+    { 'select': ['*', 'UF_*'] },
+    {
+        'amount': 'double',
+        'productId': 'int',
+        'quantityReserved': 'double',
+        'storeId': 'int'
+    }
+)
+
+CatalogStoreList = EntityConfig(
+    'catalog',
+    'store',
+    'list',
+    { 'select': ['*', 'UF_*'] },
+    {
+        'id': 'int',
+        'title': 'text'
+    }
+)
+
+CatalogCatalogList = EntityConfig(
+    'catalog',
+    'catalog',
+    'list',
+    { 'select': ['*', 'UF_*'] },
+    {
+        'NAME': 'text'
+    }
+)
+
+def CrmProductrowList(deals: list):
+    return EntityConfig(
+        'crm',
+        'productrow',
+        'list',
+        { 'filter': {'OWNER_TYPE': 'D', 'OWNER_ID': [deal['ID'] for deal in deals]} },
+        {
+            'ID': 'int',
+            'OWNER_ID': 'int',
+            'PRODUCT_ID': 'int',
+            'PRODUCT_NAME': 'text',
+            'QUANTITY': 'double'
+        }
+)
+
+CrmProductList = EntityConfig(
+    'crm',
+    'product',
+    'list',
+    { 'select': ['*', 'UF_*'] },
+    {
+        'ID': 'int',
+        'NAME': 'text',
+        'PROPERTY_119': 'int',
+        'PROPERTY_119_VALUE': 'char'
+    }
+)
 
 # словарь полей, где entity_config - конфиг запрашиваемой сущности
 #
@@ -84,12 +255,10 @@ catalog_storeproduct_list: dict[str, str | dict[str, str]] = {
             'select': ['*', 'UF_*']
         }
     },
-    'storeProduct': {
-        'amount': 'double',
-        'productId': 'int',
-        'quantityReserved': 'double',
-        'storeId': 'int'
-    }
+    'amount': 'double',
+    'productId': 'int',
+    'quantityReserved': 'double',
+    'storeId': 'int'
 }
 
 catalog_store_list: dict[str, str | dict[str, str]] = {
@@ -117,7 +286,7 @@ catalog_catalog_list: dict[str, str | dict[str, str]] = {
     'NAME': 'text'
 }
 
-def crm_productrow_fields(deals: list) -> dict[str, str | dict[str, str]]:
+def crm_productrow_list(deals: list) -> dict[str, str | dict[str, str]]:
     return {
         'entity_config': {
             'parent_name': 'crm',

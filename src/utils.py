@@ -9,7 +9,7 @@ from sqlalchemy_utils import database_exists
 from config import webhook, settings
 
 from fields import crm_deal_list, catalog_document_element_list, catalog_document_list, catalog_storeproduct_list
-from fields import catalog_store_list, catalog_catalog_list, crm_productrow_fields, crm_product_list
+from fields import catalog_store_list, catalog_catalog_list, crm_productrow_list, crm_product_list
 
 def get_db_url() -> str:
     return 'postgresql://{0}:{1}@{2}:{3}/{4}'.format(settings['user'], settings['password'], settings['host'], settings['port'], settings['db'])
@@ -37,7 +37,7 @@ def get_fields_config(deals: list) -> list[dict[str, str | dict[str, str]]]:
         catalog_storeproduct_list,
         catalog_store_list,
         catalog_catalog_list,
-        crm_productrow_fields(deals),
+        crm_productrow_list(deals),
         crm_product_list
     ]
     
