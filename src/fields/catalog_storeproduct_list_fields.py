@@ -1,9 +1,11 @@
 from typing import Dict
 
-from fields.base_fields import ENTITY_BASE_KEYS
+from fields.base_fields import ENTITY_BASE_KEYS, BASE_FIELDS_TO_DB_TYPES
 
 T_CATALOG_STOREPRODUCT_LIST_FIELDS_KEYS = ['amount', 'productId', 'quantityReserved', 'storeId']
-T_CATALOG_STOREPRODUCT_LIST_FIELDS_VALUES = ['double', 'int', 'double', 'int']
+T_CATALOG_STOREPRODUCT_LIST_FIELDS_VALUES = [
+    BASE_FIELDS_TO_DB_TYPES[i] for i in filter(lambda x: x in BASE_FIELDS_TO_DB_TYPES, T_CATALOG_STOREPRODUCT_LIST_FIELDS_KEYS)
+]
 
 KEY_AND_VALUE = { T_CATALOG_STOREPRODUCT_LIST_FIELDS_KEYS[i]: T_CATALOG_STOREPRODUCT_LIST_FIELDS_VALUES[i] for i in range(len(T_CATALOG_STOREPRODUCT_LIST_FIELDS_KEYS)) }
 
