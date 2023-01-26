@@ -25,6 +25,27 @@ engine = get_engine()
 SessionLocal = sessionmaker(bind = engine)
 session = SessionLocal()
 
+class FieldParams():
+    def __init__(
+        self,
+        param_obj: dict
+    ):
+        self.param_obj = param_obj
+
+class EntityConfig():
+    def __init__(
+        self, parent_name: str,
+        entity_name: str,
+        type_method: str,
+        params: FieldParams,
+        columns: dict
+    ):
+        self.parent_name = parent_name
+        self.entity_name = entity_name
+        self.type_method = type_method
+        self.params = params
+        self.columns = columns
+
 def is_empty_table(table) -> bool:
     return session.query(table).count() == 0
 
@@ -44,7 +65,29 @@ try:
         # print(is_empty_table(table), tablename)
         # print(in_full_record_table(table, 113))
         # print(records_in_table(table))
-        print(is_exist_db(get_db_url()))
+        # print(is_exist_db(get_db_url()))
+
+    deal = EntityConfig(
+        'crm',
+        'deal',
+        'list',
+        { 'select': ['*', 'UF_*'] },
+        {
+            'ID': 'int',
+            'TITLE': 'text',
+            'STAGE_ID': 'text',
+            'CURRENCY_ID': 'text',
+            'OPPORTUNITY': 'double',
+            'CLOSEDATE': 'date',
+            'CLOSED': 'char',
+            'UF_CRM_1668857275565': 'enum'
+        }
+    )
+
+    print(deal.type_method)
+    print(deal.params)
+    print(deal.columns)
+    
 
 except Exception as error:
     print(error)
