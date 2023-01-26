@@ -309,7 +309,7 @@ crm_product_list: dict[str, str | dict[str, str]] = {
         'entity_name': 'product',
         'type_method': 'list',
         'params': {
-            'select': ['*', 'UF_*']
+            'select': ['*', 'NAME']
         }
     },
     'ID': 'int',
