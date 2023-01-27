@@ -84,24 +84,24 @@ class Config:
             self.__is_none_value('entity_name')
 
         self.__type_method: str = self.__entity_config.get('type_method', None)
-        if self.__entity_name is None:
+        if self.__type_method is None:
             self.__is_none_value('type_method')
 
         self.__params: T_PARAMS = self.__entity_config.get('params', None)
-        if self.__entity_name is None:
+        if self.__params is None:
             self.__is_none_value('params')
 
         self.__keys: T_KEYS = self.__entity_config.get('keys', None)
-        if self.__entity_name is None:
+        if self.__keys is None:
             self.__is_none_value('keys')
 
         self.__fields: T_FIELDS = self.__config.get('fields', None)
-        if self.__entity_name is None:
+        if self.__fields is None:
             self.__is_none_value('fields')
 
     def __is_none_value(self, str: str) -> str:
         print('Not found value in field ' + str)
-
+        print()
         if str == 'entity_config':
             return DEFAULT_ENTITY_CONFIG
         if str == 'parent_name':
