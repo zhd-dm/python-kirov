@@ -1,3 +1,4 @@
+import asyncio
 from types import FunctionType
 from typing import Dict
 import sqlalchemy
@@ -6,31 +7,34 @@ from sqlalchemy.orm import sessionmaker, close_all_sessions
 
 # Local imports
 from tables_const import TABLES
-from utils import get_engine, get_db_url, is_exist_db
+from utils import get_data, get_entity_config, get_engine, get_db_url, is_exist_db
+from old_fields import crm_deal_list, crm_productrow_list
+
 from fields.base_fields import ENTITY_BASE_KEYS
-from fields.catalog_storeproduct_list_fields import T_CATALOG_STOREPRODUCT_LIST_FIELDS_VALUES
-from fields.catalog_store_list import T_CATALOG_STORE_LIST_FIELDS_VALUES
+from fields.base_entity_config_generator import EntityConfig
+from fields.catalog_catalog_list_fields import CATALOG_CATALOG_LIST_CONFIG
+from fields.catalog_document_element_list_fields import CATALOG_DOCUMENT_ELEMENT_LIST_CONFIG
+from fields.catalog_document_list_fields import CATALOG_DOCUMENT_LIST_CONFIG
+from fields.catalog_store_list import CATALOG_STORE_LIST_CONFIG
+from fields.catalog_storeproduct_list_fields import CATALOG_STOREPRODUCT_LIST_CONFIG
+from fields.crm_deal_list_fields import CRM_DEAL_LIST_CONFIG
+from fields.crm_product_list_fields import CRM_PRODUCT_LIST_CONFIG
 
+ENTITIES_CONFIG = [
+    CATALOG_CATALOG_LIST_CONFIG,
+    CATALOG_DOCUMENT_ELEMENT_LIST_CONFIG,
+    CATALOG_DOCUMENT_LIST_CONFIG,
+    CATALOG_STORE_LIST_CONFIG,
+    CATALOG_STOREPRODUCT_LIST_CONFIG,
+    CRM_DEAL_LIST_CONFIG,
+    CRM_PRODUCT_LIST_CONFIG
+]
 
-def a():
-    return
+async def test():
 
-b = 'hi'
+    print(EntityConfig(CRM_DEAL_LIST_CONFIG).get_fields())
 
-c = 1
-
-# print(isinstance(a, FunctionType))
-
-# print(type(a) == "function")
-# print(type(b))
-# print(type(c))
-
-# engine = get_engine()
-
-# SessionLocal = sessionmaker(bind = engine)
-# session = SessionLocal()
-
-print(T_CATALOG_STOREPRODUCT_LIST_FIELDS_VALUES)
+asyncio.run(test())
 
 try:
     # my_dict = {keys[i]: values[i] for i in range(len(keys))}
