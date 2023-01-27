@@ -1,3 +1,5 @@
+from fields.base_types import T_ENTITY_CONFIG_WITH_FIELDS, T_ENTITY_CONFIG, T_CALL_METHOD, T_PARAMS, T_KEYS, T_FIELDS
+
 #
 # ================== Список основных параметров конфига сущности ==================
 #
@@ -57,23 +59,49 @@ BASE_FIELDS_TO_DB_TYPES = {
 }
 
 #
-# ================== Дефолтный словарь ParamsConfig ==================
+# ================== Дефолтный словарь params ==================
 #
 
-DEFAULT_PARAMS = { 'select': ['*', 'UF_*'] }
+DEFAULT_PARAMS: T_PARAMS = { 'select': ['*', 'UF_*'] }
 
 #
-# ================== Дефолтный словарь FieldsConfig ==================
+# ================== Дефолтный словарь keys ==================
 #
 
-# DEFAULT_FIELDS = { 'ID': 'int' }
-DEFAULT_FIELDS = { 'ID': 'int', 'type': 'char', 'method': True }
+DEFAULT_KEYS: T_KEYS = ['parent_name', 'entity_name', 'type_method', 'params', 'id', 'title']
 
 #
-# ================== Дефолтный список вызываемого метода EntityConfig ==================
+# ================== Дефолтный словарь fields ==================
 #
 
-DEFAULT_CALL_METHOD = ['crm', 'asd', 'list']
+DEFAULT_FIELDS: T_FIELDS = { 'id': 'int', 'title': 'text' }
+
+#
+# ================== Дефолтный список вызываемого метода entity_config ==================
+#
+
+DEFAULT_CALL_METHOD: T_CALL_METHOD = ['catalog', 'store', 'list']
+
+#
+# ================== Дефолтный словарь entity_config ==================
+#
+
+DEFAULT_ENTITY_CONFIG: T_ENTITY_CONFIG = {
+    'parent_name': DEFAULT_CALL_METHOD[0],
+    'entity_name': DEFAULT_CALL_METHOD[1],
+    'type_method': DEFAULT_CALL_METHOD[2],
+    'params': DEFAULT_PARAMS,
+    'keys': DEFAULT_KEYS
+}
+
+#
+# ================== Дефолтный словарь entity_config_with_fields ==================
+#
+
+DEFAULT_ENTITY_CONFIG_WITH_FIELDS: T_ENTITY_CONFIG_WITH_FIELDS = { 
+    'entity_config': DEFAULT_ENTITY_CONFIG,
+    'fields': DEFAULT_FIELDS
+}
 
 #
 # ================== Словарь полей, где entity_config - конфиг запрашиваемой сущности ==================
