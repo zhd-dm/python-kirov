@@ -1,55 +1,52 @@
+import asyncio
 from types import FunctionType
+from typing import Dict
 import sqlalchemy
 from sqlalchemy_utils import database_exists
 from sqlalchemy.orm import sessionmaker, close_all_sessions
 
 # Local imports
 from tables_const import TABLES
-from utils import get_engine, get_db_url, is_exist_db
+from utils import get_data, get_entity_config, get_engine, get_db_url, is_exist_db
+from old_fields import crm_deal_list, crm_productrow_list
 
-def a():
-    return
+from fields.base_fields import ENTITY_BASE_KEYS, DEFAULT_FIELDS
+from fields.base_entity_config import Config
+from fields.catalog_catalog_list_fields import CATALOG_CATALOG_LIST_CONFIG
+from fields.catalog_document_element_list_fields import CATALOG_DOCUMENT_ELEMENT_LIST_CONFIG
+from fields.catalog_document_list_fields import CATALOG_DOCUMENT_LIST_CONFIG
+from fields.catalog_store_list import CATALOG_STORE_LIST_CONFIG
+from fields.catalog_storeproduct_list_fields import CATALOG_STOREPRODUCT_LIST_CONFIG
+from fields.crm_deal_list_fields import CRM_DEAL_LIST_CONFIG
+from fields.crm_product_list_fields import CRM_PRODUCT_LIST_CONFIG
 
-b = 'hi'
+ENTITIES_CONFIG = [
+    CATALOG_CATALOG_LIST_CONFIG,
+    CATALOG_DOCUMENT_ELEMENT_LIST_CONFIG,
+    CATALOG_DOCUMENT_LIST_CONFIG,
+    CATALOG_STORE_LIST_CONFIG,
+    CATALOG_STOREPRODUCT_LIST_CONFIG,
+    CRM_DEAL_LIST_CONFIG,
+    CRM_PRODUCT_LIST_CONFIG
+]
 
-c = 1
+async def test():
 
-# print(isinstance(a, FunctionType))
+    deal = Config(CRM_DEAL_LIST_CONFIG)
 
-# print(type(a) == "function")
-# print(type(b))
-# print(type(c))
 
-engine = get_engine()
-
-SessionLocal = sessionmaker(bind = engine)
-session = SessionLocal()
-
-def is_empty_table(table) -> bool:
-    return session.query(table).count() == 0
-
-def is_exist_table(tablename: str) -> bool:
-    return sqlalchemy.inspect(engine).has_table(tablename)
-
-def in_full_record_table(table, number_of_records: int) -> bool:
-    return session.query(table).count() == number_of_records
-
-def records_in_table(table) -> int:
-    return session.query(table).count()
+asyncio.run(test())
 
 try:
-    for table in TABLES:
-        tablename = table.__tablename__
-        # print(is_exist_table(tablename), tablename)
-        # print(is_empty_table(table), tablename)
-        # print(in_full_record_table(table, 113))
-        # print(records_in_table(table))
-        print(is_exist_db(get_db_url()))
+    # my_dict = {keys[i]: values[i] for i in range(len(keys))}
+    # print(my_dict)
+    print()
+    
 
 except Exception as error:
     print(error)
 
 finally:
-    session.commit()
-    session.close()
+    # session.commit()
+    # session.close()
     close_all_sessions()

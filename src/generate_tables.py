@@ -7,6 +7,8 @@ from sqlalchemy.dialects.postgresql import ENUM
 
 # Local imports
 from utils import get_engine
+from old_fields import CrmDealList, CatalogDocumentElementList, CatalogDocumentList, CatalogStoreproductList
+from old_fields import CatalogStoreList, CatalogCatalogList, CrmProductrowList, CrmProductList
 
 engine = get_engine()
 

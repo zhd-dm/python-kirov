@@ -8,8 +8,8 @@ from tables_const import TABLES
 from utils import get_engine, get_data, get_entity_config, get_entity_name
 from queries import truncate_table_query, data_insert_loop
 
-from fields import crm_deal_list, catalog_document_element_list, catalog_document_list, catalog_storeproduct_list
-from fields import catalog_store_list, catalog_catalog_list, crm_productrow_list, crm_product_list, CrmDealList
+from old_fields import crm_deal_list, catalog_document_element_list, catalog_document_list, catalog_storeproduct_list
+from old_fields import catalog_store_list, catalog_catalog_list, crm_productrow_list, crm_product_list, CrmDealList
 
 engine = get_engine()
 
