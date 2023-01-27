@@ -1,5 +1,4 @@
-from typing import Dict
-
+from fields.base_types import T_ENTITY_CONFIG_WITH_FIELDS
 from fields.base_fields import ENTITY_BASE_KEYS, BASE_FIELDS_TO_DB_TYPES
 
 T_CRM_PRODUCT_LIST_FIELDS_KEYS = ['ID', 'NAME', 'PROPERTY_119', 'PROPERTY_119_VALUE']
@@ -7,7 +6,7 @@ T_CRM_PRODUCT_LIST_FIELDS_VALUES = [BASE_FIELDS_TO_DB_TYPES[i] for i in filter(l
 
 DICT_FIELD_AND_DB_TYPE = { T_CRM_PRODUCT_LIST_FIELDS_KEYS[i]: T_CRM_PRODUCT_LIST_FIELDS_VALUES[i] for i in range(len(T_CRM_PRODUCT_LIST_FIELDS_KEYS)) }
 
-CRM_PRODUCT_LIST_CONFIG: Dict[str, any] = {
+CRM_PRODUCT_LIST_CONFIG: T_ENTITY_CONFIG_WITH_FIELDS = {
     'entity_config': {
         'parent_name': 'crm',
         'entity_name': 'product',
