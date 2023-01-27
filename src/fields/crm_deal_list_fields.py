@@ -17,5 +17,5 @@ CRM_DEAL_LIST_CONFIG: Dict[str, any] = {
         },
         'keys': [item for sublist in (ENTITY_BASE_KEYS, T_CRM_DEAL_LIST_FIELDS_KEYS) for item in sublist]
     },
+    'fields': DICT_FIELD_AND_DB_TYPE
 }
-CRM_DEAL_LIST_CONFIG.update(DICT_FIELD_AND_DB_TYPE)

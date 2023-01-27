@@ -1,5 +1,6 @@
 from typing import Dict
 
+from fields.base_entity_config_generator import EntityConfig
 from fields.base_fields import ENTITY_BASE_KEYS, BASE_FIELDS_TO_DB_TYPES
 
 T_CATALOG_CATALOG_LIST_FIELDS_KEYS = ['NAME']
@@ -17,5 +18,5 @@ CATALOG_CATALOG_LIST_CONFIG: Dict[str, any] = {
         },
         'keys': [item for sublist in (ENTITY_BASE_KEYS, T_CATALOG_CATALOG_LIST_FIELDS_KEYS) for item in sublist]
     },
+    'fields': DICT_FIELD_AND_DB_TYPE
 }
-CATALOG_CATALOG_LIST_CONFIG.update(DICT_FIELD_AND_DB_TYPE)
