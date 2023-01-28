@@ -8,14 +8,16 @@ from sqlalchemy import create_engine
 from sqlalchemy_utils import database_exists
 
 # Local imports
-from env import webhook, settings
+from env import webhook, Settings
 from fields.base_entity_config import BaseConfig
 
 from old_fields import crm_deal_list, catalog_document_element_list, catalog_document_list, catalog_storeproduct_list
 from old_fields import catalog_store_list, catalog_catalog_list, crm_productrow_list, crm_product_list
 
+
 def get_db_url() -> str:
-    return 'postgresql://{0}:{1}@{2}:{3}/{4}'.format(settings['user'], settings['password'], settings['host'], settings['port'], settings['db'])
+    url = Settings().db_url
+    return url
 
 def get_engine() -> Engine:
     engine = create_engine(get_db_url())
@@ -94,11 +96,18 @@ def records_in_table(session: Session, table) -> int:
     return session.query(table).count()
 
 def print_success(message: str):
-    print('===== SUCCESS =====')
-    print(message)
-    print('===== SUCCESS =====')
+    print(f"""
+        ------ SUCCESS----------------------------------------------------------- SUCCESS ------
+                                {message}
+        ----------------------------------------------------------------------------------------
+        """
+    )
+
 
 def print_error(error: Exception):
-    print('===== ERROR =====')
-    print(error)
-    print('===== ERROR =====')
+    print(f"""
+        ------ ERROR----------------------------------------------------------- ERROR ------
+                                {error}
+        ------------------------------------------------------------------------------------
+        """
+    )

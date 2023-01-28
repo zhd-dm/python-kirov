@@ -1,8 +1,13 @@
 # При добавлении новой сущности нужно создать класс этой сущности
 
+from typing import Dict, Union
+
 from sqlalchemy.orm import close_all_sessions
 from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy import create_engine
 from sqlalchemy.engine import Engine
+from sqlalchemy.orm import Session
+from sqlalchemy.orm import sessionmaker
 from sqlalchemy import Table, Column, Integer, String, Float, Text, Date, Enum
 from sqlalchemy.dialects.postgresql import ENUM
 
@@ -33,10 +38,6 @@ class DealTable(Base):
     closed = Column(String)
     uf_crm_1668857275565 = Column(__uf_crm_1668857275565_enum)
 
-    def __init__(self, engine: Engine):
-        self.__engine = engine
-        self.__create()
-
     @property
     def tablename(self):
         return self.__tablename__
@@ -45,6 +46,35 @@ class DealTable(Base):
     def column_list(self):
         return [column.name for column in self.__table__.columns]
 
+    def __init__(self, engine: Engine, **kwarg):
+        self.__engine = engine
+        self.__Session = sessionmaker(bind=engine)
+        self.__session = self.__Session()
+        
+        if kwarg:
+            self.__from_dict(kwarg)
+
+    def _drop_and_create(self):
+        self.__drop()
+        self.__create()
+
+    def _add_data(self, data: Dict[str, any]):
+        try:
+            new_deal = self.__class__(self.__engine, **data)
+            self.__session.add(new_deal)
+            self.__session.commit()
+            print_success(f'Данные успешно добавлены в таблицу {self.__tablename__}')
+        except Exception as error:
+            print_error(error)
+            self.__session.rollback()
+        finally:
+            self.__session.close()
+    
+    def __from_dict(self, data: Dict[str, any]):
+        data = { key.lower(): value for key, value in data.items() }
+        for key, value in data.items():
+            setattr(self, key, value)
+
     def __create(self):
         try:
             Base.metadata.create_all(bind = self.__engine)
@@ -52,22 +82,15 @@ class DealTable(Base):
         except Exception as error:
             print_error(error)
 
+    def __drop(self):
+        Base.metadata.drop_all(bind = self.__engine)
 
-    # def __init__(self, engine: Engine):
-    #     self.__Base = declarative_base()
-    #     self.__engine = engine
-
-    # def create(self):
-    #     self.__Base.metadata.create_all(bind = self.__engine)
-
-
-
-# class DocumentElement(Base):
-#     __tablename__ = 'document_element'
-#     temp_id = Column(Integer, primary_key = True)
-#     amount = Column(Float)
-#     elementId = Column(Integer)
-#     storeTo = Column(Integer)
+class DocumentElement(Base):
+    __tablename__ = 'document_element'
+    temp_id = Column(Integer, primary_key = True)
+    amount = Column(Float)
+    elementId = Column(Integer)
+    storeTo = Column(Integer)
 
 # class Document(Base):
 #     __tablename__ = 'document'
