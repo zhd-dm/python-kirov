@@ -1,29 +1,6 @@
 from fields.base_fields import DEFAULT_ENTITY_CONFIG, DEFAULT_CALL_METHOD, DEFAULT_PARAMS, DEFAULT_KEYS, DEFAULT_FIELDS
 from fields.base_types import T_ENTITY_CONFIG_WITH_FIELDS, T_ENTITY_CONFIG, T_CALL_METHOD, T_PARAMS, T_KEYS, T_FIELDS
 
-# @deprecated
-class OldFieldParams():
-    def __init__(
-        self,
-        param_obj: dict
-    ):
-        self.param_obj = param_obj
-
-# @deprecated
-class OldEntityConfig():
-    def __init__(
-        self,
-        parent_name: str,
-        entity_name: str,
-        type_method: str,
-        params: OldFieldParams,
-        columns: dict
-    ):
-        self.parent_name = parent_name
-        self.entity_name = entity_name
-        self.type_method = type_method
-        self.params = params
-        self.columns = columns
 
 class BaseConfig:
     def __init__(self, config: T_ENTITY_CONFIG_WITH_FIELDS):

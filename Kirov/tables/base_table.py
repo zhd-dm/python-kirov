@@ -1,21 +1,14 @@
-# При добавлении новой сущности нужно создать класс этой сущности
+from typing import Dict
 
-from typing import Dict, Union
-
-from sqlalchemy.orm import close_all_sessions
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy import create_engine
 from sqlalchemy.engine import Engine
-from sqlalchemy.orm import Session
 from sqlalchemy.orm import sessionmaker
-from sqlalchemy import Table, Column, Integer, String, Float, Text, Date, Enum
+from sqlalchemy import Column, Integer, String, Float, Text, Date
 from sqlalchemy.dialects.postgresql import ENUM
 
 # Local imports
-from utils import get_engine, print_success, print_error
-from env import Settings
-from old_fields import CrmDealList, CatalogDocumentElementList, CatalogDocumentList, CatalogStoreproductList
-from old_fields import CatalogStoreList, CatalogCatalogList, CrmProductrowList, CrmProductList
+from utils.utils import print_success, print_error
+
 
 #
 # ==== Обязательно ====
@@ -25,7 +18,7 @@ Base = declarative_base()
 
 # =====================
 
-class DealTable(Base):
+class BaseTable(Base):
     __tablename__ = 'deal'
     __uf_crm_1668857275565_enum = ENUM('211', '209', name='uf_crm_1668857275565_enum')
 
@@ -52,7 +45,7 @@ class DealTable(Base):
         self.__session = self.__Session()
 
         # self.__data_count = d_len
-        # self.__count_in_db = self.__session.query(DealTable).filter().count()
+        # self.__count_in_db = self.__session.query(BaseTable).filter().count()
         # self.__counter = 0
 
         if kwarg:
@@ -65,8 +58,8 @@ class DealTable(Base):
     def _add_data(self, data: Dict[str, any]):
         try:
             # self.__counter += 1
-            new_deal = self.__class__(self.__engine, **data)
-            self.__session.add(new_deal)
+            new_rec = self.__class__(self.__engine, **data)
+            self.__session.add(new_rec)
             self.__session.commit()
             print_success(f'Запись успешно добавлена в таблицу {self.__tablename__}')
 
@@ -100,51 +93,3 @@ class DealTable(Base):
         # Для сделок
         if (data['closedate'] == ''):
             (data['closedate']) = None
-
-class DocumentElement(Base):
-    __tablename__ = 'document_element'
-    temp_id = Column(Integer, primary_key = True)
-    amount = Column(Float)
-    elementId = Column(Integer)
-    storeTo = Column(Integer)
-
-# class Document(Base):
-#     __tablename__ = 'document'
-#     id = Column(Integer, primary_key = True)
-
-# class StoreProduct(Base):
-#     __tablename__ = 'store_product'
-#     temp_id = Column(Integer, primary_key = True)
-#     amount = Column(Float)
-#     productId = Column(Integer)
-#     quantityReserved = Column(Float)
-#     storeId = Column(Integer)
-
-# class Store(Base):
-#     __tablename__ = 'store'
-#     id = Column(Integer, primary_key = True)
-#     title = Column(Text)
-
-# class Catalog(Base):
-#     __tablename__ = 'catalog'
-#     temp_id = Column(Integer, primary_key = True)
-#     name = Column(Text)
-
-# class ProductRow(Base):
-#     __tablename__ = 'productrow'
-#     id = Column(Integer, primary_key = True)
-#     owner_id = Column(Integer)
-#     product_id = Column(Integer)
-#     product_name = Column(Text)
-#     quantity = Column(Float)
-
-# class Product(Base):
-#     __tablename__ = 'product'
-#     id = Column(Integer, primary_key = True)
-#     name = Column(Text)
-#     property_119_id = Column(Integer)
-#     property_119_value = Column(String)
-
-# Base.metadata.create_all(bind = engine)
-
-# close_all_sessions()

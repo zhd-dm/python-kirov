@@ -62,6 +62,26 @@ class EntityConfig():
         self.params = params
         self.columns = columns
 
+# class test(EntityConfig):
+#     pass
+
+# test(
+#     'crm',
+#     'deal',
+#     'list',
+#     { 'select': ['*', 'UF_*'] },
+#     {
+#         'ID': 'int',
+#         'TITLE': 'text',
+#         'STAGE_ID': 'text',
+#         'CURRENCY_ID': 'text',
+#         'OPPORTUNITY': 'double',
+#         'CLOSEDATE': 'date',
+#         'CLOSED': 'char',
+#         'UF_CRM_1668857275565': 'enum'
+#     }
+# )
+
 CrmDealList = EntityConfig(
     'crm',
     'deal',
