@@ -29,10 +29,12 @@ class BaseConfig:
     def __init__(self, config: T_ENTITY_CONFIG_WITH_FIELDS):
         self.__config: T_ENTITY_CONFIG_WITH_FIELDS = config
         self.__entity_config: T_ENTITY_CONFIG = self.__config.get('entity_config', None)
+        
+        # Вызвать по-другому, например if self.__is_valid_config(): self.__generate_dict_config()
         self.__check_error()
 
     @property
-    def config(self):
+    def entity_config(self):
         return self.__entity_config
 
     @property

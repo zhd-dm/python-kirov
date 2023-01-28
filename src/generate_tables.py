@@ -48,11 +48,15 @@ class DealTable(Base):
 
     def __init__(self, engine: Engine, **kwarg):
         self.__engine = engine
-        self.__Session = sessionmaker(bind=engine)
+        self.__Session = sessionmaker(bind = engine)
         self.__session = self.__Session()
-        
+
+        # self.__data_count = d_len
+        # self.__count_in_db = self.__session.query(DealTable).filter().count()
+        # self.__counter = 0
+
         if kwarg:
-            self.__from_dict(kwarg)
+            self.__set_attributes(kwarg)
 
     def _drop_and_create(self):
         self.__drop()
@@ -60,20 +64,20 @@ class DealTable(Base):
 
     def _add_data(self, data: Dict[str, any]):
         try:
+            # self.__counter += 1
             new_deal = self.__class__(self.__engine, **data)
             self.__session.add(new_deal)
             self.__session.commit()
-            print_success(f'Данные успешно добавлены в таблицу {self.__tablename__}')
+            print_success(f'Запись успешно добавлена в таблицу {self.__tablename__}')
+
+            # if self.__counter is not self.__data_count:
+            #     print_error('Не все записи добавлены в таблицу')
+            
         except Exception as error:
             print_error(error)
             self.__session.rollback()
         finally:
             self.__session.close()
-    
-    def __from_dict(self, data: Dict[str, any]):
-        data = { key.lower(): value for key, value in data.items() }
-        for key, value in data.items():
-            setattr(self, key, value)
 
     def __create(self):
         try:
@@ -84,6 +88,18 @@ class DealTable(Base):
 
     def __drop(self):
         Base.metadata.drop_all(bind = self.__engine)
+
+    def __set_attributes(self, data: Dict[str, any]):
+        data = { key.lower(): value for key, value in data.items() }
+        self.__empty_str_to_none(data)
+        for key, value in data.items():
+            setattr(self, key, value)
+
+    def __empty_str_to_none(self, data: Dict[str, any]):
+        #
+        # Для сделок
+        if (data['closedate'] == ''):
+            (data['closedate']) = None
 
 class DocumentElement(Base):
     __tablename__ = 'document_element'
