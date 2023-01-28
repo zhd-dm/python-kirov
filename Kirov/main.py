@@ -3,7 +3,7 @@ import time
 
 # Local imports
 
-from utils.utils import print_error
+from utils import print_error
 
 async def main():
 

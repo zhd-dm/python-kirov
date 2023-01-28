@@ -33,7 +33,6 @@ __setters:__
 - `DEFAULT_ENTITY_CONFIG: T_ENTITY_CONFIG`
 
 <br>
-<br>
 
 # __Module tables__
 
@@ -47,7 +46,6 @@ __methods:__
 - `_drop_and_create(): __drop(), __create()`
 - `_add_data(data: Dict[str, any]): .. __session.add(data), ..`
 
-<br>
 <br>
 
 # __Module utils__
@@ -72,8 +70,11 @@ __getters:__
 - `db_url -> str`
 
 
-<br>
-<br>
+<hr>
+
+### __Run tests__ -> `$ python -m unittest || python -m unittest models.user.test_user_model.TestUserModel`
+
+<hr>
 
 ## *__Used libraries:__*
 
