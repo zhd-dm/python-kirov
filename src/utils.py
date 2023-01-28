@@ -9,7 +9,7 @@ from sqlalchemy_utils import database_exists
 
 # Local imports
 from env import webhook, settings
-from fields.base_entity_config import Config
+from fields.base_entity_config import BaseConfig
 
 from old_fields import crm_deal_list, catalog_document_element_list, catalog_document_list, catalog_storeproduct_list
 from old_fields import catalog_store_list, catalog_catalog_list, crm_productrow_list, crm_product_list
@@ -32,7 +32,7 @@ async def old_get_data(field_config: dict[str, str]) -> list | dict:
         params = field_config['params']
     )
 
-async def get_data(config: Config) -> Union[List, Dict]:
+async def get_data(config: BaseConfig) -> Union[List, Dict]:
     bx = BitrixAsync(webhook)
     method = '{0}.{1}.{2}'.format(config.parent_name, config.entity_name, config.type_method)
     print(f'Method name -> {method}')
@@ -42,7 +42,7 @@ async def get_data(config: Config) -> Union[List, Dict]:
         params = config.params
     )
 
-def prepare_db_table(entity: Config, data: List | Dict) -> bool:
+def prepare_db_table(entity: BaseConfig, data: List | Dict) -> bool:
     # Тут нужно проверить, можно ли эти данные занести в таблицу
     # Примерно так -> if insert_data(data) -> bool return True
 

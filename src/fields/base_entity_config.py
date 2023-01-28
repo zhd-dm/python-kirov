@@ -25,7 +25,7 @@ class OldEntityConfig():
         self.params = params
         self.columns = columns
 
-class Config:
+class BaseConfig:
     def __init__(self, config: T_ENTITY_CONFIG_WITH_FIELDS):
         self.__config: T_ENTITY_CONFIG_WITH_FIELDS = config
         self.__entity_config: T_ENTITY_CONFIG = self.__config.get('entity_config', None)

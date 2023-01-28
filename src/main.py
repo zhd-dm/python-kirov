@@ -4,7 +4,7 @@ from sqlalchemy.orm import sessionmaker
 from sqlalchemy.orm import close_all_sessions
 
 # Local imports
-from fields.base_entity_config import Config
+from fields.base_entity_config import BaseConfig
 from fields._exports import LIST_OF_ENTITIES_CONFIG
 from fields.crm_deal_list_fields import CRM_DEAL_LIST_CONFIG
 from tables_const import TABLES
@@ -36,7 +36,7 @@ async def main():
         #         time.sleep(1)
 
         for entity in LIST_OF_ENTITIES_CONFIG:
-            ent_config = Config(entity)
+            ent_config = BaseConfig(entity)
             data = await get_data(ent_config)
             if prepare_db_table():
                 if insert_data_to_table():
