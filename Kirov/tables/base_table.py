@@ -7,8 +7,7 @@ from sqlalchemy import Column, Integer, String, Float, Text, Date
 from sqlalchemy.dialects.postgresql import ENUM
 
 # Local imports
-from utils.utils import print_success, print_error
-
+from utils.utils import print_error, print_success
 
 #
 # ==== Обязательно ====

@@ -1,15 +1,16 @@
 import asyncio
 from typing import Dict, List
 
-# Local imports 
-from utils.utils import get_engine, get_data, print_error
+# Local imports
+from utils import Utils
+from utils.utils import get_data, print_error
 from tables.base_table import BaseTable
 from fields.base_entity_config import BaseConfig
 from fields.crm_deal_list_fields import CRM_DEAL_LIST_CONFIG
 
 
-engine = get_engine()
-
+utils = Utils()
+engine = utils.engine
 
 async def main():
     try:
