@@ -1,6 +1,6 @@
 from utils import key_dict_to_lower, print_error
-from fields.base_fields_constants import DEFAULT_ENTITY_CONFIG, DEFAULT_CALL_METHOD, DEFAULT_PARAMS, DEFAULT_KEYS, DEFAULT_FIELDS
-from fields.base_fields_types import T_ENTITY_CONFIG_WITH_FIELDS, T_ENTITY_CONFIG, T_CALL_METHOD, T_PARAMS, T_KEYS, T_FIELDS
+from fields.base_fields_constants import DEFAULT_ENTITY_CONFIG, DEFAULT_CALL_METHOD, DEFAULT_PARAMS, DEFAULT_KEYS, DEFAULT_ENUMS, DEFAULT_FIELDS
+from fields.base_fields_types import T_ENTITY_CONFIG_WITH_FIELDS, T_ENTITY_CONFIG, T_CALL_METHOD, T_PARAMS, T_KEYS, T_ENUMS, T_FIELDS
 
 
 class BaseConfig:
@@ -51,6 +51,14 @@ class BaseConfig:
     def fields_lower(self):
         return key_dict_to_lower(self.__fields)
 
+    @property
+    def enums(self):
+        return self.__enums
+
+    @property
+    def enums_lower(self):
+        return key_dict_to_lower(self.__enums)
+
     def __check_error(self):
         if self.__entity_config is None:
             self.__is_none_value('entity_config')
@@ -78,13 +86,17 @@ class BaseConfig:
         if self.__keys is None:
             self.__is_none_value('keys')
 
+        self.__enums: T_ENUMS = self.__entity_config.get('enums', None)
+        if self.__enums is None:
+            self.__is_none_value('enums')
+
         self.__fields: T_FIELDS = self.__config.get('fields', None)
         if self.__fields is None:
             self.__is_none_value('fields')
 
     def __is_none_value(self, str: str) -> str:
         print_error('Not found value in field ' + str)
-        
+
         if str == 'entity_config':
             return DEFAULT_ENTITY_CONFIG
         if str == 'parent_name':
@@ -97,5 +109,7 @@ class BaseConfig:
             return DEFAULT_PARAMS
         if str == 'keys':
             return DEFAULT_KEYS
+        if str == 'enums':
+            return DEFAULT_ENUMS
         if str == 'fields':
             return DEFAULT_FIELDS

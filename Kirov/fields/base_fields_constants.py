@@ -1,7 +1,7 @@
 from typing import Dict, List
 
 
-from fields.base_fields_types import T_ENTITY_CONFIG_WITH_FIELDS, T_ENTITY_CONFIG, T_CALL_METHOD, T_PARAMS, T_KEYS, T_FIELDS
+from fields.base_fields_types import T_ENTITY_CONFIG_WITH_FIELDS, T_ENTITY_CONFIG, T_CALL_METHOD, T_PARAMS, T_KEYS, T_ENUMS, T_FIELDS
 
 
 #
@@ -63,16 +63,22 @@ BASE_FIELDS_TO_DB_TYPES: Dict[str, str] = {
 }
 
 #
-# ================== Дефолтный словарь params ==================
+# ================== Дефолтный список params ==================
 #
 
 DEFAULT_PARAMS: T_PARAMS = { 'select': ['*', 'UF_*'] }
 
 #
-# ================== Дефолтный словарь keys ==================
+# ================== Дефолтный список keys ==================
 #
 
 DEFAULT_KEYS: T_KEYS = ['parent_name', 'entity_name', 'type_method', 'params', 'id', 'title']
+
+#
+# ================== Дефолтный словарь enums ==================
+#
+
+DEFAULT_ENUMS: T_ENUMS = {}
 
 #
 # ================== Дефолтный словарь fields ==================

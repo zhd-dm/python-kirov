@@ -15,7 +15,10 @@ CRM_DEAL_LIST_CONFIG: T_ENTITY_CONFIG_WITH_FIELDS = {
         'params': {
             'select': ['*', 'UF_*']
         },
-        'keys': [item for sublist in (ENTITY_BASE_KEYS, T_CRM_DEAL_LIST_FIELDS_KEYS) for item in sublist]
+        'keys': [item for sublist in (ENTITY_BASE_KEYS, T_CRM_DEAL_LIST_FIELDS_KEYS) for item in sublist],
+        'enums': {
+            'UF_CRM_1668857275565': ['211', '209']
+        }
     },
     'fields': DICT_FIELD_AND_DB_TYPE
 }
