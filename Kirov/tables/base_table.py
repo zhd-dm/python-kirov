@@ -1,21 +1,14 @@
 from typing import Dict
 
-from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.engine import Engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy import Column, Integer, String, Float, Text, Date
 from sqlalchemy.dialects.postgresql import ENUM
 
 # Local imports
-from utils.utils import print_error, print_success
+from utils import print_error, print_success
+from tables import Base
 
-#
-# ==== Обязательно ====
-#
-
-Base = declarative_base()
-
-# =====================
 
 class BaseTable(Base):
     __tablename__ = 'deal'

@@ -1,5 +1,5 @@
-from fields.base_types import T_ENTITY_CONFIG_WITH_FIELDS
-from fields.base_fields import ENTITY_BASE_KEYS, BASE_FIELDS_TO_DB_TYPES
+from fields import T_ENTITY_CONFIG_WITH_FIELDS, ENTITY_BASE_KEYS, BASE_FIELDS_TO_DB_TYPES
+
 
 T_CATALOG_STOREPRODUCT_LIST_FIELDS_KEYS = ['amount', 'productId', 'quantityReserved', 'storeId']
 T_CATALOG_STOREPRODUCT_LIST_FIELDS_VALUES = [
