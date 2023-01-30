@@ -1,3 +1,4 @@
+from utils import key_dict_to_lower, print_error
 from fields.base_fields_constants import DEFAULT_ENTITY_CONFIG, DEFAULT_CALL_METHOD, DEFAULT_PARAMS, DEFAULT_KEYS, DEFAULT_FIELDS
 from fields.base_fields_types import T_ENTITY_CONFIG_WITH_FIELDS, T_ENTITY_CONFIG, T_CALL_METHOD, T_PARAMS, T_KEYS, T_FIELDS
 
@@ -46,6 +47,9 @@ class BaseConfig:
     def fields(self, v: T_FIELDS):
         self.__fields = v
 
+    @property
+    def fields_lower(self):
+        return key_dict_to_lower(self.__fields)
 
     def __check_error(self):
         if self.__entity_config is None:
@@ -79,8 +83,8 @@ class BaseConfig:
             self.__is_none_value('fields')
 
     def __is_none_value(self, str: str) -> str:
-        print('Not found value in field ' + str)
-        print()
+        print_error('Not found value in field ' + str)
+        
         if str == 'entity_config':
             return DEFAULT_ENTITY_CONFIG
         if str == 'parent_name':

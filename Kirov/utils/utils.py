@@ -1,21 +1,13 @@
+#
+# Файл утилит должен быть без зависимостей от других модулей системы !!!
+#
+
+
 from typing import Union, List, Dict
 
-from fast_bitrix24 import BitrixAsync
 
-# Local imports
-from env import webhook
-from fields.base_entity_config import BaseConfig
-
-
-async def get_data(config: BaseConfig) -> Union[List, Dict]:
-    bx = BitrixAsync(webhook)
-    method = f'{config.parent_name}.{config.entity_name}.{config.type_method}'
-    print(f'Method name -> {method}')
-
-    return await bx.get_all(
-        method,
-        params = config.params
-    )
+def key_dict_to_lower(dict: Dict[str, any]) -> Dict[str, any]:
+    return { key.lower(): value for key, value in dict.items() }
 
 def print_success(message: str):
     print(f"""

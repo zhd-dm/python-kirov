@@ -1,13 +1,16 @@
 from typing import Dict
 
+from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.engine import Engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy import Column, Integer, String, Float, Text, Date
 from sqlalchemy.dialects.postgresql import ENUM
 
 # Local imports
-from utils import print_error, print_success
-from tables import Base
+from utils import print_error, print_success, key_dict_to_lower
+
+
+Base = declarative_base()
 
 
 class BaseTable(Base):
@@ -75,13 +78,13 @@ class BaseTable(Base):
         Base.metadata.drop_all(bind = self.__engine)
 
     def __set_attributes(self, data: Dict[str, any]):
-        data = { key.lower(): value for key, value in data.items() }
-        self.__empty_str_to_none(data)
+        self.__empty_str_to_none(key_dict_to_lower(data))
+        
         for key, value in data.items():
             setattr(self, key, value)
 
     def __empty_str_to_none(self, data: Dict[str, any]):
         #
-        # Для сделок
+        # Для crm.deal.list
         if (data['closedate'] == ''):
             (data['closedate']) = None
