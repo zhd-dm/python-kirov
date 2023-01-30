@@ -1,4 +1,5 @@
-from fields import T_ENTITY_CONFIG_WITH_FIELDS, ENTITY_BASE_KEYS, BASE_FIELDS_TO_DB_TYPES
+from fields.base_fields_types import T_ENTITY_CONFIG_WITH_FIELDS
+from fields.base_fields_constants import ENTITY_BASE_KEYS, BASE_FIELDS_TO_DB_TYPES
 
 
 T_CATALOG_DOCUMENT_LIST_FIELDS_KEYS = ['id']

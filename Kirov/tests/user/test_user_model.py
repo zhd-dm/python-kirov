@@ -4,7 +4,7 @@ from sqlalchemy.orm import sessionmaker
 
 
 from env import TESTING_settings
-from models import Base, User
+from tests import Base, User
 from utils import Settings
 
 settings = TESTING_settings

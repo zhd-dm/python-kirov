@@ -1,17 +1,20 @@
-from fields import T_ENTITY_CONFIG_WITH_FIELDS, T_ENTITY_CONFIG, T_CALL_METHOD, T_PARAMS, T_KEYS, T_FIELDS
+from typing import Dict, List
+
+
+from fields.base_fields_types import T_ENTITY_CONFIG_WITH_FIELDS, T_ENTITY_CONFIG, T_CALL_METHOD, T_PARAMS, T_KEYS, T_FIELDS
 
 
 #
 # ================== Список основных параметров конфига сущности ==================
 #
 
-ENTITY_BASE_KEYS = ['parent_name', 'entity_name', 'type_method', 'params']
+ENTITY_BASE_KEYS: List[str] = ['parent_name', 'entity_name', 'type_method', 'params']
 
 #
 # ================== Словарь полей и их тип данных в БД ==================
 #
 
-BASE_FIELDS_TO_DB_TYPES = {
+BASE_FIELDS_TO_DB_TYPES: Dict[str, str] = {
 
     # crm.deal.list
     'ID': 'int',
