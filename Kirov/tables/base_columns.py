@@ -5,7 +5,7 @@ from sqlalchemy.dialects.postgresql import ENUM
 from fields.base_entity_config import BaseConfig
 
 
-class TableConfig:
+class BaseColumns:
     
     def __init__(self, config: BaseConfig):
         self.__config = config
@@ -18,8 +18,10 @@ class TableConfig:
             
             if self.__config.primary_key_field_lower == key:
                 setattr(self, key, self.__get_primary_key_column())
+
             elif self.__config.primary_key_field_lower == '':
                 setattr(self, 'temp_id', self.__get_primary_key_column())
+                
             if self.__config.primary_key_field_lower != key:
                 setattr(self, key, self.__get_column(key, value))
 

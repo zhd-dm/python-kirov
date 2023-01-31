@@ -1,1 +1,0 @@
-from models.table_config import TableConfig
