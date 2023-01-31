@@ -5,7 +5,7 @@ from sqlalchemy.dialects.postgresql import ENUM
 from fields.base_entity_config import BaseConfig
 
 
-class CrmDealList:
+class TableConfig:
     
     def __init__(self, config: BaseConfig):
         self.__config = config
@@ -15,9 +15,19 @@ class CrmDealList:
 
     def __generate_columns(self):
         for key, value in self.__config.fields_lower.items():
-            setattr(self, key, self.__get_column_with_props(key, value))
+            
+            if self.__config.primary_key_field_lower == key:
+                setattr(self, key, self.__get_primary_key_column())
+            elif self.__config.primary_key_field_lower == '':
+                setattr(self, 'temp_id', self.__get_primary_key_column())
+            if self.__config.primary_key_field_lower != key:
+                setattr(self, key, self.__get_column(key, value))
 
-    def __get_column_with_props(self, key: str, python_type: str) -> Column:
+    def __get_primary_key_column(self):
+        return Column(Integer, primary_key = True)
+
+    def __get_column(self, key: str, python_type: str) -> Column:
+
         match python_type:
             case 'int':
                 return Column(Integer)

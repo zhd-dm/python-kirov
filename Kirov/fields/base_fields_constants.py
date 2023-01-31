@@ -1,7 +1,7 @@
 from typing import Dict, List
 
 
-from fields.base_fields_types import T_ENTITY_CONFIG_WITH_FIELDS, T_ENTITY_CONFIG, T_CALL_METHOD, T_PARAMS, T_KEYS, T_ENUMS, T_FIELDS
+from fields.base_fields_types import T_ENTITY_CONFIG_WITH_FIELDS, T_ENTITY_CONFIG, T_CALL_METHOD, T_PARAMS, T_KEYS, T_ENUMS, T_PRIMARY_KEY, T_FIELDS
 
 
 #
@@ -96,7 +96,7 @@ DEFAULT_CALL_METHOD: T_CALL_METHOD = ['catalog', 'store', 'list']
 # ================== Дефолтное поле PK ==================
 #
 
-DEFAULT_PRIMARY_KEY: str = 'id'
+DEFAULT_PRIMARY_KEY: T_PRIMARY_KEY = ''
 
 #
 # ================== Дефолтный словарь entity_config ==================

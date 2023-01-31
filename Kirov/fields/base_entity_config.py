@@ -1,6 +1,6 @@
 from utils import key_dict_to_lower, print_error
-from fields.base_fields_constants import DEFAULT_ENTITY_CONFIG, DEFAULT_CALL_METHOD, DEFAULT_PARAMS, DEFAULT_KEYS, DEFAULT_ENUMS, DEFAULT_FIELDS
-from fields.base_fields_types import T_ENTITY_CONFIG_WITH_FIELDS, T_ENTITY_CONFIG, T_CALL_METHOD, T_PARAMS, T_KEYS, T_ENUMS, T_FIELDS
+from fields.base_fields_constants import DEFAULT_ENTITY_CONFIG, DEFAULT_CALL_METHOD, DEFAULT_PARAMS, DEFAULT_KEYS, DEFAULT_ENUMS, DEFAULT_PRIMARY_KEY, DEFAULT_FIELDS
+from fields.base_fields_types import T_ENTITY_CONFIG_WITH_FIELDS, T_ENTITY_CONFIG, T_CALL_METHOD, T_PARAMS, T_KEYS, T_ENUMS, T_PRIMARY_KEY, T_FIELDS
 
 
 class BaseConfig:
@@ -39,6 +39,23 @@ class BaseConfig:
     def keys(self):
         return self.__keys
 
+    
+    @property
+    def enums(self):
+        return self.__enums
+
+    @property
+    def enums_lower(self):
+        return key_dict_to_lower(self.__enums)
+
+    @property
+    def primary_key_field(self):
+        return self.__primary_key_field
+
+    @property
+    def primary_key_field_lower(self):
+        return self.__primary_key_field.lower()
+
     @property
     def fields(self):
         return self.__fields
@@ -51,13 +68,6 @@ class BaseConfig:
     def fields_lower(self):
         return key_dict_to_lower(self.__fields)
 
-    @property
-    def enums(self):
-        return self.__enums
-
-    @property
-    def enums_lower(self):
-        return key_dict_to_lower(self.__enums)
 
     def __check_error(self):
         if self.__entity_config is None:
@@ -90,6 +100,10 @@ class BaseConfig:
         if self.__enums is None:
             self.__is_none_value('enums')
 
+        self.__primary_key_field: T_PRIMARY_KEY = self.__entity_config.get('primary_key', None)
+        if self.__primary_key_field is None:
+            self.__is_none_value('primary_key')
+
         self.__fields: T_FIELDS = self.__config.get('fields', None)
         if self.__fields is None:
             self.__is_none_value('fields')
@@ -111,5 +125,7 @@ class BaseConfig:
             return DEFAULT_KEYS
         if str == 'enums':
             return DEFAULT_ENUMS
+        if str == 'primary_key':
+            return DEFAULT_PRIMARY_KEY
         if str == 'fields':
             return DEFAULT_FIELDS

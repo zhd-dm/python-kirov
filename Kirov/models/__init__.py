@@ -1,1 +1,1 @@
-from models.crm_deal_list import CrmDealList
+from models.table_config import TableConfig
