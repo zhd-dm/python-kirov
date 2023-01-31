@@ -18,7 +18,8 @@ CATALOG_STOREPRODUCT_LIST_CONFIG: T_ENTITY_CONFIG_WITH_FIELDS = {
             'select': ['*', 'UF_*']
         },
         'keys': [item for sublist in (ENTITY_BASE_KEYS, T_CATALOG_STOREPRODUCT_LIST_FIELDS_KEYS) for item in sublist],
-        'enums': {}
+        'enums': {},
+        'primary_key': 'temp_id'
     },
     'fields': DICT_FIELD_AND_DB_TYPE
 }

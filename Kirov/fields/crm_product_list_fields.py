@@ -16,7 +16,8 @@ CRM_PRODUCT_LIST_CONFIG: T_ENTITY_CONFIG_WITH_FIELDS = {
             'select': ['*', 'NAME']
         },
         'keys': [item for sublist in (ENTITY_BASE_KEYS, T_CRM_PRODUCT_LIST_FIELDS_KEYS) for item in sublist],
-        'enums': {}
+        'enums': {},
+        'primary_key': 'ID'
     },
     'fields': DICT_FIELD_AND_DB_TYPE
 }

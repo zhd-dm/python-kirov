@@ -16,7 +16,8 @@ CRM_PRODUCTROW_LIST_CONFIG: T_ENTITY_CONFIG_WITH_FIELDS = {
             'filter': {'OWNER_TYPE': 'D', 'OWNER_ID': 'custom'} # [deal['ID'] for deal in deals]
         },
         'keys': [item for sublist in (ENTITY_BASE_KEYS, T_CRM_PRODUCTROW_LIST_FIELDS_KEYS) for item in sublist],
-        'enums': {}
+        'enums': {},
+        'primary_key': 'ID'
     },
     'fields': DICT_FIELD_AND_DB_TYPE
 }

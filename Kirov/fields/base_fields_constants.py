@@ -93,6 +93,12 @@ DEFAULT_FIELDS: T_FIELDS = { 'id': 'int', 'title': 'text' }
 DEFAULT_CALL_METHOD: T_CALL_METHOD = ['catalog', 'store', 'list']
 
 #
+# ================== Дефолтное поле PK ==================
+#
+
+DEFAULT_PRIMARY_KEY: str = 'id'
+
+#
 # ================== Дефолтный словарь entity_config ==================
 #
 
@@ -101,7 +107,8 @@ DEFAULT_ENTITY_CONFIG: T_ENTITY_CONFIG = {
     'entity_name': DEFAULT_CALL_METHOD[1],
     'type_method': DEFAULT_CALL_METHOD[2],
     'params': DEFAULT_PARAMS,
-    'keys': DEFAULT_KEYS
+    'keys': DEFAULT_KEYS,
+    'primary_key_field': DEFAULT_PRIMARY_KEY
 }
 
 #
