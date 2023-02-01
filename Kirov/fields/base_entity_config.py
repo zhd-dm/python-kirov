@@ -39,6 +39,10 @@ class BaseConfig:
     def keys(self):
         return self.__keys
 
+    @property.setter
+    def keys(self, v: str):
+        self.__keys.append(v)
+
     
     @property
     def enums(self):

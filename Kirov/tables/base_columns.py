@@ -21,6 +21,9 @@ class BaseColumns:
         pass
 
     def __generate_columns(self):
+        if self.__config.primary_key_field_lower == '':
+            self.__config.keys('pk_tech_field')
+
         for key, value in self.__config.fields_lower.items():
             self.__set_column_to_class(key, value)
 
