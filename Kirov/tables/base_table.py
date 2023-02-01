@@ -15,7 +15,7 @@ class BaseTable:
     def tablename(self):
         return self.__tablename__
 
-    def __init__(self, engine: Engine, entity_config: BaseConfig, **kwarg):
+    def __init__(self, engine: Engine, entity_config: BaseConfig):
         self.__metadata = MetaData()
         self.__engine = engine
         self.__entity_config = entity_config
@@ -25,9 +25,6 @@ class BaseTable:
         self.__table = Table(self.tablename, self.__metadata, *self.__columns)
 
         self.__connection = engine.connect()
-
-        if not kwarg:
-            pass
 
     def _drop_and_create(self):
         self.__drop()
@@ -44,8 +41,6 @@ class BaseTable:
         
             except Exception as error:
                 print_error(f'Не удалось добавить запись в таблицу {self.tablename}. Ошибка: {str(error)}')
-            finally:
-                pass
         
         self.__connection.close()
 

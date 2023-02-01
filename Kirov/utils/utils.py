@@ -9,10 +9,13 @@ from typing import Union, List, Dict
 def key_dict_to_lower(dict: Dict[str, any]) -> Dict[str, any]:
     return { key.lower(): value for key, value in dict.items() }
 
+def props_list_to_lower(list: List[str]) -> List[str]:
+    return [ value.lower() for value in list ]
+
 def print_success(message: str):
     print(f"""
         ------ SUCCESS----------------------------------------------------------- SUCCESS ------
-                                {message}
+            {message}
         ----------------------------------------------------------------------------------------
         """
     )
@@ -20,7 +23,7 @@ def print_success(message: str):
 def print_error(error: Exception):
     print(f"""
         ------ ERROR----------------------------------------------------------- ERROR ------
-                                {error}
+            {error}
         ------------------------------------------------------------------------------------
         """
     )

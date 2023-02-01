@@ -18,18 +18,15 @@ class BaseColumns:
     def __init__(self, config: BaseConfig):
         self.__config = config
         self.__generate_columns()
-        pass
 
     def __generate_columns(self):
-        if self.__config.primary_key_field_lower == '':
-            self.__config.keys('pk_tech_field')
-
         for key, value in self.__config.fields_lower.items():
             self.__set_column_to_class(key, value)
 
     def __set_column_to_class(self, key: str, python_type: str):
 
             if self.__config.primary_key_field_lower == '':
+                self.__config.keys = 'pk_tech_field'
                 setattr(self, 'pk_tech_field', self.__get_column_with_props('pk_tech_field', python_type))
 
             setattr(self, key, self.__get_column_with_props(key, python_type))
@@ -37,7 +34,6 @@ class BaseColumns:
     def __get_column_with_props(self, key: str, python_type: str) -> Column:
 
         if key == 'id' or key == 'pk_tech_field':
-            pass
             return Column(Integer, primary_key = True, name = key)
             
         match python_type:

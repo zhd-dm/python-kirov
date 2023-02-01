@@ -1,9 +1,10 @@
-from utils import key_dict_to_lower, print_error
+from utils import key_dict_to_lower, props_list_to_lower, print_error
 from fields.base_fields_constants import DEFAULT_ENTITY_CONFIG, DEFAULT_CALL_METHOD, DEFAULT_PARAMS, DEFAULT_KEYS, DEFAULT_ENUMS, DEFAULT_PRIMARY_KEY, DEFAULT_FIELDS
 from fields.base_fields_types import T_ENTITY_CONFIG_WITH_FIELDS, T_ENTITY_CONFIG, T_CALL_METHOD, T_PARAMS, T_KEYS, T_ENUMS, T_PRIMARY_KEY, T_FIELDS
 
 
 class BaseConfig:
+
     def __init__(self, config: T_ENTITY_CONFIG_WITH_FIELDS):
         self.__config: T_ENTITY_CONFIG_WITH_FIELDS = config
         self.__entity_config: T_ENTITY_CONFIG = self.__config.get('entity_config', None)
@@ -39,9 +40,18 @@ class BaseConfig:
     def keys(self):
         return self.__keys
 
-    @property.setter
+    @property
+    def keys_lower(self):
+        return props_list_to_lower(self.__keys)
+
+    @keys.setter
     def keys(self, v: str):
-        self.__keys.append(v)
+        if isinstance(v, str):
+            self.__keys.append(v)
+        else:
+            print_error('Элемент списка keys должен быть строкой')
+        if v == '':
+            print_error('Элемент списка keys не должен быть пустой строкой')
 
     
     @property
