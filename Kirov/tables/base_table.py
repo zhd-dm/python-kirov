@@ -3,88 +3,89 @@ from typing import Dict
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.engine import Engine
 from sqlalchemy.orm import sessionmaker
-from sqlalchemy import Column, Integer, String, Float, Text, Date
+from sqlalchemy import MetaData, Table, Column, Integer, String, Float, Text, Date
 from sqlalchemy.dialects.postgresql import ENUM
 
 # Local imports
+from fields.base_entity_config import BaseConfig
+from tables.base_columns import BaseColumns
 from utils import print_error, print_success, key_dict_to_lower
 
 
-Base = declarative_base()
-
-
-class BaseTable(Base):
-    __tablename__ = 'deal'
-    __uf_crm_1668857275565_enum = ENUM('211', '209', name='uf_crm_1668857275565_enum')
-
-    id = Column(Integer, primary_key = True)
-    title = Column(Text)
-    stage_id = Column(Text)
-    currency_id = Column(Text)
-    opportunity = Column(Float)
-    closedate = Column(Date)
-    closed = Column(String)
-    uf_crm_1668857275565 = Column(__uf_crm_1668857275565_enum)
+class BaseTable:
 
     @property
     def tablename(self):
         return self.__tablename__
 
-    @property
-    def column_list(self):
-        return [column.name for column in self.__table__.columns]
-
-    def __init__(self, engine: Engine, **kwarg):
+    def __init__(self, engine: Engine, entity_config: BaseConfig, **kwarg):
         self.__engine = engine
-        self.__Session = sessionmaker(bind = engine)
-        self.__session = self.__Session()
+        self.__entity_config = entity_config
+        self.__columns = BaseColumns(self.__entity_config).column_list
+        
+        self.__metadata = MetaData()
 
-        # self.__data_count = d_len
-        # self.__count_in_db = self.__session.query(BaseTable).filter().count()
-        # self.__counter = 0
+        self.__tablename__ = self.__entity_config.entity_name
+        self.__table = Table(self.tablename, self.__metadata, *self.__columns)
+        
+        # self.__Session = sessionmaker(bind = self.__engine)
+        # self.__session = self.__Session()
 
-        if kwarg:
-            self.__set_attributes(kwarg)
+        self.__connection = engine.connect()
+
+        # if kwarg:
+        #     self.__set_attributes(kwarg)
+
+        if not kwarg:
+            pass
+
+        # if kwarg:
+        #     self.__add_data(kwarg)
 
     def _drop_and_create(self):
         self.__drop()
         self.__create()
 
     def _add_data(self, data: Dict[str, any]):
-        try:
-            # self.__counter += 1
-            new_rec = self.__class__(self.__engine, **data)
-            self.__session.add(new_rec)
-            self.__session.commit()
-            print_success(f'Запись успешно добавлена в таблицу {self.__tablename__}')
-
-            # if self.__counter is not self.__data_count:
-            #     print_error('Не все записи добавлены в таблицу')
+        for obj in data:
+            obj = self.__empty_str_to_none(key_dict_to_lower(obj))
             
-        except Exception as error:
-            print_error(error)
-            self.__session.rollback()
-        finally:
-            self.__session.close()
+            try:
+                # new_entry = self.__table(**obj)
+                
+                obj = { k: v for k, v in obj.items() if k in self.__entity_config.keys }
+                self.__connection.execute(self.__table.insert().values(**obj))
+                # self.__session.add(new_entry)
+                # self.__session.commit()
+                print_success(f'Запись успешно добавлена в таблицу {self.tablename}')
+        
+            except Exception as error:
+                print_error(f'Не удалось добавить запись в таблицу {self.tablename}. Ошибка: {str(error)}')
+                # self.__session.rollback()
+            finally:
+                pass
+                # self.__session.close()
 
     def __create(self):
         try:
-            Base.metadata.create_all(bind = self.__engine)
-            print_success(f'Таблица {self.__tablename__} успешно создана')
+            self.__metadata.create_all(bind = self.__engine)
+            print_success(f'Таблица {self.tablename} успешно создана')
         except Exception as error:
             print_error(error)
 
     def __drop(self):
-        Base.metadata.drop_all(bind = self.__engine)
+        self.__metadata.drop_all(bind = self.__engine)
 
-    def __set_attributes(self, data: Dict[str, any]):
-        self.__empty_str_to_none(key_dict_to_lower(data))
+    # def __set_attributes(self, data: Dict[str, any]):
+    #     self.__empty_str_to_none(key_dict_to_lower(data))
         
-        for key, value in data.items():
-            setattr(self, key, value)
+    #     for key, value in data.items():
+    #         setattr(self, key, value)
 
     def __empty_str_to_none(self, data: Dict[str, any]):
         #
         # Для crm.deal.list
         if (data['closedate'] == ''):
-            (data['closedate']) = None
+            data['closedate'] = None
+
+        return data
