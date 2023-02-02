@@ -16,17 +16,17 @@ class BaseColumns:
         return columns
     
     def __init__(self, config: BaseConfig):
-        self.__config = config
+        self.__entity_config = config
         self.__generate_columns()
 
     def __generate_columns(self):
-        for key, value in self.__config.fields_lower.items():
+        for key, value in self.__entity_config.fields_lower.items():
             self.__set_column_to_class(key, value)
 
     def __set_column_to_class(self, key: str, python_type: str):
 
-            if self.__config.primary_key_field_lower == '':
-                self.__config.keys = 'pk_tech_field'
+            if self.__entity_config.primary_key_field_lower == '':
+                self.__entity_config.keys = 'pk_tech_field'
                 setattr(self, 'pk_tech_field', self.__get_column_with_props('pk_tech_field', python_type))
 
             setattr(self, key, self.__get_column_with_props(key, python_type))
@@ -49,6 +49,6 @@ class BaseColumns:
                 return Column(String, name = key)
             case 'enum':
                 return Column(
-                    ENUM(*self.__config.enums_lower[next(iter(self.__config.enums_lower))], name = f'enum_{key}'),
+                    ENUM(*self.__entity_config.enums_lower[next(iter(self.__entity_config.enums_lower))], name = f'enum_{key}'),
                     name = key
                 )

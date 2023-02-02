@@ -2,12 +2,14 @@ import asyncio
 from typing import Dict, List, Union
 
 from fast_bitrix24 import BitrixAsync
+from sqlalchemy import MetaData
 
 # Local imports
 from env import webhook
 from fields.base_entity_config import BaseConfig
 from fields.crm_deal_list_fields import CRM_DEAL_LIST_CONFIG
 from fields.catalog_storeproduct_list_fields import CATALOG_STOREPRODUCT_LIST_CONFIG
+from fields.catalog_catalog_list_fields import CATALOG_CATALOG_LIST_CONFIG
 
 
 from utils import Utils, print_error, key_dict_to_lower
@@ -16,6 +18,7 @@ from tables import BaseTable, BaseColumns
 
 utils = Utils()
 engine = utils.engine
+metadata = MetaData()
 
 # Подумать куда вынести
 async def get_data(config: BaseConfig) -> Union[List, Dict]:
@@ -34,7 +37,7 @@ async def main():
     try:
         pass
         config = BaseConfig(CRM_DEAL_LIST_CONFIG)
-        table = BaseTable(engine, config)
+        table = BaseTable(engine, metadata, config)
         table._drop_and_create()
         
         data: List[Dict[str, any]] = await get_data(config)

@@ -1,6 +1,6 @@
 from utils import key_dict_to_lower, props_list_to_lower, print_error
 from fields.base_fields_constants import DEFAULT_ENTITY_CONFIG, DEFAULT_CALL_METHOD, DEFAULT_PARAMS, DEFAULT_KEYS, DEFAULT_ENUMS, DEFAULT_PRIMARY_KEY, DEFAULT_FIELDS
-from fields.base_fields_types import T_ENTITY_CONFIG_WITH_FIELDS, T_ENTITY_CONFIG, T_CALL_METHOD, T_PARAMS, T_KEYS, T_ENUMS, T_PRIMARY_KEY, T_FIELDS
+from fields.base_fields_types import T_ENTITY_CONFIG_WITH_FIELDS, T_ENTITY_CONFIG, T_PARENT_NAME, T_ENTITY_NAME, T_CALL_METHOD, T_PARAMS, T_KEYS, T_ENUMS, T_PRIMARY_KEY, T_FIELDS
 
 
 class BaseConfig:
@@ -76,7 +76,10 @@ class BaseConfig:
 
     @fields.setter
     def fields(self, v: T_FIELDS):
-        self.__fields = v
+        if isinstance(v, T_FIELDS):
+            self.__fields = v
+        else:
+            print_error('Поле должно соответствовать типу T_FIELDS')
 
     @property
     def fields_lower(self):
@@ -90,15 +93,15 @@ class BaseConfig:
             self.__generate_dict_config()
 
     def __generate_dict_config(self):
-        self.__parent_name: str = self.__entity_config.get('parent_name', None)
+        self.__parent_name: T_PARENT_NAME = self.__entity_config.get('parent_name', None)
         if self.__parent_name is None:
             self.__is_none_value('parent_name')
         
-        self.__entity_name: str = self.__entity_config.get('entity_name', None)
+        self.__entity_name: T_ENTITY_NAME = self.__entity_config.get('entity_name', None)
         if self.__entity_name is None:
             self.__is_none_value('entity_name')
 
-        self.__type_method: str = self.__entity_config.get('type_method', None)
+        self.__type_method: T_CALL_METHOD = self.__entity_config.get('type_method', None)
         if self.__type_method is None:
             self.__is_none_value('type_method')
 

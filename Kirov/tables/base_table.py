@@ -15,8 +15,8 @@ class BaseTable:
     def tablename(self):
         return self.__tablename__
 
-    def __init__(self, engine: Engine, entity_config: BaseConfig):
-        self.__metadata = MetaData()
+    def __init__(self, engine: Engine, metadata: MetaData, entity_config: BaseConfig):
+        self.__metadata = metadata
         self.__engine = engine
         self.__entity_config = entity_config
         self.__columns = BaseColumns(self.__entity_config).column_list
