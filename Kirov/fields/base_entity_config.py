@@ -85,7 +85,6 @@ class BaseConfig:
     def fields_lower(self):
         return key_dict_to_lower(self.__fields)
 
-
     def __check_error(self):
         if self.__entity_config is None:
             self.__is_none_value('entity_config')

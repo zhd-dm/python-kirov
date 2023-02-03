@@ -28,8 +28,11 @@ class BaseColumns:
             if self.__entity_config.primary_key_field_lower == '':
                 self.__entity_config.keys = 'pk_tech_field'
                 setattr(self, 'pk_tech_field', self.__get_column_with_props('pk_tech_field', python_type))
-
-            setattr(self, key, self.__get_column_with_props(key, python_type))
+            elif python_type == 'json':
+                setattr(self, f'{key}_id', self.__get_column_with_props(f'{key}_id', python_type))
+                setattr(self, f'{key}_value', self.__get_column_with_props(f'{key}_value', python_type))
+            else:
+                setattr(self, key, self.__get_column_with_props(key, python_type))
 
     def __get_column_with_props(self, key: str, python_type: str) -> Column:
 
@@ -52,3 +55,8 @@ class BaseColumns:
                     ENUM(*self.__entity_config.enums_lower[next(iter(self.__entity_config.enums_lower))], name = f'enum_{key}'),
                     name = key
                 )
+            case 'json':
+                if '_id' in key:
+                    return Column(Integer, name = key)
+                if '_value' in key:
+                    return Column(String, name = key)

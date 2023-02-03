@@ -19,7 +19,7 @@ CRM_DEAL_LIST_CONFIG: T_ENTITY_CONFIG_WITH_FIELDS = {
         'enums': {
             'UF_CRM_1668857275565': ['211', '209']
         },
-        'primary_key': 'ID'
+        'primary_key': 'id'
     },
     'fields': DICT_FIELD_AND_DB_TYPE
 }
