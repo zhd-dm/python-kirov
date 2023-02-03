@@ -72,13 +72,19 @@ class BaseTable:
         if self.tablename == 'deal':
             if element['closedate'] == '':
                 element['closedate'] = None
-            # if element['date'] and element['date'] == '':
-            #     element['date'] = None
 
         #
         # Для crm.product.list
         if (self.tablename == 'product' and element['property_119'] == None):
             element['property_119'] = {
+                'valueId': None,
+                'value': None
+            }
+
+        #
+        # Для catalog.product.sku.list
+        if (self.tablename == 'product_sku' and element['property119'] == None):
+            element['property119'] = {
                 'valueId': None,
                 'value': None
             }

@@ -57,9 +57,19 @@ BASE_FIELDS_TO_DB_TYPES: Dict[str, str] = {
     # crm.product.list
     # 'ID': 'int',                  # ==== дубль
     # 'NAME': 'text',               # ==== дубль
-    'PROPERTY_119': 'json' # {'valueId': '123', 'value': 'aaa'}
+    'PROPERTY_119': 'json', # {'valueId': '123', 'value': 'aaa'}
     # 'PROPERTY_119': 'int',
     # 'PROPERTY_119_VALUE': 'char'
+
+    # catalog.product.offer.list
+    'parentId': 'json',
+    # 'id': 'int',                  # ==== дубль
+    'name': 'char',
+    'purchasingPrice': 'double',
+
+    # catalog.product.sku.list
+    # 'id': 'int',                  # ==== дубль
+    'property119': 'json'
 }
 
 #

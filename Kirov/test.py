@@ -16,6 +16,8 @@ from fields.catalog_storeproduct_list_fields import CATALOG_STOREPRODUCT_LIST_CO
 from fields.crm_deal_list_fields import CRM_DEAL_LIST_CONFIG
 from fields.crm_product_list_fields import CRM_PRODUCT_LIST_CONFIG
 from fields.crm_productrow_list_fields import CRM_PRODUCTROW_LIST_CONFIG
+from fields.catalog_product_offer_list import CATALOG_PRODUCT_OFFER_LIST_CONFIG
+from fields.catalog_product_sku_list import CATALOG_PRODUCT_SKU_LIST_CONFIG
 from fields import LIST_OF_ENTITIES_CONFIG
 
 
@@ -41,7 +43,7 @@ async def get_data(config: BaseConfig) -> Union[List, Dict]:
 
 async def main():
     try:
-        for entity_config in LIST_OF_ENTITIES_CONFIG:
+        for entity_config in [LIST_OF_ENTITIES_CONFIG]:
             config = BaseConfig(entity_config)
             data: List[Dict[str, any]] = await get_data(config)
             table = BaseTable(engine, config)
