@@ -10,7 +10,7 @@ from fields.base_entity_config import BaseConfig
 class BaseColumns:
 
     @property
-    def column_list(self):
+    def column_list(self) -> List[Column]:
         columns = [value for key, value in self.__dict__.items()]
         del columns[0]
         return columns

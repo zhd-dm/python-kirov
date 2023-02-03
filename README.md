@@ -3,11 +3,15 @@
 ## `class BaseConfig(config: T_ENTITY_CONFIG_WITH_FIELDS)`
 
 ### __Types:__
+- `T_PARENT_NAME = str`
+- `T_ENTITY_NAME = str`
+- `T_CALL_METHOD = str`
 - `T_PARAMS = Dict[str, List[str]]`
 - `T_KEYS = List[str]`
+- `T_ENUMS = Dict[str, List[any]]`
+- `T_PRIMARY_KEY = str`
 - `T_FIELDS = Dict[str, str]`
-- `T_CALL_METHOD = str`
-- `T_ENTITY_CONFIG = Dict[str, Union[ T_CALL_METHOD, T_PARAMS, T_KEYS ]]`
+- `T_ENTITY_CONFIG = Dict[str, Union[ T_PARENT_NAME, T_ENTITY_NAME, T_CALL_METHOD, T_PARAMS, T_KEYS, T_ENUMS, T_PRIMARY_KEY ]]`
 - `T_ENTITY_CONFIG_WITH_FIELDS = Dict[str, Union[ T_ENTITY_CONFIG, T_FIELDS ]]`
 
 __getters:__ 
@@ -17,10 +21,13 @@ __getters:__
 - `type_method -> str`
 - `params -> T_PARAMS`
 - `keys -> T_KEYS`
+- `enums -> T_ENUMS`
+- `primary_key_field -> T_PRIMARY_KEY`
 - `fields -> T_FIELDS`
 
 __setters:__
 - `params.setter: self.__params = v`
+- `keys.setter: self.__keys.append(v)`
 - `fields.setter: self.__fields = v`
 
 ## __Constants:__
@@ -28,23 +35,30 @@ __setters:__
 - `BASE_FIELDS_TO_DB_TYPES: Dict[str, str]`
 - `DEFAULT_PARAMS: T_PARAMS`
 - `DEFAULT_KEYS: T_KEYS`
+- `DEFAULT_ENUMS: T_ENUMS`
 - `DEFAULT_FIELDS: T_FIELDS`
 - `DEFAULT_CALL_METHOD: List[T_CALL_METHOD]`
+- `DEFAULT_PRIMARY_KEY: T_PRIMARY_KEY`
 - `DEFAULT_ENTITY_CONFIG: T_ENTITY_CONFIG`
+- `DEFAULT_ENTITY_CONFIG_WITH_FIELDS: T_ENTITY_CONFIG_WITH_FIELDS`
 
 <br>
 
 # __Module tables__
 
-## `class BaseTable(engine: Engine, **kwarg)`
+## `class BaseTable(engine: Engine, entity_config: BaseConfig)`
 
 __getters:__ 
 - `tablename -> str`
-- `column_list -> List[str]`
 
 __methods:__
 - `_drop_and_create(): __drop(), __create()`
-- `_add_data(data: Dict[str, any]): .. __session.add(data), ..`
+- `_add_data(data: Dict[str, any]): .. __connection.execute(**element), ..`
+
+## `class BaseColumns()`
+
+__getters:__ 
+- `column_list -> List[Column]`
 
 <br>
 
@@ -60,7 +74,8 @@ __getters:__
 - `engine -> Engine`
 
 __methods:__
-- `async get_data(config: BaseConfig) -> Union[List, Dict]`
+- `key_dict_to_lower(dict: Dict[str, any]) -> Dict[str, any]`
+- `props_list_to_lower(list: List[str]) -> List[str]`
 - `print_success(message: str): print(""" """) `
 - `print_error(error: Exception): print(""" """) `
 
