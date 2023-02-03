@@ -24,7 +24,8 @@ class BaseTable:
         self.__entity_config = entity_config
 
         self.__columns = BaseColumns(self.__entity_config).column_list
-        self.__tablename__ = self.__entity_config.entity_name
+        self.__tablename__ = self.__entity_config.entity_name.replace('.', '_')
+
         self.__table = Table(self.tablename, self.__metadata, *self.__columns)
 
     def _drop_and_create(self):
@@ -32,10 +33,8 @@ class BaseTable:
         self.__create()
 
     def _add_data(self, data: Dict[str, any]):
-        pass
         for element in data:
             element = self.__empty_str_to_none(key_dict_to_lower(element))
-            pass
             
             try:
                 element = { k: v for k, v in element.items() if k in self.__entity_config.keys_lower }
@@ -71,7 +70,7 @@ class BaseTable:
         #
         # Для crm.deal.list
         if self.tablename == 'deal':
-            if element['closedate'] and element['closedate'] == '':
+            if element['closedate'] == '':
                 element['closedate'] = None
             # if element['date'] and element['date'] == '':
             #     element['date'] = None

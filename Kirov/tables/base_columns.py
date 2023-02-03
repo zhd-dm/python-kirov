@@ -28,7 +28,8 @@ class BaseColumns:
             if self.__entity_config.primary_key_field_lower == '':
                 self.__entity_config.keys = 'pk_tech_field'
                 setattr(self, 'pk_tech_field', self.__get_column_with_props('pk_tech_field', python_type))
-            elif python_type == 'json':
+
+            if python_type == 'json':
                 setattr(self, f'{key}_id', self.__get_column_with_props(f'{key}_id', python_type))
                 setattr(self, f'{key}_value', self.__get_column_with_props(f'{key}_value', python_type))
             else:
