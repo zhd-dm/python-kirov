@@ -37,6 +37,7 @@ class BaseTable:
             element = self.__empty_str_to_none(key_dict_to_lower(element))
             
             try:
+                # DEPRECATED
                 element = { k: v for k, v in element.items() if k in self.__entity_config.keys_lower }
                 element_copy = copy.deepcopy(element)
 

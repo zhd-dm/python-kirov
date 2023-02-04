@@ -20,6 +20,7 @@ ENTITY_CONFIG_KEYS = ['parent_name', 'entity_name', 'type_method', 'params', 'en
 # ================== Список основных параметров конфига сущности ==================
 #
 
+# DEPRECATED
 ENTITY_BASE_KEYS: T_KEYS = ['parent_name', 'entity_name', 'type_method', 'params']
 
 #
@@ -94,6 +95,7 @@ DEFAULT_PARAMS: T_PARAMS = { 'select': ['*', 'UF_*'] }
 # ================== Дефолтный список keys ==================
 #
 
+# DEPRECATED
 DEFAULT_KEYS: T_KEYS = ['parent_name', 'entity_name', 'type_method', 'params', 'id', 'title']
 
 #
