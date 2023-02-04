@@ -12,14 +12,14 @@ def key_dict_to_lower(dict: Dict[str, any]) -> Dict[str, any]:
 def props_list_to_lower(list: List[str]) -> List[str]:
     return [ value.lower() for value in list ]
 
-def get_dict_by_indexes_of_list_of_lists(key_i: int, key_v: int, list: List[List[Union[str, int]]]) -> Dict[Union[str, int], Union[str, int]]:
+def get_dict_by_indexes_of_list_of_lists(key_i: int, key_v: int, list: List[List[any]]) -> Dict[str, any]:
     """
     Метод генерации словаря из списка списков
 
     Аргументы:
     - `key_i: int` - ключ, который будет ключом в словаре
     - `key_v: int` - ключ, который будет значением в словаре
-    - `list: List[List[Union[str, int]]]` - входящий список списков
+    - `list: List[List[any]]` - входящий список списков
 
     Пример:
 
@@ -28,6 +28,39 @@ def get_dict_by_indexes_of_list_of_lists(key_i: int, key_v: int, list: List[List
     [['a', 'b', 'c'], [1, 2, 3], ['d', 2, 0]] -> { 'a': 'b', 1: 2, 'd': 2 }
     """
     return { i[key_i]: i[key_v] for i in list }
+
+def find_list_of_list_of_lists(from_index: int, condition: str, list: List[List[any]]) -> List[any]:
+    """
+    Метод поиска списка из списка списков по условию
+
+    Аргументы:
+    - `from_index: int` - индекс, по которому будем сравнивать
+    - `condition: int` - чему должно быть равно значение этого индекса
+    - `list: List[List[any]]` - входящий список списков
+
+    Пример:
+
+    Если from_index = 0, а condition = 'd', и на вход получаем такой список:
+
+    [['a', 'b', 'c'], [1, 2, 3], ['d', 2, 0]] -> ['d', 2, 0]
+    """
+    return next(item for item in list if item[from_index] == condition)
+
+def convert_list_to_dict(keys: List[str], list: List[any]) -> Dict[str, any]:
+    """
+    Метод преобразования списка в словарь с заданными ключами
+
+    Аргументы:
+    - `keys: List[str]` - список ключей, которые будут заданы индексам словаря
+    - `list: List[any]` - исходный список
+
+    Пример:
+
+    Если keys = ['a', 'b', 'c'], и на вход получаем такой список:
+
+    ['super', 1, None] -> { 'a': 'super', 'b': 1, 'c': None }
+    """
+    return dict(zip(keys, list))
 
 def print_success(message: str):
     print(f"""
