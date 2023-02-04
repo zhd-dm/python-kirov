@@ -1,4 +1,4 @@
-from env import DEFAULT_settings
+from env import DEFAULT_settings, SPREADSHEET_ID
 
 from utils.types import T_SETTINGS
 
@@ -14,3 +14,7 @@ class Settings:
     @property
     def db_url(self):
         return f'postgresql://{self.__user}:{self.__password}@{self.__host}:{self.__port}/{self.__db}'
+
+    @property
+    def spreadsheet_id(self):
+        return SPREADSHEET_ID

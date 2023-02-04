@@ -20,9 +20,9 @@ from fields.catalog_product_offer_list import CATALOG_PRODUCT_OFFER_LIST_CONFIG
 from fields.catalog_product_sku_list import CATALOG_PRODUCT_SKU_LIST_CONFIG
 from fields import LIST_OF_ENTITIES_CONFIG
 
-
+from google_sheets import GoogleSheet
 from utils import Utils, print_error, key_dict_to_lower
-from tables import BaseTable, BaseColumns
+from tables import BaseTable
 
 
 utils = Utils()
@@ -43,13 +43,17 @@ async def get_data(config: BaseConfig) -> Union[List, Dict]:
 
 async def main():
     try:
-        for entity_config in [LIST_OF_ENTITIES_CONFIG]:
-            config = BaseConfig(entity_config)
-            data: List[Dict[str, any]] = await get_data(config)
-            table = BaseTable(engine, config)
-            table._drop_and_create()
-            table._add_data(data)
-            time.sleep(1)
+        google_sheet = GoogleSheet()
+        print(google_sheet._get_base_fields_to_db_types())
+
+
+        # for entity_config in [CRM_DEAL_LIST_CONFIG]:
+        #     config = BaseConfig(entity_config)
+        #     data: List[Dict[str, any]] = await get_data(config)
+        #     table = BaseTable(engine, config)
+        #     table._drop_and_create()
+        #     table._add_data(data)
+        #     time.sleep(1)
 
 
     except Exception as error:
