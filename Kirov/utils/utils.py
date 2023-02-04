@@ -2,7 +2,7 @@
 # Файл утилит должен быть без зависимостей от других модулей приложения !!!
 #
 
-
+import json
 from typing import Union, List, Dict
 
 
@@ -61,6 +61,27 @@ def convert_list_to_dict(keys: List[str], list: List[any]) -> Dict[str, any]:
     ['super', 1, None] -> { 'a': 'super', 'b': 1, 'c': None }
     """
     return dict(zip(keys, list))
+
+def convert_str_to_dict_or_list(string: str) -> Union[List[any], Dict[str, any]]:
+    """
+    Метод преобразования строки в список или словарь если это возможно
+
+    Аргументы:
+    - `string: str` - входная строка
+
+    Пример:
+
+    Если string = "['a', b, 'c']"
+
+    string -> ['a', 'b', 'c'], аналогично со словарем
+    """
+
+    if string.startswith('{'):
+        return json.loads(string.replace("'", '"'))
+    if string.startswith('['):
+        return list(map(str, string[1:-1].split(', ')))
+
+    return string
 
 def print_success(message: str):
     print(f"""

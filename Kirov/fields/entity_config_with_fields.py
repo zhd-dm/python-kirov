@@ -3,7 +3,7 @@ from typing import Dict, List
 
 from google_sheets.google_sheet import GoogleSheet
 
-from utils import find_list_of_list_of_lists, convert_list_to_dict
+from utils import find_list_of_list_of_lists, convert_list_to_dict, convert_str_to_dict_or_list
 
 from fields.base_fields_types import T_ENTITY_CONFIG, T_FIELDS, T_ENTITY_CONFIG_WITH_FIELDS
 from fields.base_fields_constants import ENTITY_CONFIG_KEYS
@@ -43,6 +43,7 @@ class EntityConfigWithFields:
     Геттеры:
     - `entity_config_with_fields` - словарь конфига сущности с его полями и типами данных
     """
+
     @property
     def entity_config_with_fields(self):
         return self.__get_entity_config_with_fields()
@@ -55,10 +56,10 @@ class EntityConfigWithFields:
         #
         self.__google_sheet = GoogleSheet()
         self.__entities_config_list = self.__google_sheet._get_range_values(RANGE_ENTITIES_CONFIG)
+
         #
         self.__get_entity_config_with_fields()
         #
-        pass
 
     def __get_entity_config_with_fields(self):
         entity_config: T_ENTITY_CONFIG_WITH_FIELDS = {
@@ -73,14 +74,19 @@ class EntityConfigWithFields:
         """
 
         config_without_keys = self.__prepare_current_entity_config()
-        entity_config = config_without_keys
-        entity_config['keys'] = ['test']
+        entity_config = {}
         
+        for k in config_without_keys:
+            entity_config[k] = convert_str_to_dict_or_list(config_without_keys[k])
+
+        # DEPRECATED
+        # entity_config['keys'].extend(ENTITY_BASE_KEYS)
+
         return entity_config
 
     def __get_current_fields(self) -> T_FIELDS:
         """
-        Метод генерации словаря fields по entity_key
+        Метод генерации словаря T_FIELDS по entity_key
         """
 
         fields = {
@@ -103,5 +109,5 @@ class EntityConfigWithFields:
         target_list.insert(0, split_item[1])
         target_list.insert(0, split_item[0])
         target_dict = convert_list_to_dict(ENTITY_CONFIG_KEYS, target_list)
-        
+
         return target_dict

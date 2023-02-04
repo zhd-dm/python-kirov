@@ -13,7 +13,8 @@ RANGE_ENTITIES_CONFIG = 'G3:K'
 # ================== Список ключей для маппинга списка из Google Sheets в T_ENTITY_CONFIG ==================
 #
 
-ENTITY_CONFIG_KEYS = ['parent_name', 'entity_name', 'type_method', 'params', 'enums', 'primary_key']
+# DEPRECATED
+ENTITY_CONFIG_KEYS = ['parent_name', 'entity_name', 'type_method', 'params', 'enums', 'primary_key', 'keys']
 
 #
 # ================== Список основных параметров конфига сущности ==================
