@@ -1,13 +1,13 @@
 import os.path
 import pickle
-from typing import List, Union
+from typing import List, Union, Type
 
-from googleapiclient.discovery import build
+from googleapiclient.discovery import build, Resource
 from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
 from google.oauth2.credentials import Credentials
 
-# from Kirov.env import SPREADSHEET_ID
+from env import SPREADSHEET_ID
 
 T_SHEET_RANGE = str
 T_SHEET_VALUES = List[Union[str, int, List[Union[str, int]]]]
@@ -34,6 +34,7 @@ class GoogleSheet:
                 pickle.dump(creds, token)
 
         self.__service = build('sheets', 'v4', credentials = creds)
+        # self.__service: Union[Type[build], Request] = self.__service
 
     def _read_range_values(self, range: T_SHEET_RANGE):
         result = self.__service.spreadsheets().values().get(spreadsheetId = SPREADSHEET_ID, range = range).execute()
@@ -56,11 +57,14 @@ class GoogleSheet:
         
 def main():
    google_sheet = GoogleSheet()
-   range = 'entity_config!A3:C35'
+   range = 'entity_config!A3:C'
    print(google_sheet._read_range_values(range))
 
 main()
 
+# => A3:C - выборка base_fields_to_db_types
+# => G3:I - выборка для crm.deal.list
+#
 
 #
 # ======== Примеры ========
