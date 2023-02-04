@@ -3,11 +3,24 @@ from typing import Dict, List
 
 from fields.base_fields_types import T_ENTITY_CONFIG_WITH_FIELDS, T_ENTITY_CONFIG, T_CALL_METHOD, T_PARAMS, T_KEYS, T_ENUMS, T_PRIMARY_KEY, T_FIELDS
 
+#
+# ================== Диапазон Google Sheets ячеек конфигов сущностей ==================
+#
+
+RANGE_ENTITIES_CONFIG = 'G3:K'
+
+#
+# ================== Список ключей для маппинга списка из Google Sheets в T_ENTITY_CONFIG ==================
+#
+
+# DEPRECATED
+ENTITY_CONFIG_KEYS = ['parent_name', 'entity_name', 'type_method', 'params', 'enums', 'primary_key', 'keys']
 
 #
 # ================== Список основных параметров конфига сущности ==================
 #
 
+# DEPRECATED
 ENTITY_BASE_KEYS: T_KEYS = ['parent_name', 'entity_name', 'type_method', 'params']
 
 #
@@ -82,6 +95,7 @@ DEFAULT_PARAMS: T_PARAMS = { 'select': ['*', 'UF_*'] }
 # ================== Дефолтный список keys ==================
 #
 
+# DEPRECATED
 DEFAULT_KEYS: T_KEYS = ['parent_name', 'entity_name', 'type_method', 'params', 'id', 'title']
 
 #

@@ -36,14 +36,17 @@ class BaseConfig:
     def params(self, v: T_PARAMS):
         self.__params = v
 
+    # DEPRECATED
     @property
     def keys(self):
         return self.__keys
-
+    
+    # DEPRECATED
     @property
     def keys_lower(self):
         return props_list_to_lower(self.__keys)
 
+    # DEPRECATED
     @keys.setter
     def keys(self, v: str):
         if isinstance(v, str):
@@ -53,7 +56,6 @@ class BaseConfig:
         if v == '':
             print_error('Элемент списка keys не должен быть пустой строкой')
 
-    
     @property
     def enums(self):
         return self.__enums
@@ -108,6 +110,7 @@ class BaseConfig:
         if self.__params is None:
             self.__is_none_value('params')
 
+        # DEPRECATED
         self.__keys: T_KEYS = self.__entity_config.get('keys', None)
         if self.__keys is None:
             self.__is_none_value('keys')
@@ -137,6 +140,7 @@ class BaseConfig:
             return DEFAULT_CALL_METHOD[2]
         if str == 'params':
             return DEFAULT_PARAMS
+        # DEPRECATED
         if str == 'keys':
             return DEFAULT_KEYS
         if str == 'enums':

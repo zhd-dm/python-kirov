@@ -5,7 +5,7 @@ from sqlalchemy.engine import Engine
 from sqlalchemy import MetaData, Table
 
 # Local imports
-from fields.base_entity_config import BaseConfig
+from fields.base_config import BaseConfig
 from tables.base_columns import BaseColumns
 from utils import print_error, print_success, key_dict_to_lower
 
@@ -37,6 +37,7 @@ class BaseTable:
             element = self.__empty_str_to_none(key_dict_to_lower(element))
             
             try:
+                # DEPRECATED
                 element = { k: v for k, v in element.items() if k in self.__entity_config.keys_lower }
                 element_copy = copy.deepcopy(element)
 
