@@ -8,25 +8,25 @@ from google.auth.transport.requests import Request
 
 from utils import Settings, print_success
 
-from google_sheets import DEFAULT_LIST_NAME, T_SHEET_RANGE, T_SHEET_VALUES_RETURN, T_SHEET_VALUES_SEND
+from google_sheets import DEFAULT_SHEET_NAME, T_SHEET_RANGE, T_SHEET_VALUES_RETURN, T_SHEET_VALUES_SEND
 
 
 class GoogleSheet:
     """
-    Класс обращения к Google Sheets по переданному list_name
+    Класс обращения к Google Sheets по переданному sheet_name
 
     Аргументы:
-    - `list_name: str` - имя листа, с которым будем работать
+    - `sheet_name: str` - имя листа, с которым будем работать, по умолчанию DEFAULT_SHEET_NAME
 
     Пример:
 
-    google_sheet = GoogleSheet(DEFAULT_LIST_NAME)
+    google_sheet = GoogleSheet('sheet_name!')
     """
 
     SCOPES = ['https://www.googleapis.com/auth/spreadsheets']
     service = None
 
-    def __init__(self, list_name: str = DEFAULT_LIST_NAME):
+    def __init__(self, list_name: str = DEFAULT_SHEET_NAME):
         creds = None
         if os.path.exists('token.pickle'):
             with open('token.pickle', 'rb') as token:
