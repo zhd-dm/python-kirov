@@ -44,7 +44,7 @@ class GoogleSheet:
         if list_name:
             self.__list_name = list_name
         else:
-            self.__list_name = DEFAULT_LIST_NAME
+            self.__list_name = DEFAULT_SHEET_NAME
 
         self.__service = build('sheets', 'v4', credentials = creds)
 
