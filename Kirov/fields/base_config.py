@@ -53,7 +53,6 @@ class BaseConfig:
         if v == '':
             print_error('Элемент списка keys не должен быть пустой строкой')
 
-    
     @property
     def enums(self):
         return self.__enums

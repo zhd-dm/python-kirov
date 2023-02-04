@@ -5,7 +5,7 @@ from sqlalchemy.engine import Engine
 from sqlalchemy import MetaData, Table
 
 # Local imports
-from fields.base_entity_config import BaseConfig
+from fields.base_config import BaseConfig
 from tables.base_columns import BaseColumns
 from utils import print_error, print_success, key_dict_to_lower
 
