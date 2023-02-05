@@ -34,7 +34,7 @@ class EntityConfigWithFields:
         return self.__fields_config
 
     def __init__(self, entity_key: str = None, bitrix_fields_to_db_types: Dict[str, any] = None):
-        pass
+
         if bitrix_fields_to_db_types:
             self.__bitrix_fields_to_db_types = bitrix_fields_to_db_types
 

@@ -85,6 +85,22 @@ def convert_str_to_dict_or_list(string: str) -> Union[List[any], Dict[str, any]]
 
     return string
 
+def replace_custom_param(d: Dict[str, any], find_key: str, new_value: any):
+    """
+    Рекурсивный метод подмены значения в словаре новым значением
+
+    Аргументы:
+    - `d: Dict[str, any]` - входной словарь
+    - `find_key: str` - по какому ключу будет замена
+    - `new_value: any` - новое значение
+    """
+
+    for k, v in d.items():
+        if isinstance(v, dict):
+            replace_custom_param(v, find_key, new_value)
+        elif v == find_key:
+            d[k] = new_value
+
 def print_success(message: str):
     print(f"""
         ------ SUCCESS----------------------------------------------------------- SUCCESS ------

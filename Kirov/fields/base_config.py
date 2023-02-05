@@ -32,10 +32,12 @@ class BaseConfig:
     def params(self):
         return self.__params
 
-    # DEPRECATED
     @params.setter
     def params(self, v: T_PARAMS):
-        self.__params = v
+        if isinstance(v, dict):
+            self.__params = v
+        else:
+            print_error('params должен быть словарем')
 
     # DEPRECATED
     @property
