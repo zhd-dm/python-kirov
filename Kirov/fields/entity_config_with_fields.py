@@ -1,11 +1,8 @@
 from typing import Dict, List
 
 
+from utils import find_list_of_matrix, convert_list_to_dict, convert_str_to_dict_or_list, print_error
 from google_sheets.google_sheet import GoogleSheet
-from google_sheets import RANGE_BASE_FIELDS_TO_DB_TYPES, SHEET_BITRIX_FIELD_INDEX, SHEET_PYTHON_TYPE_INDEX
-
-from utils import find_list_of_matrix, convert_list_to_dict, convert_str_to_dict_or_list, get_dict_by_indexes_of_matrix, print_error
-
 from fields.base_fields_types import T_ENTITY_CONFIG, T_FIELDS, T_ENTITY_CONFIG_WITH_FIELDS
 from fields.base_fields_constants import ENTITY_CONFIG_KEYS, RANGE_ENTITIES_CONFIG
 
@@ -36,24 +33,19 @@ class EntityConfigWithFields:
     def fields_config(self):
         return self.__fields_config
 
-    @property
-    def bitrix_fields_to_db_types(self):
-        return self.__bitrix_fields_to_db_types
+    def __init__(self, entity_key: str = None, bitrix_fields_to_db_types: Dict[str, any] = None):
+        pass
+        if bitrix_fields_to_db_types:
+            self.__bitrix_fields_to_db_types = bitrix_fields_to_db_types
 
+        if entity_key:
+            self.__entity_key = entity_key
+            self.__google_sheet = GoogleSheet()
+            self.__entities_config_lists = self.__google_sheet._get_range_values(RANGE_ENTITIES_CONFIG)
 
-    def __init__(self, entity_key):
-        self.__entity_key = entity_key
-        self.__google_sheet = GoogleSheet()
-        self.__entities_config_lists = self.__google_sheet._get_range_values(RANGE_ENTITIES_CONFIG)
-
-        self.__bitrix_fields_to_db_types = get_dict_by_indexes_of_matrix(
-            SHEET_BITRIX_FIELD_INDEX,
-            SHEET_PYTHON_TYPE_INDEX,
-            self.__google_sheet._get_range_values(RANGE_BASE_FIELDS_TO_DB_TYPES)
-        )
-        self.__entity_config = self.__prepare_current_entity()
-        self.__fields_config = self.__generate_current_fields()
-        self.__entity_config_with_fields = self.__get_entity_config_with_fields()
+            self.__entity_config = self.__prepare_current_entity()
+            self.__fields_config = self.__generate_current_fields()
+            self.__entity_config_with_fields = self.__get_entity_config_with_fields()
 
     def __get_entity_config_with_fields(self):
         entity_config_with_fields: T_ENTITY_CONFIG_WITH_FIELDS = {
@@ -69,7 +61,7 @@ class EntityConfigWithFields:
         """
 
         list_of_bitrix_fields = self.entity_config.get('keys')
-        list_of_entity_fields = [self.bitrix_fields_to_db_types[i] for i in filter(lambda x: x in self.bitrix_fields_to_db_types, list_of_bitrix_fields)]
+        list_of_entity_fields = [self.__bitrix_fields_to_db_types[i] for i in filter(lambda x: x in self.__bitrix_fields_to_db_types, list_of_bitrix_fields)]
 
         fields_config = {
             list_of_bitrix_fields[i]: list_of_entity_fields[i] for i in range(len(list_of_bitrix_fields))

@@ -22,8 +22,8 @@ from fields.catalog_product_sku_list import CATALOG_PRODUCT_SKU_LIST_CONFIG
 from fields import LIST_OF_ENTITIES_CONFIG
 
 from google_sheets.google_sheet import GoogleSheet
-from google_sheets import RANGE_BASE_FIELDS_TO_DB_TYPES, SHEET_BITRIX_FIELD_INDEX, SHEET_PYTHON_TYPE_INDEX
-from utils import Utils, print_error, key_dict_to_lower, get_dict_by_indexes_of_list_of_lists
+from google_sheets import RANGE_BITRIX_FIELDS_TO_DB_TYPES, SHEET_BITRIX_FIELD_INDEX, SHEET_PYTHON_TYPE_INDEX
+from utils import Utils, print_error, get_dict_by_indexes_of_matrix
 from tables import BaseTable
 
 
@@ -33,7 +33,7 @@ engine = utils.engine
 # Подумать куда вынести
 async def get_data(config: BaseConfig) -> Union[List, Dict]:
     bx = BitrixAsync(webhook)
-    method = f'{config.parent_name}.{config.entity_name}.{config.type_method}'
+    method = f'{config.parent_name}.{config.entity_name}.{config.type_method}' if config.parent_name else f'{config.entity_name}.{config.type_method}'
     print(f'Method name -> {method}')
 
     return await bx.get_all(
@@ -42,31 +42,41 @@ async def get_data(config: BaseConfig) -> Union[List, Dict]:
     )
 #
 
+BITRIX_METHODS = [
+    'crm.deal.list',
+    'catalog.catalog.list',
+    'catalog.document.element.list',
+    'catalog.document.list',
+    'catalog.product.offer.list',
+    'catalog.product.sku.list',
+    'catalog.store.list',
+    'catalog.storeproduct.list',
+    'crm.product.list',
+    'crm.productrow.list', # json.decoder.JSONDecodeError: Extra data: line 1 column 55 (char 54)
+    'crm.company.list',
+    'user.get',
+    'crm.deal.productrows.list' # json.decoder.JSONDecodeError: Extra data: line 1 column 55 (char 54)
+]
 
 async def main():
-    try:
-        # google_sheet = GoogleSheet()
-        # base_fields_to_db_types = get_dict_by_indexes_of_list_of_lists(
-        #     SHEET_BITRIX_FIELD_INDEX,
-        #     SHEET_PYTHON_TYPE_INDEX,
-        #     google_sheet._get_range_values(RANGE_BASE_FIELDS_TO_DB_TYPES)
-        # )
-        # print(base_fields_to_db_types)
-        entity_config_with_fields = EntityConfigWithFields('crm.deal.list')
 
-        # for entity_config in [entity_config_with_fields.entity_config_with_fields]:
-        #     config = BaseConfig(entity_config)
-        #     data: List[Dict[str, any]] = await get_data(config)
-        #     table = BaseTable(engine, config)
-        #     table._drop_and_create()
-        #     table._add_data(data)
-        #     time.sleep(1)
+    fields_from_sheets = get_dict_by_indexes_of_matrix(
+        SHEET_BITRIX_FIELD_INDEX,
+        SHEET_PYTHON_TYPE_INDEX,
+        GoogleSheet()._get_range_values(RANGE_BITRIX_FIELDS_TO_DB_TYPES)
+    )
 
+    for bitrix_method in ['catalog.document.list']:
+        ecwf = EntityConfigWithFields(entity_key = bitrix_method, bitrix_fields_to_db_types = fields_from_sheets)
 
-    except Exception as error:
-        print_error(error)
+        for entity_config in [ecwf.entity_config_with_fields]:
+            config = BaseConfig(entity_config)
+            data: List[Dict[str, any]] = await get_data(config)
+            table = BaseTable(engine, config)
+            table._drop_and_create()
+            table._add_data(data)
+            time.sleep(1)
 
-    finally:
-        engine.pool.dispose()
+    engine.pool.dispose()
 
 asyncio.run(main())
