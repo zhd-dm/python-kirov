@@ -32,6 +32,7 @@ class BaseConfig:
     def params(self):
         return self.__params
 
+    # DEPRECATED
     @params.setter
     def params(self, v: T_PARAMS):
         self.__params = v
@@ -76,6 +77,7 @@ class BaseConfig:
     def fields(self):
         return self.__fields
 
+    # DEPRECATED
     @fields.setter
     def fields(self, v: T_FIELDS):
         if isinstance(v, T_FIELDS):

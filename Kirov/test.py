@@ -53,13 +53,8 @@ async def main():
         # )
         # print(base_fields_to_db_types)
         entity_config_with_fields = EntityConfigWithFields('crm.deal.list')
-        
-        pass
 
-
-
-
-        # for entity_config in [CRM_DEAL_LIST_CONFIG]:
+        # for entity_config in [entity_config_with_fields.entity_config_with_fields]:
         #     config = BaseConfig(entity_config)
         #     data: List[Dict[str, any]] = await get_data(config)
         #     table = BaseTable(engine, config)
