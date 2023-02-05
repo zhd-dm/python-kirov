@@ -3,8 +3,9 @@ from typing import Dict, List
 
 from utils import find_list_of_matrix, convert_list_to_dict, convert_str_to_dict_or_list, print_error
 from google_sheets.google_sheet import GoogleSheet
-from fields.base_fields_types import T_ENTITY_CONFIG, T_FIELDS, T_ENTITY_CONFIG_WITH_FIELDS
-from fields.base_fields_constants import ENTITY_CONFIG_KEYS, RANGE_ENTITIES_CONFIG
+from google_sheets.constants import RANGE_ENTITIES_CONFIG
+from fields.types import T_ENTITY_CONFIG, T_FIELDS, T_ENTITY_CONFIG_WITH_FIELDS
+from fields.constants import ENTITY_CONFIG_KEYS
 
 
 class EntityConfigWithFields:
@@ -13,12 +14,12 @@ class EntityConfigWithFields:
 
     Параметры:
     - `entity_key` - ключ по которому будут доставаться поля из Google Sheets (прим. crm.deal.list)
+    - `bitrix_fields_to_db_types` - словарь field: python_type
 
     Геттеры:
     - `entity_config_with_fields` - словарь конфига сущности с полями и их типами
     - `entity_config` - словарь конфига сущности
     - `fields_config` - словарь конфига полей сущности с их типами данных
-    - `bitrix_fields_to_db_types` - словарь полей битрикса, приведенных к python_types 
     """
 
     @property
@@ -87,6 +88,10 @@ class EntityConfigWithFields:
         split_list: List[str] = target_list[0].split('.')
         target_list.pop(0)
 
+        #
+        # REFACTOR:
+        # Придумать более лаконичную обработку 
+        #
         if split_list.__len__() == 2:
             target_list.insert(0, split_list[1])
             target_list.insert(0, split_list[0])

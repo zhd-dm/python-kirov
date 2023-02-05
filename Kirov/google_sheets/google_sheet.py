@@ -6,9 +6,11 @@ from googleapiclient.discovery import build
 from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
 
+
 from utils import Settings, print_success
 
-from google_sheets import DEFAULT_SHEET_NAME, T_SHEET_RANGE, T_SHEET_VALUES_RETURN, T_SHEET_VALUES_SEND
+from google_sheets.constants import DEFAULT_SHEET_NAME
+from google_sheets.types import T_SHEET_VALUES_RETURN, T_SHEET_VALUES_SEND
 
 
 class GoogleSheet:
@@ -48,12 +50,12 @@ class GoogleSheet:
 
         self.__service = build('sheets', 'v4', credentials = creds)
 
-    def _get_range_values(self, range: T_SHEET_RANGE) -> T_SHEET_VALUES_RETURN:
+    def _get_range_values(self, range: str) -> T_SHEET_VALUES_RETURN:
         """
         Метод получения списка списков из Google Sheets по переданному range
 
         Аргументы:
-        - `range: T_SHEET_RANGE` - диапазон полей которые будем доставать
+        - `range: str` - диапазон полей которые будем доставать
 
         Пример:
 
@@ -64,12 +66,12 @@ class GoogleSheet:
         values = result.get('values', [])
         return values
 
-    def _update_range_values(self, range: T_SHEET_RANGE, values: T_SHEET_VALUES_SEND):
+    def _update_range_values(self, range: str, values: T_SHEET_VALUES_SEND):
         """
         Метод отправки значений в Google Sheets по переданному словарю
 
         Аргументы:
-        - `range: T_SHEET_RANGE` - диапазон полей в которые будем записывать значения
+        - `range: str` - диапазон полей в которые будем записывать значения
         - `values: T_SHEET_VALUES_SEND` - значения которые запишем в эти поля
 
         Пример:

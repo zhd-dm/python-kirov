@@ -8,6 +8,15 @@ from fields.base_config import BaseConfig
 
 
 class BaseColumns:
+    """
+    Класс генерации колонки по переданному entity_config
+
+    Параметры:
+    - `config: BaseConfig` - entity_config
+    
+    Геттеры:
+    - `column_list -> List[Column]` - список колонок Column
+    """
 
     @property
     def column_list(self) -> List[Column]:
@@ -25,7 +34,12 @@ class BaseColumns:
 
     def __set_column_to_class(self, key: str, python_type: str):
 
-            if self.__entity_config.primary_key_field_lower == '':
+        #
+        # REFACTOR:
+        # Подумать над переработкой этого метода
+        #
+
+            if self.__entity_config.primary_key_lower == '':
                 self.__entity_config.keys = 'pk_tech_field'
                 setattr(self, 'pk_tech_field', self.__get_column_with_props('pk_tech_field', python_type))
 
@@ -36,6 +50,11 @@ class BaseColumns:
                 setattr(self, key, self.__get_column_with_props(key, python_type))
 
     def __get_column_with_props(self, key: str, python_type: str) -> Column:
+
+        #
+        # REFACTOR:
+        # Подумать над переработкой этого метода
+        #
 
         if key == 'id' or key == 'pk_tech_field':
             return Column(Integer, primary_key = True, name = key)

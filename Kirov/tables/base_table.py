@@ -4,13 +4,22 @@ from typing import Dict
 from sqlalchemy.engine import Engine
 from sqlalchemy import MetaData, Table
 
-# Local imports
+
+from utils import print_error, print_success, key_dict_to_lower
 from fields.base_config import BaseConfig
 from tables.base_columns import BaseColumns
-from utils import print_error, print_success, key_dict_to_lower
 
 
 class BaseTable:
+    """
+    Класс генерации таблицы в БД по переданному BaseConfig
+
+    Параметры:
+    - `entity_config: BaseConfig` - entity_config
+    
+    Геттеры:
+    - `tablename -> str` - название таблицы
+    """
 
     @property
     def tablename(self):
@@ -37,7 +46,6 @@ class BaseTable:
             element = self.__empty_str_to_none(key_dict_to_lower(element))
             
             try:
-                # DEPRECATED
                 element = { k: v for k, v in element.items() if k in self.__entity_config.keys_lower }
                 element_copy = copy.deepcopy(element)
 
@@ -53,7 +61,11 @@ class BaseTable:
             except Exception as error:
                 print_error(f'Не удалось добавить запись в таблицу {self.tablename}. Ошибка: {error}')
         
-        # self.__check_is_all_values_added_to_table(data)
+        #
+        # REFACTOR:
+        # Добавить проверку на соответствие количества добавленных записей полученным записям
+        #
+
         self.__connection.close()
 
     def __create(self):
@@ -68,6 +80,12 @@ class BaseTable:
         print_success(f'Таблица {self.tablename} успешно удалена')
 
     def __empty_str_to_none(self, element: Dict[str, any]):
+
+        #
+        # REFACTOR:
+        # Продумать более лаконичную обработку невалидных значений и json
+        #
+
         #
         # Для crm.deal.list
         if self.tablename == 'deal':
