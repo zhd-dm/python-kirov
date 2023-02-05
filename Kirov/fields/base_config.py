@@ -1,8 +1,31 @@
 from utils import key_dict_to_lower, props_list_to_lower, print_error
-from fields.types import T_ENTITY_CONFIG_WITH_FIELDS, T_ENTITY_CONFIG, T_PARENT_NAME, T_ENTITY_NAME, T_CALL_METHOD, T_PARAMS, T_KEYS, T_ENUMS, T_PRIMARY_KEY, T_FIELDS
+from fields.types import T_ENTITY_CONFIG_WITH_FIELDS, T_ENTITY_CONFIG, T_PARENT_NAME, T_ENTITY_NAME, T_TYPE_METHOD, T_PARAMS, T_KEYS, T_ENUMS, T_PRIMARY_KEY, T_FIELDS
 
 
 class BaseConfig:
+    """
+    Класс - обертка над EntityConfigWithFields для типизации и доступа к полям
+
+    Параметры:
+    - `config: T_ENTITY_CONFIG_WITH_FIELDS`
+
+    Геттеры:
+    - `entity_config -> T_ENTITY_CONFIG` - словарь конфига сущности с полями и их типами
+    - `parent_name -> T_PARENT_NAME` - имя родительской сущности вызываемого метода
+    - `entity_name -> T_ENTITY_NAME` - имя сущности вызываемого метода
+    - `type_method -> T_TYPE_METHOD` - тип вызываемого метода
+    - `params -> T_PARAMS` - словарь который передается в запрос в качестве объекта params
+    - `keys -> T_KEYS` - список ключей словаря entity_config
+    - `keys_lower -> T_KEYS` - список ключей словаря entity_config в нижнем регистре
+    - `enums_lower -> T_ENUMS` - список словарей енумов (если они есть)
+    - `primary_key_lower -> T_PRIMARY_KEY` - имя поля, которое будет PK в БД
+    - `fields -> T_FIELDS` - словарь полей сущности
+    - `fields_lower -> T_FIELDS` - словарь полей сущности в нижнем регистре
+
+    Сеттеры:
+    - `params(v: T_PARAMS)` - изменяет объект params перед отправкой запроса
+    - `keys(v: str)` - добавляет ключ в список ключей
+    """
 
     def __init__(self, config: T_ENTITY_CONFIG_WITH_FIELDS):
         self.__config: T_ENTITY_CONFIG_WITH_FIELDS = config
@@ -38,17 +61,14 @@ class BaseConfig:
         else:
             print_error('params должен быть словарем')
 
-    # DEPRECATED
     @property
     def keys(self):
         return self.__keys
     
-    # DEPRECATED
     @property
     def keys_lower(self):
         return props_list_to_lower(self.__keys)
 
-    # DEPRECATED
     @keys.setter
     def keys(self, v: str):
         if isinstance(v, str):
@@ -59,32 +79,16 @@ class BaseConfig:
             print_error('Элемент списка keys не должен быть пустой строкой')
 
     @property
-    def enums(self):
-        return self.__enums
-
-    @property
     def enums_lower(self):
         return key_dict_to_lower(self.__enums)
 
     @property
-    def primary_key_field(self):
-        return self.__primary_key_field
-
-    @property
-    def primary_key_field_lower(self):
-        return self.__primary_key_field.lower()
+    def primary_key_lower(self):
+        return self.__primary_key.lower()
 
     @property
     def fields(self):
         return self.__fields
-
-    # DEPRECATED
-    @fields.setter
-    def fields(self, v: T_FIELDS):
-        if isinstance(v, T_FIELDS):
-            self.__fields = v
-        else:
-            print_error('Поле должно соответствовать типу T_FIELDS')
 
     @property
     def fields_lower(self):
@@ -102,10 +106,9 @@ class BaseConfig:
         # DEPRECATED
         self.__entity_name: T_ENTITY_NAME = self.__entity_config.get('entity_name')
         # DEPRECATED
-        self.__type_method: T_CALL_METHOD = self.__entity_config.get('type_method')
+        self.__type_method: T_TYPE_METHOD = self.__entity_config.get('type_method')
         self.__params: T_PARAMS = self.__entity_config.get('params')
-        # DEPRECATED
         self.__keys: T_KEYS = self.__entity_config.get('keys')
         self.__enums: T_ENUMS = self.__entity_config.get('enums')
-        self.__primary_key_field: T_PRIMARY_KEY = self.__entity_config.get('primary_key')
+        self.__primary_key: T_PRIMARY_KEY = self.__entity_config.get('primary_key')
         self.__fields: T_FIELDS = self.__config.get('fields')

@@ -14,12 +14,12 @@ class EntityConfigWithFields:
 
     Параметры:
     - `entity_key` - ключ по которому будут доставаться поля из Google Sheets (прим. crm.deal.list)
+    - `bitrix_fields_to_db_types` - словарь field: python_type
 
     Геттеры:
     - `entity_config_with_fields` - словарь конфига сущности с полями и их типами
     - `entity_config` - словарь конфига сущности
     - `fields_config` - словарь конфига полей сущности с их типами данных
-    - `bitrix_fields_to_db_types` - словарь полей битрикса, приведенных к python_types 
     """
 
     @property
@@ -88,6 +88,10 @@ class EntityConfigWithFields:
         split_list: List[str] = target_list[0].split('.')
         target_list.pop(0)
 
+        #
+        # REFACTOR:
+        # Придумать более лаконичную обработку 
+        #
         if split_list.__len__() == 2:
             target_list.insert(0, split_list[1])
             target_list.insert(0, split_list[0])
