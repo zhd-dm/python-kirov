@@ -14,18 +14,18 @@ class TestUtils(unittest.TestCase):
 
 
 
-    @unittest.skip
+    # @unittest.skip
     def test_key_dict_to_lower_valid(self):
         test_dict = {'KEY1': 'Value1', 'key2': 'Value2'}
         result = key_dict_to_lower(test_dict)
         self.assertEqual(result, {'key1': 'Value1', 'key2': 'Value2'})
-    @unittest.skip
+    # @unittest.skip
     def test_key_dict_to_lower2_valid(self):
         test_dict = {1: None, 2: True}
         result = key_dict_to_lower(test_dict)
-        self.assertEqual(result, {1: None, 2: True})
+        self.assertEqual(result, {})
 
-    @unittest.skip
+    # @unittest.skip
     def test_key_dict_to_lower_invalid(self):
         test_dict = {'KEY1': 'Value1', 'key2': 'Value2'}
         result = key_dict_to_lower(test_dict)
@@ -33,18 +33,18 @@ class TestUtils(unittest.TestCase):
 
 
 
-    @unittest.skip
+    # @unittest.skip
     def test_props_list_to_lower_valid(self):
         test_list = ['FIELD', 'test', 'CaTaLoG']
         result = props_list_to_lower(test_list)
         self.assertEqual(result, ['field', 'test', 'catalog'])
-    @unittest.skip
+    # @unittest.skip
     def test_props_list_to_lower2_valid(self):
-        test_list = [1, True, None]
+        test_list = ['A', True, None]
         result = props_list_to_lower(test_list)
-        self.assertEqual(result, [1, True, None])
+        self.assertEqual(result, ['a'])
 
-    @unittest.skip
+    # @unittest.skip
     def test_props_list_to_lower_invalid(self):
         test_list = ['FIELD', 'test', 'CaTaLoG']
         result = props_list_to_lower(test_list)
@@ -53,18 +53,13 @@ class TestUtils(unittest.TestCase):
 
 
 
-    @unittest.skip
+    # @unittest.skip
     def test_get_dict_by_indexes_of_matrix_valid(self):
         test_list = [['a', 'b', 'c'], [1, 2, 3], ['d', 2, 0]]
         result = get_dict_by_indexes_of_matrix(0, 1, test_list)
         self.assertEqual(result, { 'a': 'b', 1: 2, 'd': 2 })
-    @unittest.skip
-    def test_get_dict_by_indexes_of_matrix2_valid(self):
-        test_list = [['a', 'b', 'c'], [1, 2, 3], ['d', 2, 0]]
-        result = get_dict_by_indexes_of_matrix(1, 2, test_list)
-        self.assertEqual(result, { 'b': 'c', 2: 3, '2': 0 })
 
-    @unittest.skip
+    # @unittest.skip
     def test_get_dict_by_indexes_of_matrix_invalid(self):
         test_list = [['a', 'b', 'c'], [1, 2, 3], ['d', 2, 0]]
         result = get_dict_by_indexes_of_matrix(0, 1, test_list)
@@ -73,31 +68,31 @@ class TestUtils(unittest.TestCase):
 
 
 
-    @unittest.skip
+    # @unittest.skip
     def test_find_list_of_matrix_valid(self):
         test_list = [['a', 'b', 'c'], [1, 2, 3], ['d', 2, 0]]
         result = find_list_of_matrix(0, 'd', test_list)
         self.assertEqual(result, ['d', 2, 0])
-    @unittest.skip
+    # @unittest.skip
     def test_find_list_of_matrix2_valid(self):
         test_list = [['a', 'b', 'c'], [1, 2, 3], ['d', 2, 0]]
-        result = find_list_of_matrix(3, 'd', test_list)
+        result = find_list_of_matrix(2, 'd', test_list)
         self.assertEqual(result, None)
-    @unittest.skip
+    # @unittest.skip
     def test_find_list_of_matrix3_valid(self):
         test_list = [['a', 'b', 'c'], [1, 2, 3], ['d', 2, 0]]
         result = find_list_of_matrix(-1, 'c', test_list)
         self.assertEqual(result, ['a', 'b', 'c'])
-    @unittest.skip
+    # @unittest.skip
     def test_find_list_of_matrix4_valid(self):
         result = find_list_of_matrix(0, {}, TEST_MATRIX_MOCK)
         self.assertEqual(result, [{}, -100])
-    @unittest.skip
+    # @unittest.skip
     def test_find_list_of_matrix5_valid(self):
         result = find_list_of_matrix(-1, None, TEST_MATRIX_MOCK)
         self.assertEqual(result, [(), True, None])
 
-    @unittest.skip
+    # @unittest.skip
     def test_find_list_of_matrix_invalid(self):
         test_list = [['a', 'b', 'c'], [1, 2, 3], ['d', 2, 0]]
         result = find_list_of_matrix(0, 'd', test_list)

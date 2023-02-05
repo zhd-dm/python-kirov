@@ -7,19 +7,19 @@ from typing import Union, List, Dict
 
 
 def key_dict_to_lower(dict: Dict[str, any]) -> Dict[str, any]:
-    return { key.lower(): value for key, value in dict.items() }
+    return { key.lower(): value for key, value in dict.items() if isinstance(key, str) }
 
 def props_list_to_lower(list: List[str]) -> List[str]:
-    return [ value.lower() for value in list ]
+    return [ value.lower() for value in list if isinstance(value, str) ]
 
-def get_dict_by_indexes_of_matrix(key_i: int, key_v: int, list: List[List[any]]) -> Dict[str, any]:
+def get_dict_by_indexes_of_matrix(key_i: int, key_v: int, matrix: List[List[any]]) -> Dict[str, any]:
     """
     Метод генерации словаря из матрицы
 
     Аргументы:
     - `key_i: int` - ключ, который будет ключом в словаре
     - `key_v: int` - ключ, который будет значением в словаре
-    - `list: List[List[any]]` - входящая матрица
+    - `matrix: List[List[any]]` - входящая матрица
 
     Пример:
 
@@ -27,16 +27,16 @@ def get_dict_by_indexes_of_matrix(key_i: int, key_v: int, list: List[List[any]])
 
     [['a', 'b', 'c'], [1, 2, 3], ['d', 2, 0]] -> { 'a': 'b', 1: 2, 'd': 2 }
     """
-    return { i[key_i]: i[key_v] for i in list }
+    return { i[key_i]: i[key_v] for i in matrix }
 
-def find_list_of_matrix(from_index: int, condition: str, list: List[List[any]]) -> List[any]:
+def find_list_of_matrix(from_index: int, condition: str, matrix: List[List[any]]) -> List[any]:
     """
     Метод поиска списка из матрицы
 
     Аргументы:
     - `from_index: int` - индекс, по которому будем сравнивать
     - `condition: int` - чему должно быть равно значение этого индекса
-    - `list: List[List[any]]` - входящая матрица
+    - `matrix: List[List[any]]` - входящая матрица
 
     Пример:
 
@@ -44,7 +44,14 @@ def find_list_of_matrix(from_index: int, condition: str, list: List[List[any]]) 
 
     [['a', 'b', 'c'], [1, 2, 3], ['d', 2, 0]] -> ['d', 2, 0]
     """
-    return next(item for item in list if item[from_index] == condition)
+
+    if from_index >= matrix[0].__len__():
+        print_error('find_list_of_matrix() => Индекс поиска не может быть больше или равен длине списков в матрице')
+
+    try:
+        return next(item for item in matrix if item[from_index] == condition)
+    except Exception as error:
+        print_error(f'Ничего не найдено. Ошибка: {error}')
 
 def convert_list_to_dict(keys: List[str], list: List[any]) -> Dict[str, any]:
     """
