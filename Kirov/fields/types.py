@@ -1,14 +1,13 @@
 from typing import Dict, List, Union
 
 #
-# ================== Базовые типы для конфига ==================
+# ================== Базовые типы конфига ==================
 #
 
 T_PARENT_NAME = str
 T_ENTITY_NAME = str
 T_CALL_METHOD = str
 T_PARAMS = Dict[str, List[str]]
-# DEPRECATED
 T_KEYS = List[str]
 T_ENUMS = Dict[str, List[any]]
 T_PRIMARY_KEY = str

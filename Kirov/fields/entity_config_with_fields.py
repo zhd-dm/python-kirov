@@ -3,8 +3,9 @@ from typing import Dict, List
 
 from utils import find_list_of_matrix, convert_list_to_dict, convert_str_to_dict_or_list, print_error
 from google_sheets.google_sheet import GoogleSheet
-from fields.base_fields_types import T_ENTITY_CONFIG, T_FIELDS, T_ENTITY_CONFIG_WITH_FIELDS
-from fields.base_fields_constants import ENTITY_CONFIG_KEYS, RANGE_ENTITIES_CONFIG
+from google_sheets.constants import RANGE_ENTITIES_CONFIG
+from fields.types import T_ENTITY_CONFIG, T_FIELDS, T_ENTITY_CONFIG_WITH_FIELDS
+from fields.constants import ENTITY_CONFIG_KEYS
 
 
 class EntityConfigWithFields:
