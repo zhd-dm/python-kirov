@@ -87,7 +87,7 @@ __getters:__
 
 <hr>
 
-### __Run tests__ -> `$ python -m unittest || python -m unittest models.user.test_user_model.TestUserModel`
+### __Run tests__ -> `$ python -m unittest || $ python -m unittest tests.utils.test_utils_methods.TestUtils`
 
 <hr>
 

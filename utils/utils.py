@@ -76,16 +76,24 @@ def convert_str_to_dict_or_list(string: str) -> Union[List[any], Dict[str, any]]
     string -> ['a', 'b', 'c'], аналогично со словарем
     """
 
-    if string.startswith('{'):
-        return json.loads(string.replace("'", '"'))
-    if string.startswith('['):
-        return list(map(str, string[1:-1].split(', ')))
-    if ',' in string:
-        return string.replace(' ', '').split(",")
+    if isinstance(string, str):
+        if string.startswith('{'):
+            try:
+                dict = json.loads(string.replace("'", '"'))
+                return dict
+            except json.decoder.JSONDecodeError as error:
+                print_error(f'convert_str_to_dict_or_list() => {error}')
+
+        elif string.startswith('['):
+            return list(map(str, string[1:-1].replace(' ', '').split(', ')))
+        elif ',' in string:
+            return string.replace(' ', '').split(",")
+    else:
+        print_error('convert_str_to_dict_or_list() => Передаваемый аргумент должен быть строкой')
 
     return string
 
-def replace_custom_param(d: Dict[str, any], find_key: str, new_value: any):
+def replace_custom_value(d: Dict[str, any], find_key: str, new_value: any) -> bool:
     """
     Рекурсивный метод подмены значения в словаре новым значением
 
@@ -97,7 +105,7 @@ def replace_custom_param(d: Dict[str, any], find_key: str, new_value: any):
 
     for k, v in d.items():
         if isinstance(v, dict):
-            replace_custom_param(v, find_key, new_value)
+            replace_custom_value(v, find_key, new_value)
         elif v == find_key:
             d[k] = new_value
 

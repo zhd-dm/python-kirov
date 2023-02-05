@@ -12,7 +12,7 @@ from fields.constants import BITRIX_METHODS
 from google_sheets.google_sheet import GoogleSheet
 from google_sheets.constants import RANGE_BITRIX_FIELDS_TO_DB_TYPES, SHEET_BITRIX_FIELD_INDEX, SHEET_PYTHON_TYPE_INDEX
 from tables.base_table import BaseTable
-from utils import Utils, get_dict_by_indexes_of_matrix, replace_custom_param
+from utils import Utils, get_dict_by_indexes_of_matrix, replace_custom_value
 
 
 #
@@ -57,7 +57,7 @@ async def main():
             #
             # REFACTOR: сделать проверку на то, существует ли метод в списке кастомных методов
             # 
-            replace_custom_param(config.params, 'custom', deal_ids)
+            replace_custom_value(config.params, 'custom', deal_ids)
 
             data: List[Dict[str, any]] = await get_data(config)
 
