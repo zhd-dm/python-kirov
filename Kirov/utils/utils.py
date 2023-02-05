@@ -12,35 +12,35 @@ def key_dict_to_lower(dict: Dict[str, any]) -> Dict[str, any]:
 def props_list_to_lower(list: List[str]) -> List[str]:
     return [ value.lower() for value in list ]
 
-def get_dict_by_indexes_of_list_of_lists(key_i: int, key_v: int, list: List[List[any]]) -> Dict[str, any]:
+def get_dict_by_indexes_of_matrix(key_i: int, key_v: int, list: List[List[any]]) -> Dict[str, any]:
     """
-    Метод генерации словаря из списка списков
+    Метод генерации словаря из матрицы
 
     Аргументы:
     - `key_i: int` - ключ, который будет ключом в словаре
     - `key_v: int` - ключ, который будет значением в словаре
-    - `list: List[List[any]]` - входящий список списков
+    - `list: List[List[any]]` - входящая матрица
 
     Пример:
 
-    Если key_i = 1, а key_v = 2, и на вход получаем такой список:
+    Если key_i = 1, а key_v = 2, и на вход получаем такую матрицу:
 
     [['a', 'b', 'c'], [1, 2, 3], ['d', 2, 0]] -> { 'a': 'b', 1: 2, 'd': 2 }
     """
     return { i[key_i]: i[key_v] for i in list }
 
-def find_list_of_list_of_lists(from_index: int, condition: str, list: List[List[any]]) -> List[any]:
+def find_list_of_matrix(from_index: int, condition: str, list: List[List[any]]) -> List[any]:
     """
-    Метод поиска списка из списка списков по условию
+    Метод поиска списка из матрицы
 
     Аргументы:
     - `from_index: int` - индекс, по которому будем сравнивать
     - `condition: int` - чему должно быть равно значение этого индекса
-    - `list: List[List[any]]` - входящий список списков
+    - `list: List[List[any]]` - входящая матрица
 
     Пример:
 
-    Если from_index = 0, а condition = 'd', и на вход получаем такой список:
+    Если from_index = 0, а condition = 'd', и на вход получаем такую матрицу:
 
     [['a', 'b', 'c'], [1, 2, 3], ['d', 2, 0]] -> ['d', 2, 0]
     """
@@ -81,7 +81,7 @@ def convert_str_to_dict_or_list(string: str) -> Union[List[any], Dict[str, any]]
     if string.startswith('['):
         return list(map(str, string[1:-1].split(', ')))
     if ',' in string:
-        return string.split(",")
+        return string.replace(' ', '').split(",")
 
     return string
 
