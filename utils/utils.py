@@ -60,6 +60,16 @@ def convert_list_to_dict(keys: List[str], list: List[any]) -> Dict[str, any]:
 
     ['super', 1, None] -> { 'a': 'super', 'b': 1, 'c': None }
     """
+
+    if keys.__len__() != list.__len__():
+        print_error('convert_list_to_dict() => длина списка ключей должна совпадать длине списка значений')
+        return {}
+
+    for v in keys:
+        if isinstance(v, dict):
+            print_error('convert_list_to_dict() => ключом не может быть словарь')
+            return {}
+
     return dict(zip(keys, list))
 
 def convert_str_to_dict_or_list(string: str) -> Union[List[any], Dict[str, any]]:

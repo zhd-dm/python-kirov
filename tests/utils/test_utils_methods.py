@@ -106,18 +106,25 @@ class TestUtils(unittest.TestCase):
 
 
 
-    @unittest.skip
+    # @unittest.skip
     def test_convert_list_to_dict_valid(self):
         test_list = ['super', 1, None]
         result = convert_list_to_dict(['a', 'b', 'c'], test_list)
         self.assertEqual(result, { 'a': 'super', 'b': 1, 'c': None })
-    @unittest.skip
+    # @unittest.skip
     def test_convert_list_to_dict2_valid(self):
+        test_keys = [1, {}, None]
         test_list = ['super', 1, None]
-        result = convert_list_to_dict([1, {}, None], test_list)
-        self.assertEqual(result, { 1: 'super', {}: 1, None: None })
+        result = convert_list_to_dict(test_keys, test_list)
+        self.assertEqual(result, {})
+    # @unittest.skip
+    def test_convert_list_to_dict3_valid(self):
+        test_keys = [1, 's', None, True]
+        test_list = ['super', 1, None]
+        result = convert_list_to_dict(test_keys, test_list)
+        self.assertEqual(result, {})
 
-    @unittest.skip
+    # @unittest.skip
     def test_convert_list_to_dict_invalid(self):
         test_list = ['super', 1, None]
         result = convert_list_to_dict(['a', 'b', 'c'], test_list)
