@@ -73,6 +73,8 @@ class BaseTable:
         if self.tablename == 'deal':
             if element['closedate'] == '':
                 element['closedate'] = None
+            if element['uf_crm_1667025237906'] == '':
+                element['uf_crm_1667025237906'] = None
 
         #
         # Для crm.product.list

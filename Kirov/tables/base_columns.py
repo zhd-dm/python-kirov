@@ -57,7 +57,13 @@ class BaseColumns:
                     name = key
                 )
             case 'json':
-                if '_id' in key:
-                    return Column(Integer, name = key)
-                if '_value' in key:
-                    return Column(String, name = key)
+                if self.__entity_config.entity_name == 'product.offer':
+                    if '_id' in key:
+                        return Column(Integer, name = key)
+                    if '_value' in key:
+                        return Column(Integer, name = key)
+                else:
+                    if '_id' in key:
+                        return Column(Integer, name = key)
+                    if '_value' in key:
+                        return Column(String, name = key)

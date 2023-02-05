@@ -80,6 +80,8 @@ def convert_str_to_dict_or_list(string: str) -> Union[List[any], Dict[str, any]]
         return json.loads(string.replace("'", '"'))
     if string.startswith('['):
         return list(map(str, string[1:-1].split(', ')))
+    if ',' in string:
+        return string.split(",")
 
     return string
 
