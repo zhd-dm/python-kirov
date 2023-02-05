@@ -85,23 +85,38 @@ class EntityConfigWithFields:
         - индекс извлечения названия метода тоже равен 0
         """
         
+        target_list = []
+
         try:
             target_list = find_list_of_matrix(0, self.__entity_key, self.__entities_config_lists)
-            split_item: List[str] = target_list[0].split('.')
-            target_list.pop(0)
-            target_list.insert(0, split_item[2])
-            target_list.insert(0, split_item[1])
-            target_list.insert(0, split_item[0])
-            target_dict = convert_list_to_dict(ENTITY_CONFIG_KEYS, target_list)
-
-            entity_config = {}
-            for k in target_dict:
-                entity_config[k] = convert_str_to_dict_or_list(target_dict[k])
-
-            # DEPRECATED
-            # entity_config['keys'].extend(ENTITY_BASE_KEYS)
-
-            return entity_config
-
         except Exception:
             print_error('Произошла ошибка при поиске конфига метода из Google Sheets')
+
+        split_list: List[str] = target_list[0].split('.')
+        target_list.pop(0)
+
+        if split_list.__len__() == 2:
+            target_list.insert(0, split_list[1])
+            target_list.insert(0, split_list[0])
+            target_list.insert(0, '')
+
+        if split_list.__len__() == 3:
+            target_list.insert(0, split_list[2])
+            target_list.insert(0, split_list[1])
+            target_list.insert(0, split_list[0])
+
+        if split_list.__len__() == 4:
+            target_list.insert(0, split_list[3])
+            target_list.insert(0, f'{split_list[1]}.{split_list[2]}')
+            target_list.insert(0, split_list[0])
+
+        target_dict = convert_list_to_dict(ENTITY_CONFIG_KEYS, target_list)
+
+        entity_config = {}
+        for k in target_dict:
+            entity_config[k] = convert_str_to_dict_or_list(target_dict[k])
+
+        # DEPRECATED
+        # entity_config['keys'].extend(ENTITY_BASE_KEYS)
+
+        return entity_config

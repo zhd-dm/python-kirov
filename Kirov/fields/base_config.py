@@ -96,14 +96,17 @@ class BaseConfig:
             self.__generate_dict_config()
 
     def __generate_dict_config(self):
+        # DEPRECATED
         self.__parent_name: T_PARENT_NAME = self.__entity_config.get('parent_name', None)
         if self.__parent_name is None:
             self.__is_none_value('parent_name')
-        
+       
+        # DEPRECATED
         self.__entity_name: T_ENTITY_NAME = self.__entity_config.get('entity_name', None)
         if self.__entity_name is None:
             self.__is_none_value('entity_name')
-
+        
+        # DEPRECATED
         self.__type_method: T_CALL_METHOD = self.__entity_config.get('type_method', None)
         if self.__type_method is None:
             self.__is_none_value('type_method')
@@ -134,12 +137,15 @@ class BaseConfig:
 
         if str == 'entity_config':
             return DEFAULT_ENTITY_CONFIG
+        # DEPRECATED
         if str == 'parent_name':
-            return DEFAULT_CALL_METHOD[0]
+            return None
+        # DEPRECATED
         if str == 'entity_name':
-            return DEFAULT_CALL_METHOD[1]
+            return None
+        # DEPRECATED
         if str == 'type_method':
-            return DEFAULT_CALL_METHOD[2]
+            return None
         if str == 'params':
             return DEFAULT_PARAMS
         # DEPRECATED
