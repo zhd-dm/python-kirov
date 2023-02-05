@@ -1,6 +1,6 @@
 import unittest
 
-from utils.utils import key_dict_to_lower, props_list_to_lower, get_dict_by_indexes_of_list_of_lists, find_list_of_list_of_lists, convert_list_to_dict, convert_str_to_dict_or_list
+from utils.utils import key_dict_to_lower, props_list_to_lower, get_dict_by_indexes_of_matrix, find_list_of_matrix, convert_list_to_dict, convert_str_to_dict_or_list
 
 
 class TestUtils(unittest.TestCase):
@@ -46,45 +46,45 @@ class TestUtils(unittest.TestCase):
 
 
     @unittest.skip
-    def test_get_dict_by_indexes_of_list_of_lists_valid(self):
+    def test_get_dict_by_indexes_of_matrix_valid(self):
         test_list = [['a', 'b', 'c'], [1, 2, 3], ['d', 2, 0]]
-        result = get_dict_by_indexes_of_list_of_lists(0, 1, test_list)
+        result = get_dict_by_indexes_of_matrix(0, 1, test_list)
         self.assertEqual(result, { 'a': 'b', 1: 2, 'd': 2 })
     @unittest.skip
-    def test_get_dict_by_indexes_of_list_of_lists2_valid(self):
+    def test_get_dict_by_indexes_of_matrix2_valid(self):
         test_list = [['a', 'b', 'c'], [1, 2, 3], ['d', 2, 0]]
-        result = get_dict_by_indexes_of_list_of_lists(1, 2, test_list)
+        result = get_dict_by_indexes_of_matrix(1, 2, test_list)
         self.assertEqual(result, { 'b': 'c', 2: 3, '2': 0 })
 
     @unittest.skip
-    def test_get_dict_by_indexes_of_list_of_lists_invalid(self):
+    def test_get_dict_by_indexes_of_matrix_invalid(self):
         test_list = [['a', 'b', 'c'], [1, 2, 3], ['d', 2, 0]]
-        result = get_dict_by_indexes_of_list_of_lists(0, 1, test_list)
+        result = get_dict_by_indexes_of_matrix(0, 1, test_list)
         self.assertNotEqual(result, { None: 'b', 1: 2, 'd': 2 })
 
 
 
 
     @unittest.skip
-    def test_find_list_of_list_of_lists_valid(self):
+    def test_find_list_of_matrix_valid(self):
         test_list = [['a', 'b', 'c'], [1, 2, 3], ['d', 2, 0]]
-        result = find_list_of_list_of_lists(0, 'd', test_list)
+        result = find_list_of_matrix(0, 'd', test_list)
         self.assertEqual(result, ['d', 2, 0])
     @unittest.skip
-    def test_find_list_of_list_of_lists2_valid(self):
+    def test_find_list_of_matrix2_valid(self):
         test_list = [['a', 'b', 'c'], [1, 2, 3], ['d', 2, 0]]
-        result = find_list_of_list_of_lists(3, 'd', test_list)
+        result = find_list_of_matrix(3, 'd', test_list)
         self.assertEqual(result, None)
     @unittest.skip
-    def test_find_list_of_list_of_lists3_valid(self):
+    def test_find_list_of_matrix3_valid(self):
         test_list = [['a', 'b', 'c'], [1, 2, 3], ['d', 2, 0]]
-        result = find_list_of_list_of_lists(-1, 'c', test_list)
+        result = find_list_of_matrix(-1, 'c', test_list)
         self.assertEqual(result, ['a', 'b', 'c'])
 
     @unittest.skip
-    def test_find_list_of_list_of_lists_invalid(self):
+    def test_find_list_of_matrix_invalid(self):
         test_list = [['a', 'b', 'c'], [1, 2, 3], ['d', 2, 0]]
-        result = find_list_of_list_of_lists(0, 'd', test_list)
+        result = find_list_of_matrix(0, 'd', test_list)
         self.assertNotEqual(result, ['d', 2, 0, 1])
 
 
