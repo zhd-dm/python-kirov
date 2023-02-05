@@ -2,11 +2,6 @@ from typing import List, Union
 
 
 #
-# Тип range который запрашиваем у Google Sheets
-#
-T_SHEET_RANGE = str
-
-#
 # Тип values который возвращается из Google Sheets
 #
 T_SHEET_VALUES_RETURN = List[List[str]]
