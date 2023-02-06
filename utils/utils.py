@@ -110,7 +110,7 @@ def convert_str_to_dict_or_list(string: str) -> Union[List[any], Dict[str, any]]
 
     return string
 
-def replace_custom_value(d: Dict[str, any], find_key: str, new_value: any) -> bool:
+def replace_custom_value(d: Dict[str, any], find_key: str, new_value: any):
     """
     Рекурсивный метод подмены значения в словаре новым значением
 

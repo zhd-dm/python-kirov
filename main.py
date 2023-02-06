@@ -1,18 +1,11 @@
 import asyncio
 import time
-from typing import Dict, List, Union
+from typing import List
 
-from fast_bitrix24 import BitrixAsync
+from sqlalchemy.engine import Engine
 
-
-from env import webhook
-from fields.base_config import BaseConfig
-from fields.entity_config_with_fields import EntityConfigWithFields
-from fields.constants import BITRIX_METHODS
-from google_sheets.google_sheet import GoogleSheet
-from google_sheets.constants import RANGE_BITRIX_FIELDS_TO_DB_TYPES, SHEET_BITRIX_FIELD_INDEX, SHEET_PYTHON_TYPE_INDEX
-from tables.base_table import BaseTable
-from utils import Utils, get_dict_by_indexes_of_matrix, replace_custom_value
+from data_importer import DataImporter
+from utils import Utils
 
 
 #
@@ -22,53 +15,30 @@ from utils import Utils, get_dict_by_indexes_of_matrix, replace_custom_value
 # Продумать разделение на роли
 #
 
+def get_engine():
+    utils = Utils()
+    return utils.engine
 
-utils = Utils()
-engine = utils.engine
+async def generate_entity(engine: Engine, bitrix_method: str):
+    if not engine:
+        engine = get_engine()
 
-# Подумать куда вынести
-async def get_data(config: BaseConfig) -> Union[List, Dict]:
-    bx = BitrixAsync(webhook)
-    method = f'{config.parent_name}.{config.entity_name}.{config.type_method}' if config.parent_name else f'{config.entity_name}.{config.type_method}'
-    print(f'Method name -> {method}')
+    data_importer = DataImporter(engine, bitrix_method)
+    await data_importer._get_generate_and_set_entity()
+    engine.pool.dispose()
 
-    return await bx.get_all(
-        method,
-        params = config.params
-    )
-#
+async def generate_entities(bitrix_methods: List[str]):
+    engine = get_engine()
+
+    for bitrix_method in bitrix_methods:
+        await generate_entity(engine, bitrix_method)
+        time.sleep(1)
 
 async def main():
 
-    fields_from_sheets = get_dict_by_indexes_of_matrix(
-        SHEET_BITRIX_FIELD_INDEX,
-        SHEET_PYTHON_TYPE_INDEX,
-        GoogleSheet()._get_range_values(RANGE_BITRIX_FIELDS_TO_DB_TYPES)
-    )
+    await generate_entity(None, 'crm.deal.list')
 
-    deal_ids: List = []
 
-    for bitrix_method in BITRIX_METHODS:
-        ecwf = EntityConfigWithFields(entity_key = bitrix_method, bitrix_fields_to_db_types = fields_from_sheets)
 
-        for entity_config in [ecwf.entity_config_with_fields]:
-            config = BaseConfig(entity_config)
-            
-            #
-            # REFACTOR: сделать проверку на то, существует ли метод в списке кастомных методов
-            # 
-            replace_custom_value(config.params, 'custom', deal_ids)
-
-            data: List[Dict[str, any]] = await get_data(config)
-
-            if config.entity_name == 'deal':
-                deal_ids = [deal['ID'] for deal in data]
- 
-            table = BaseTable(engine, config)
-            table._drop_and_create()
-            table._add_data(data)
-            time.sleep(1)
-
-    engine.pool.dispose()
-
-asyncio.run(main())
+if __name__ == '__main__':
+    asyncio.run(main())
