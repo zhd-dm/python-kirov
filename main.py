@@ -33,7 +33,7 @@ async def generate_entities(bitrix_methods: List[str]):
 
 async def main():
 
-    await generate_entity(None, 'crm.deal.list')
+    await generate_entity(None, 'crm.productrow.list')
 
 
 

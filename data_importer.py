@@ -1,16 +1,16 @@
 from typing import Dict, List, Union
 
 from fast_bitrix24 import BitrixAsync
-from sqlalchemy.engine import Engine
 
 
 from env import webhook
 from fields.base_config import BaseConfig
 from fields.entity_config_with_fields import EntityConfigWithFields
+from fields.constants import ENTITIES_WITH_CUSTOM_PARAMS
 from google_sheets.google_sheet import GoogleSheet
 from google_sheets.constants import RANGE_BITRIX_FIELDS_TO_DB_TYPES, SHEET_BITRIX_FIELD_INDEX, SHEET_PYTHON_TYPE_INDEX
 from tables.base_table import BaseTable
-from utils import get_dict_by_indexes_of_matrix, replace_custom_value
+from utils import Settings, get_dict_by_indexes_of_matrix, replace_custom_value
 
 
 class DataImporter:
@@ -19,16 +19,12 @@ class DataImporter:
     генерацией по нему колонок и таблиц, получением данных из битрикса и записью в них данными
 
     Параметры:
-    - `engine: Engine` - Engine
+    - `settings: Settings` - класс для подключения к БД
     - `bitrix_method: str` - метод, на который отправляется запрос в битрикс
     
     Геттеры:
     - `config -> BaseConfig` - конфиг сущности
     - `fields_from_sheets -> Dict[str, Any]` - словарь запрашиваемых полей из Google Sheets
-    - `deal_ids -> List` - список айдишников сделок (нужны для вызова crm.productrow.list)
-
-    Сеттеры:
-    - `deal_ids` - предназначен для записи айдишников сделок
     """
 
     @property
@@ -39,37 +35,22 @@ class DataImporter:
     def fields_from_sheets(self):
         return self.__fields_from_sheets
 
-    @property
-    def deal_ids(self):
-        return self.__deal_ids
+    def __init__(self, settings: Settings, bitrix_method: str):
+        self.__settings = settings
+        self.__connection = settings.connection
 
-    @deal_ids.setter
-    def deal_ids(self, v: List):
-        self.__deal_ids = v
-
-    def __init__(self, engine: Engine, bitrix_method: str, deal_ids: List):
-        self.__engine = engine
         self.__fields_from_sheets = self.__get_fields_from_sheet()
 
         self.__ecwf = EntityConfigWithFields(entity_key = bitrix_method, bitrix_fields_to_db_types = self.fields_from_sheets)
         self.__config = BaseConfig(self.__ecwf.entity_config_with_fields)
 
-        self.__deal_ids: List = []
+        if self.config.full_method in ENTITIES_WITH_CUSTOM_PARAMS():
+            self.__replace_custom_params(ENTITIES_WITH_CUSTOM_PARAMS(self.__connection))
 
     async def _get_generate_and_set_entity(self):
-        
-        #
-        # REFACTOR: сделать проверку на то, существует ли метод в списке кастомных методов
-        # 
-        replace_custom_value(self.config.params, 'custom', self.deal_ids)
-
-        data: List[Dict[str, any]] = await self.__get_data(self.config)
-
-        if self.config.entity_name == 'deal':
-            self.deal_ids = [deal['ID'] for deal in data]
-
-        table = BaseTable(self.__engine, self.config)
+        table = BaseTable(self.__settings, self.config)
         table._drop_and_create()
+        data: List[Dict[str, any]] = await self.__get_data(self.config)
         table._add_data(data)
 
     def __get_fields_from_sheet(self):
@@ -88,3 +69,6 @@ class DataImporter:
             method,
             params = config.params
         )
+
+    def __replace_custom_params(self, entities_with_custom_params: Dict):
+        self.config._replace_custom_params(entities_with_custom_params.get(self.config.full_method))

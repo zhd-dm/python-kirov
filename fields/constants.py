@@ -25,3 +25,19 @@ BITRIX_METHODS = [
     'crm.company.list',
     'user.get'
 ]
+
+#
+# ================== Метод получения списка кастомных параметров запроса ==================
+#
+
+def ENTITIES_WITH_CUSTOM_PARAMS(conn = None):
+    entities_with_custom_params = {
+        'crm.productrow.list': []
+    }
+
+    if not conn:
+        return entities_with_custom_params.keys()
+    else:
+        entities_with_custom_params['crm.productrow.list'] = [row[0] for row in conn.execute('SELECT id FROM deal').fetchall()]
+
+    return entities_with_custom_params
