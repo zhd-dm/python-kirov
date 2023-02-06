@@ -2,10 +2,8 @@ import asyncio
 import time
 from typing import List
 
-from sqlalchemy.engine import Engine
-
 from data_importer import DataImporter
-from utils import Utils
+from utils import Settings
 
 
 #
@@ -15,23 +13,22 @@ from utils import Utils
 # Продумать разделение на роли
 #
 
-def get_engine():
-    utils = Utils()
-    return utils.engine
+def get_settings():
+    return Settings()
 
-async def generate_entity(engine: Engine, bitrix_method: str):
-    if not engine:
-        engine = get_engine()
+async def generate_entity(settings: Settings, bitrix_method: str):
+    if not settings:
+        settings = get_settings()
 
-    data_importer = DataImporter(engine, bitrix_method)
+    data_importer = DataImporter(settings, bitrix_method)
     await data_importer._get_generate_and_set_entity()
-    engine.pool.dispose()
+    settings.engine.pool.dispose()
 
 async def generate_entities(bitrix_methods: List[str]):
-    engine = get_engine()
+    settings = get_settings()
 
     for bitrix_method in bitrix_methods:
-        await generate_entity(engine, bitrix_method)
+        await generate_entity(settings, bitrix_method)
         time.sleep(1)
 
 async def main():

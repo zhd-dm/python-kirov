@@ -1,11 +1,10 @@
 import copy
 from typing import Dict
 
-from sqlalchemy.engine import Engine
-from sqlalchemy import MetaData, Table
+from sqlalchemy import Table
 
 
-from utils import print_error, print_success, key_dict_to_lower
+from utils import Settings, print_error, print_success, key_dict_to_lower
 from fields.base_config import BaseConfig
 from tables.base_columns import BaseColumns
 
@@ -15,6 +14,7 @@ class BaseTable:
     Класс генерации таблицы в БД по переданному BaseConfig
 
     Параметры:
+    - `settings: Settings` - класс для подключения к БД
     - `entity_config: BaseConfig` - entity_config
     
     Геттеры:
@@ -25,10 +25,10 @@ class BaseTable:
     def tablename(self):
         return self.__tablename__
 
-    def __init__(self, engine: Engine, entity_config: BaseConfig):
-        self.__metadata = MetaData()
-        self.__engine = engine
-        self.__connection = engine.connect()
+    def __init__(self, settings: Settings, entity_config: BaseConfig):
+        self.__metadata = settings.metadata
+        self.__engine = settings.engine
+        self.__connection = settings.connection
 
         self.__entity_config = entity_config
 

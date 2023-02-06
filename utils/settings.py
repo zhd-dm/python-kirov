@@ -1,3 +1,6 @@
+from sqlalchemy import create_engine, MetaData
+
+
 from env import DEFAULT_settings, SPREADSHEET_ID
 
 from utils.types import T_SETTINGS
@@ -18,3 +21,15 @@ class Settings:
     @property
     def spreadsheet_id(self):
         return SPREADSHEET_ID
+
+    @property
+    def engine(self):
+        return create_engine(self.db_url)
+
+    @property
+    def metadata(self):
+        return MetaData()
+
+    @property
+    def connection(self):
+        return self.engine.connect()

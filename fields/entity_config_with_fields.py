@@ -113,7 +113,4 @@ class EntityConfigWithFields:
         for k in target_dict:
             entity_config[k] = convert_str_to_dict_or_list(target_dict[k])
 
-        # DEPRECATED
-        # entity_config['keys'].extend(ENTITY_BASE_KEYS)
-
         return entity_config

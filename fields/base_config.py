@@ -1,5 +1,5 @@
-from utils import key_dict_to_lower, props_list_to_lower, print_error
-from fields.types import T_ENTITY_CONFIG_WITH_FIELDS, T_ENTITY_CONFIG, T_PARENT_NAME, T_ENTITY_NAME, T_TYPE_METHOD, T_PARAMS, T_KEYS, T_ENUMS, T_PRIMARY_KEY, T_FIELDS
+from utils import key_dict_to_lower, props_list_to_lower, print_error, replace_custom_value
+from fields.types import T_ENTITY_CONFIG_WITH_FIELDS, T_ENTITY_CONFIG, T_PARENT_NAME, T_ENTITY_NAME, T_TYPE_METHOD, T_FULL_METHOD, T_PARAMS, T_KEYS, T_ENUMS, T_PRIMARY_KEY, T_FIELDS
 
 
 class BaseConfig:
@@ -14,6 +14,7 @@ class BaseConfig:
     - `parent_name -> T_PARENT_NAME` - имя родительской сущности вызываемого метода
     - `entity_name -> T_ENTITY_NAME` - имя сущности вызываемого метода
     - `type_method -> T_TYPE_METHOD` - тип вызываемого метода
+    - `full_method -> T_FULL_METHOD` - полное наименование вызываемого метода
     - `params -> T_PARAMS` - словарь который передается в запрос в качестве объекта params
     - `keys -> T_KEYS` - список ключей словаря entity_config
     - `keys_lower -> T_KEYS` - список ключей словаря entity_config в нижнем регистре
@@ -49,6 +50,10 @@ class BaseConfig:
     @property
     def type_method(self):
         return self.__type_method
+
+    @property
+    def full_method(self) -> T_FULL_METHOD:
+        return f'{self.parent_name}.{self.entity_name}.{self.type_method}'
 
     @property
     def params(self):
@@ -93,6 +98,9 @@ class BaseConfig:
     @property
     def fields_lower(self):
         return key_dict_to_lower(self.__fields)
+
+    def _replace_custom_params(self, custom_value: any):
+        replace_custom_value(self.__params, 'custom', custom_value)
 
     def __check_error(self):
         if self.__entity_config is None:
