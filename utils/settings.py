@@ -14,6 +14,10 @@ class Settings:
         self.__user = settings['user']
         self.__password = settings['password']
 
+        self.__engine = create_engine(self.db_url)
+        self.__connection = self.engine.connect()
+        self.__metadata = MetaData()
+
     @property
     def db_url(self):
         return f'postgresql://{self.__user}:{self.__password}@{self.__host}:{self.__port}/{self.__db}'
@@ -24,12 +28,12 @@ class Settings:
 
     @property
     def engine(self):
-        return create_engine(self.db_url)
+        return self.__engine
 
     @property
     def metadata(self):
-        return MetaData()
+        return self.__metadata
 
     @property
     def connection(self):
-        return self.engine.connect()
+        return self.__connection
