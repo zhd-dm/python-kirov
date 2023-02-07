@@ -15,7 +15,6 @@ class Settings:
         self.__password = settings['password']
 
         self.__engine = create_engine(self.db_url)
-        self.__connection = self.engine.connect()
         self.__metadata = MetaData()
 
     @property
@@ -36,4 +35,4 @@ class Settings:
 
     @property
     def connection(self):
-        return self.__connection
+        return self.engine.connect()

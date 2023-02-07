@@ -51,7 +51,7 @@ def find_list_of_matrix(from_index: int, condition: str, matrix: List[List[any]]
     try:
         return next(item for item in matrix if item[from_index] == condition)
     except Exception as error:
-        print_error(f'Ничего не найдено. Ошибка: {error}')
+        print_error(f'Ничего не найдено. Ошибка при передаче {condition}')
 
 def convert_list_to_dict(keys: List[str], list: List[any]) -> Dict[str, any]:
     """
