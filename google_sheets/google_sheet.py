@@ -26,7 +26,6 @@ class GoogleSheet:
     """
 
     SCOPES = ['https://www.googleapis.com/auth/spreadsheets']
-    service = None
 
     def __init__(self, list_name: str = DEFAULT_SHEET_NAME):
         creds = None

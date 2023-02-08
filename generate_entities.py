@@ -14,8 +14,8 @@ class GenerateEntities:
     - `bitrix_methods: List[str]` - метод(-ы) на который(-е) отправляется запрос
     """
 
-    def __init__(self, settings: Settings, bitrix_methods: List[str]):
-        self.__settings = settings
+    def __init__(self, bitrix_methods: List[str]):
+        self.__settings = Settings()
         self.__bitrix_methods = bitrix_methods
 
         self.__call_counter = 0
@@ -29,7 +29,7 @@ class GenerateEntities:
             self.__call_counter += 1
 
             if self.__call_counter == self.__bitrix_methods.__len__():
-                self.__settings.engine.pool.dispose()
+                self.__settings._engine_dispose()
 
             await asyncio.sleep(1)
 
