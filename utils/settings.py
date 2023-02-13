@@ -1,21 +1,18 @@
 from sqlalchemy import create_engine, MetaData
 
 
-from env import DEFAULT_settings, SPREADSHEET_ID
+from env import DEFAULT_SETTINGS, SPREADSHEET_ID
 
 from utils.types import T_SETTINGS
 
 
 class Settings:
-    def __init__(self, settings: T_SETTINGS = DEFAULT_settings):
+    def __init__(self, settings: T_SETTINGS = DEFAULT_SETTINGS):
         self.__host = settings['host']
         self.__port = settings['port']
         self.__db = settings['db']
         self.__user = settings['user']
         self.__password = settings['password']
-
-        self.__engine = create_engine(self.db_url)
-        self.__metadata = MetaData()
 
     @property
     def db_url(self):
@@ -27,11 +24,11 @@ class Settings:
 
     @property
     def engine(self):
-        return self.__engine
+        return create_engine(self.db_url)
 
     @property
     def metadata(self):
-        return self.__metadata
+        return MetaData()
 
     @property
     def connection(self):

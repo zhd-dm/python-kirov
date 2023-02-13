@@ -1,3 +1,4 @@
+import asyncio
 from typing import List, Union
 
 from generate_entities import GenerateEntities
@@ -13,10 +14,12 @@ from fields.constants import BITRIX_METHODS
 # Продумать разделение на роли
 #
 
-def main():
+async def main():
 
     settings = Settings()
-    GenerateEntities(settings, ['crm.deal.list', 'catalog.catalog.list'])
+    await GenerateEntities(settings, BITRIX_METHODS)._generate_entities()
+    settings.engine.pool.dispose()
+
 
 if __name__ == '__main__':
-    main()
+    asyncio.run(main())
