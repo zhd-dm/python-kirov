@@ -1,3 +1,4 @@
+import asyncio
 from typing import List, Union
 
 from generate_entities import GenerateEntities
@@ -21,4 +22,4 @@ async def main():
 
 
 if __name__ == '__main__':
-    main()
+    asyncio.run(main())
