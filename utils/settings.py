@@ -1,13 +1,13 @@
 from sqlalchemy import create_engine, MetaData
 
 
-from env import DEFAULT_settings, SPREADSHEET_ID
+from env import DEFAULT_SETTINGS, SPREADSHEET_ID
 
 from utils.types import T_SETTINGS
 
 
 class Settings:
-    def __init__(self, settings: T_SETTINGS = DEFAULT_settings):
+    def __init__(self, settings: T_SETTINGS = DEFAULT_SETTINGS):
         self.__host = settings['host']
         self.__port = settings['port']
         self.__db = settings['db']
