@@ -11,6 +11,17 @@ def key_dict_to_lower(dict: Dict[str, any]) -> Dict[str, any]:
 
 def props_list_to_lower(list: List[str]) -> List[str]:
     return [ value.lower() for value in list if isinstance(value, str) ]
+    
+def get_list_by_index_of_matrix(index: int, matrix: List[List[any]]) -> List[any]:
+    """
+    Метод генерации списка элементов по индексу из матрицы
+
+    Аргументы:
+    - `index: int` - индекс, по которому будут доставаться элементы
+    - `matrix: List[List[any]]` - входная матрица
+    """
+
+    return [list[index] for list in matrix]
 
 def get_dict_by_indexes_of_matrix(key_i: int, key_v: int, matrix: List[List[any]]) -> Dict[str, any]:
     """
@@ -19,7 +30,7 @@ def get_dict_by_indexes_of_matrix(key_i: int, key_v: int, matrix: List[List[any]
     Аргументы:
     - `key_i: int` - ключ, который будет ключом в словаре
     - `key_v: int` - ключ, который будет значением в словаре
-    - `matrix: List[List[any]]` - входящая матрица
+    - `matrix: List[List[any]]` - входная матрица
 
     Пример:
 
@@ -36,7 +47,7 @@ def find_list_of_matrix(from_index: int, condition: str, matrix: List[List[any]]
     Аргументы:
     - `from_index: int` - индекс, по которому будем сравнивать
     - `condition: int` - чему должно быть равно значение этого индекса
-    - `matrix: List[List[any]]` - входящая матрица
+    - `matrix: List[List[any]]` - входная матрица
 
     Пример:
 
