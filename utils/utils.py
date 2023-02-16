@@ -21,6 +21,18 @@ def get_list_by_index_of_matrix(index: int, matrix: List[List[any]]) -> List[any
     - `matrix: List[List[any]]` - входная матрица
     """
 
+    if not isinstance(matrix, list):
+        print_error(f'get_list_by_index_of_matrix() => Тип матрицы должен быть list')
+        return matrix
+
+    if index > matrix[0].__len__():
+        print_error(f'get_list_by_index_of_matrix() => Индекс не может быть больше чем длина списка внутри матрицы')
+        return matrix
+
+    if not all(len(list) == len(matrix[0]) for list in matrix):
+        print_error(f'get_list_by_index_of_matrix() => Не все списки в матрице равной длины')
+        return matrix
+
     return [list[index] for list in matrix]
 
 def get_dict_by_indexes_of_matrix(key_i: int, key_v: int, matrix: List[List[any]]) -> Dict[str, any]:
@@ -62,7 +74,7 @@ def find_list_of_matrix(from_index: int, condition: str, matrix: List[List[any]]
     try:
         return next(item for item in matrix if item[from_index] == condition)
     except Exception as error:
-        print_error(f'Ничего не найдено. Ошибка при передаче {condition}')
+        print_error(f'find_list_of_matrix() => Ничего не найдено. Ошибка при передаче {condition}')
 
 def convert_list_to_dict(keys: List[str], list: List[any]) -> Dict[str, any]:
     """
