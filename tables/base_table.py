@@ -1,7 +1,7 @@
 import copy
 from typing import Dict
 
-from sqlalchemy import Table
+from sqlalchemy import Table, select, func
 
 
 from utils import Settings, print_error, print_success, key_dict_to_lower
@@ -42,6 +42,7 @@ class BaseTable:
         self.__create()
 
     def _add_data(self, data: Dict[str, any]):
+        call_counter = 0
         for element in data:
             element = self.__empty_str_to_none(key_dict_to_lower(element))
             
@@ -57,14 +58,20 @@ class BaseTable:
                         del element[k]
 
                 self.__connection.execute(self.__table.insert().values(**element))
-        
+                call_counter += 1
+
             except Exception as error:
                 print_error(f'Не удалось добавить запись в таблицу {self.tablename}. Ошибка: {error}')
-        
-        #
-        # REFACTOR:
-        # Добавить проверку на соответствие количества добавленных записей полученным записям
-        #
+
+        query = select([func.count()]).select_from(self.__table)
+        count_query = self.__connection.execute(query).scalar()
+
+        if call_counter == count_query:
+            # TelegramBot._send_success_message(f'Все записи успешно добавлены в таблицу {self.tablename} - {count_query}')
+            print_success(f'Все записи успешно добавлены в таблицу {self.tablename} - {count_query}')
+        else:
+            print_error(f'Не все записи добавлены в таблицу {self.tablename}. Добавлено {count_query}, а пришло {call_counter}')
+            # TelegramBot._send_error_message(f'Не все записи добавлены в таблицу {self.tablename}. Добавлено {count_query}, а пришло {call_counter}')
 
         self.__connection.close()
 
