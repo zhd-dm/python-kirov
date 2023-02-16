@@ -6,11 +6,25 @@ import json
 from typing import Union, List, Dict
 
 
+def key_and_value_dict_to_lower(dict: Dict[str, str]) -> Dict[str, str]:
+    return { key.lower(): v.lower() for key, v in dict.items() if isinstance(key, str) and isinstance(v, str) }
+
 def key_dict_to_lower(dict: Dict[str, any]) -> Dict[str, any]:
     return { key.lower(): value for key, value in dict.items() if isinstance(key, str) }
 
 def props_list_to_lower(list: List[str]) -> List[str]:
     return [ value.lower() for value in list if isinstance(value, str) ]
+
+def get_list_keys_from_dict_of_condition(dict: Dict[str, any], condition: str) -> List[str]:
+    """
+    Метод получения списка ключей из словаря по условию
+
+    Аргументы:
+    - `dict: Dict[str, any]` - входной словарь
+    - `condition: str` - условие, которому должно быть равно значение
+    """
+
+    return [ key for key, value in dict.items() if value == condition ]
     
 def get_list_by_index_of_matrix(index: int, matrix: List[List[any]]) -> List[any]:
     """
