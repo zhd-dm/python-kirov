@@ -16,6 +16,19 @@ TEST_DICTIONARY_MOCK = {
     }
 }
 
+TEST_LOWER_DICTIONARY_MOCK = {
+    'STR': 'STR',
+    'str': 'STR'
+}
+
+TEST_GET_KEYS_OF_DICT_BY_CONDITION_MOCK = {
+    'key1': 'int',
+    'key2': 'str',
+    'key3': 'json',
+    2: True,
+    False: None
+}
+
 TEST_LIST_MOCK = [
     1,
     2,

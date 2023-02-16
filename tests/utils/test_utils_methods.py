@@ -2,11 +2,11 @@ import copy
 
 import unittest
 
-from utils import key_dict_to_lower, props_list_to_lower, get_dict_by_indexes_of_matrix, find_list_of_matrix
-from utils import convert_list_to_dict, convert_str_to_dict_or_list, replace_custom_value, get_list_by_index_of_matrix
+from utils import key_dict_to_lower, props_list_to_lower, get_dict_by_indexes_of_matrix, find_list_of_matrix, get_list_keys_from_dict_of_condition
+from utils import convert_list_to_dict, convert_str_to_dict_or_list, replace_custom_value, get_list_by_index_of_matrix, key_and_value_dict_to_lower
 
 from tests.utils.test_utils_methods_mock import TEST_DICTIONARY_MOCK, TEST_LIST_MOCK, TEST_MATRIX_NOT_EQUAL_LEN_MOCK, TEXT_MATRIX_EQUAL_LEN_MOCK, TEST_STR_DICT_MOCK
-
+from tests.utils.test_utils_methods_mock import TEST_LOWER_DICTIONARY_MOCK, TEST_GET_KEYS_OF_DICT_BY_CONDITION_MOCK
 
 class TestUtils(unittest.TestCase):
     def setUp(self):
@@ -161,7 +161,8 @@ class TestUtils(unittest.TestCase):
         self.assertNotEqual(result, {'a': 132, 'b': {}, 'c': 'str'})
 
 
-
+    # =============== Проверить
+    #
     # @unittest.skip
     def test_replace_custom_value_valid(self):
         result = copy.deepcopy(TEST_DICTIONARY_MOCK)
@@ -196,24 +197,62 @@ class TestUtils(unittest.TestCase):
         result = copy.deepcopy(TEXT_MATRIX_EQUAL_LEN_MOCK)
         get_list_by_index_of_matrix(0, result)
         self.assertEqual(result, TEXT_MATRIX_EQUAL_LEN_MOCK)
-
     # @unittest.skip
     def test_get_list_by_index_of_matrix2_valid(self):
         result = copy.deepcopy(TEST_MATRIX_NOT_EQUAL_LEN_MOCK)
         get_list_by_index_of_matrix(1000, result)
         self.assertEqual(result, TEST_MATRIX_NOT_EQUAL_LEN_MOCK)
-
     # @unittest.skip
     def test_get_list_by_index_of_matrix3_valid(self):
         result = copy.deepcopy(TEST_DICTIONARY_MOCK)
         get_list_by_index_of_matrix(0, result)
         self.assertEqual(result, TEST_DICTIONARY_MOCK)
-
     # @unittest.skip
     def test_get_list_by_index_of_matrix4_valid(self):
         result = copy.deepcopy(TEST_MATRIX_NOT_EQUAL_LEN_MOCK)
         get_list_by_index_of_matrix(0, result)
         self.assertEqual(result, TEST_MATRIX_NOT_EQUAL_LEN_MOCK)
+    #
+    # =============== Проверить
+
+
+
+    # @unittest.skip
+    def test_key_and_value_dict_to_lower_valid(self):
+        test_dict = copy.deepcopy(TEST_LOWER_DICTIONARY_MOCK)
+        result = key_and_value_dict_to_lower(test_dict)
+        self.assertEqual(result, { 'str': 'str', 'str': 'str' })
+
+    # @unittest.skip
+    def test_key_and_value_dict_to_lower_invalid(self):
+        test_dict = copy.deepcopy(TEST_LOWER_DICTIONARY_MOCK)
+        result = key_and_value_dict_to_lower(test_dict)
+        self.assertNotEqual(result, { 'str': 'str', 'STR': 'str' })
+
+
+
+
+    # @unittest.skip
+    def test_get_list_keys_from_dict_of_condition_valid(self):
+        test_dict = copy.deepcopy(TEST_GET_KEYS_OF_DICT_BY_CONDITION_MOCK)
+        result = get_list_keys_from_dict_of_condition(test_dict, 'json')
+        self.assertEqual(result, [ 'key3' ])
+    # @unittest.skip
+    def test_get_list_keys_from_dict_of_condition2_valid(self):
+        test_dict = copy.deepcopy(TEST_GET_KEYS_OF_DICT_BY_CONDITION_MOCK)
+        result = get_list_keys_from_dict_of_condition(test_dict, True)
+        self.assertEqual(result, [ 2 ])
+    # @unittest.skip
+    def test_get_list_keys_from_dict_of_condition2_valid(self):
+        test_dict = copy.deepcopy(TEST_GET_KEYS_OF_DICT_BY_CONDITION_MOCK)
+        result = get_list_keys_from_dict_of_condition(test_dict, None)
+        self.assertEqual(result, [ False ])
+
+    # @unittest.skip
+    def test_get_list_keys_from_dict_of_condition_invalid(self):
+        test_dict = copy.deepcopy(TEST_GET_KEYS_OF_DICT_BY_CONDITION_MOCK)
+        result = get_list_keys_from_dict_of_condition(test_dict, 'json')
+        self.assertNotEqual(result, [ 'key1' ])
 
 
 
