@@ -29,7 +29,7 @@ class BaseColumns:
         self.__generate_columns()
 
     def __generate_columns(self):
-        for key, value in self.__entity_config.fields_lower.items():
+        for key, value in self.__entity_config.field_keys_lower.items():
             self.__set_column_to_class(key, value)
 
     def __set_column_to_class(self, key: str, python_type: str):

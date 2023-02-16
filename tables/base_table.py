@@ -4,7 +4,7 @@ from typing import Dict
 from sqlalchemy import Table, select, func
 
 
-from utils import Settings, print_error, print_success, key_dict_to_lower
+from utils import Settings, print_error, print_success, key_dict_to_lower, get_list_keys_from_dict_of_condition
 from fields.base_config import BaseConfig
 from tables.base_columns import BaseColumns
 
@@ -87,6 +87,7 @@ class BaseTable:
         print_success(f'Таблица {self.tablename} успешно удалена')
 
     def __empty_str_to_none(self, element: Dict[str, any]):
+        self.__separate_json_fields(element)
 
         #
         # REFACTOR:
@@ -101,29 +102,13 @@ class BaseTable:
             if element['uf_crm_1667025237906'] == '':
                 element['uf_crm_1667025237906'] = None
 
-        #
-        # Для crm.product.list
-        if (self.tablename == 'product' and element['property_119'] == None):
-            element['property_119'] = {
-                'valueId': None,
-                'value': None
-            }
-
-        #
-        # Для catalog.product.sku.list
-        if (self.tablename == 'product_sku' and element['property119'] == None):
-            element['property119'] = {
-                'valueId': None,
-                'value': None
-            }
-
         return element
 
-    # def __check_is_all_values_added_to_table(self, data):
-    #     query = "SELECT count(*) FROM " + self.tablename
-    #     result = self.__connection.execute(query).scalar()
+    def __separate_json_fields(self, element: Dict[str, any]):
+        json_field_keys = get_list_keys_from_dict_of_condition(self.__entity_config.field_keys_and_values_lower, 'json')
 
-    #     if result != data.__len__():
-    #         print_error(f'{data.__len__() - self.__count_records} записи не было занесено в таблицу {self.tablename}')
-    #     else:
-    #         print_success(f'OK Все записи были успешно добавлены в таблицу {self.tablename}')
+        for key in json_field_keys:
+            element[key] = {
+                'valueId': None,
+                'value': None
+            }

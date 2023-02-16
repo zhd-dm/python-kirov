@@ -1,4 +1,4 @@
-from utils import key_dict_to_lower, props_list_to_lower, print_error, replace_custom_value
+from utils import key_dict_to_lower, props_list_to_lower, print_error, replace_custom_value, key_and_value_dict_to_lower
 from fields.types import T_ENTITY_CONFIG_WITH_FIELDS, T_ENTITY_CONFIG, T_PARENT_NAME, T_ENTITY_NAME, T_TYPE_METHOD, T_FULL_METHOD, T_PARAMS, T_KEYS, T_ENUMS, T_PRIMARY_KEY, T_FIELDS
 
 
@@ -21,7 +21,8 @@ class BaseConfig:
     - `enums_lower -> T_ENUMS` - список словарей енумов (если они есть)
     - `primary_key_lower -> T_PRIMARY_KEY` - имя поля, которое будет PK в БД
     - `fields -> T_FIELDS` - словарь полей сущности
-    - `fields_lower -> T_FIELDS` - словарь полей сущности в нижнем регистре
+    - `field_keys_lower -> T_FIELDS` - словарь ключей полей сущности в нижнем регистре
+    - `field_keys_and_values_lower -> T_FIELDS` - словарь ключей и значений полей сущности в нижнем регистре
 
     Сеттеры:
     - `params(v: T_PARAMS)` - изменяет объект params перед отправкой запроса
@@ -96,8 +97,12 @@ class BaseConfig:
         return self.__fields
 
     @property
-    def fields_lower(self):
+    def field_keys_lower(self):
         return key_dict_to_lower(self.__fields)
+
+    @property
+    def field_keys_and_values_lower(self):
+        return key_and_value_dict_to_lower(self.__fields)
 
     def _replace_custom_params(self, custom_value: any):
         replace_custom_value(self.__params, 'custom', custom_value)
