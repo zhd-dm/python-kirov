@@ -44,7 +44,7 @@ class BaseTable:
     def _add_data(self, data: Dict[str, any]):
         call_counter = 0
         for element in data:
-            element = self.__empty_str_to_none(key_dict_to_lower(element))
+            element = self.__prepare_incorrect_values(key_dict_to_lower(element))
             
             try:
                 element = { k: v for k, v in element.items() if k in self.__entity_config.keys_lower }
@@ -86,23 +86,24 @@ class BaseTable:
         self.__metadata.drop_all(bind = self.__engine)
         print_success(f'Таблица {self.tablename} успешно удалена')
 
-    def __empty_str_to_none(self, element: Dict[str, any]):
+    def __prepare_incorrect_values(self, element: Dict[str, any]):
         self.__separate_json_fields(element)
-
-        #
-        # REFACTOR:
-        # Продумать более лаконичную обработку невалидных значений и json
-        #
-
-        #
-        # Для crm.deal.list
-        if self.tablename == 'deal':
-            if element['closedate'] == '':
-                element['closedate'] = None
-            if element['uf_crm_1667025237906'] == '':
-                element['uf_crm_1667025237906'] = None
+        self.__set_empty_str_to_none(element)
 
         return element
+
+    def __set_empty_str_to_none(self, element: Dict[str, any]):
+        """
+        Если появляется тип, отличный от char / text, нужно добавить его сюда
+        """
+        str_field_keys = get_list_keys_from_dict_of_condition(self.__entity_config.field_keys_and_values_lower, 'int') \
+            + get_list_keys_from_dict_of_condition(self.__entity_config.field_keys_and_values_lower, 'double') \
+            + get_list_keys_from_dict_of_condition(self.__entity_config.field_keys_and_values_lower, 'date') \
+            + get_list_keys_from_dict_of_condition(self.__entity_config.field_keys_and_values_lower, 'enum')
+
+        for key in str_field_keys:
+            if element[key] == '':
+                element[key] = None
 
     def __separate_json_fields(self, element: Dict[str, any]):
         json_field_keys = get_list_keys_from_dict_of_condition(self.__entity_config.field_keys_and_values_lower, 'json')
