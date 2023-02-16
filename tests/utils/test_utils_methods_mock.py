@@ -37,10 +37,14 @@ TEST_LIST_MOCK = [
     ()
 ]
 
-TEST_MATRIX_MOCK = [
+TEST_MATRIX_NOT_EQUAL_LEN_MOCK = [
     [1, 2, 3], ['a', 'b', 'c'], [(), True, None],
     [12.423, 'test', False], [{}, -100], [[[], {1: {}}], None, 5],
     ['s', 'int', 'str'], [-2, '', ''], [[{}], None]
+]
+
+TEXT_MATRIX_EQUAL_LEN_MOCK = [
+    [12.423, 'test', False], [[[], {1: {}}], None, 5], [-2, '', '']
 ]
 
 TEST_STR_DICT_MOCK = "{'a': 1, 'b': True, 'c': None}"

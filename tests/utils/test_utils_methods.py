@@ -3,9 +3,9 @@ import copy
 import unittest
 
 from utils import key_dict_to_lower, props_list_to_lower, get_dict_by_indexes_of_matrix, find_list_of_matrix
-from utils import convert_list_to_dict, convert_str_to_dict_or_list, replace_custom_value
+from utils import convert_list_to_dict, convert_str_to_dict_or_list, replace_custom_value, get_list_by_index_of_matrix
 
-from tests.utils.test_utils_methods_mock import TEST_DICTIONARY_MOCK, TEST_LIST_MOCK, TEST_MATRIX_MOCK, TEST_STR_DICT_MOCK
+from tests.utils.test_utils_methods_mock import TEST_DICTIONARY_MOCK, TEST_LIST_MOCK, TEST_MATRIX_NOT_EQUAL_LEN_MOCK, TEXT_MATRIX_EQUAL_LEN_MOCK, TEST_STR_DICT_MOCK
 
 
 class TestUtils(unittest.TestCase):
@@ -85,11 +85,11 @@ class TestUtils(unittest.TestCase):
         self.assertEqual(result, ['a', 'b', 'c'])
     # @unittest.skip
     def test_find_list_of_matrix4_valid(self):
-        result = find_list_of_matrix(0, {}, TEST_MATRIX_MOCK)
+        result = find_list_of_matrix(0, {}, TEST_MATRIX_NOT_EQUAL_LEN_MOCK)
         self.assertEqual(result, [{}, -100])
     # @unittest.skip
     def test_find_list_of_matrix5_valid(self):
-        result = find_list_of_matrix(-1, None, TEST_MATRIX_MOCK)
+        result = find_list_of_matrix(-1, None, TEST_MATRIX_NOT_EQUAL_LEN_MOCK)
         self.assertEqual(result, [(), True, None])
 
     # @unittest.skip
@@ -188,6 +188,32 @@ class TestUtils(unittest.TestCase):
         result = copy.deepcopy(TEST_DICTIONARY_MOCK)
         replace_custom_value(result, 'custom', ['update'])
         self.assertNotEqual(result, TEST_DICTIONARY_MOCK)
+
+
+
+    # @unittest.skip
+    def test_get_list_by_index_of_matrix_valid(self):
+        result = copy.deepcopy(TEXT_MATRIX_EQUAL_LEN_MOCK)
+        get_list_by_index_of_matrix(0, result)
+        self.assertEqual(result, TEXT_MATRIX_EQUAL_LEN_MOCK)
+
+    # @unittest.skip
+    def test_get_list_by_index_of_matrix2_valid(self):
+        result = copy.deepcopy(TEST_MATRIX_NOT_EQUAL_LEN_MOCK)
+        get_list_by_index_of_matrix(1000, result)
+        self.assertEqual(result, TEST_MATRIX_NOT_EQUAL_LEN_MOCK)
+
+    # @unittest.skip
+    def test_get_list_by_index_of_matrix3_valid(self):
+        result = copy.deepcopy(TEST_DICTIONARY_MOCK)
+        get_list_by_index_of_matrix(0, result)
+        self.assertEqual(result, TEST_DICTIONARY_MOCK)
+
+    # @unittest.skip
+    def test_get_list_by_index_of_matrix4_valid(self):
+        result = copy.deepcopy(TEST_MATRIX_NOT_EQUAL_LEN_MOCK)
+        get_list_by_index_of_matrix(0, result)
+        self.assertEqual(result, TEST_MATRIX_NOT_EQUAL_LEN_MOCK)
 
 
 
