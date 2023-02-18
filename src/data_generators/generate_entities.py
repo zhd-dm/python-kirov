@@ -1,26 +1,30 @@
 import asyncio
-from typing import Union, List
+from typing import List
 
 
-from utils import Settings, print_error
-from data_importer import DataImporter
+from utils.mapping import print_error
+from connectors.db_connector import DBConnector
+
+from data_generators.data_importer import DataImporter
+
 
 class GenerateEntities:
     """
     Класс асинхронных вызовов обращения к DataImporter
+
     Аргументы:
-    - `settings: Settings` - класс для подключения к БД
+    - `connector: DBConnector` - класс для подключения к БД
     - `bitrix_methods: List[str]` - метод(-ы) на который(-е) отправляется запрос
     """
 
-    def __init__(self, settings: Settings, bitrix_methods: List[str]):
-        self.__settings = settings
+    def __init__(self, connector: DBConnector, bitrix_methods: List[str]):
+        self.__connector = connector
         self.__bitrix_methods = bitrix_methods
         self.__call_counter = 0
 
     async def _generate_entities(self):
         for bitrix_method in self.__bitrix_methods:
-            data_importer = DataImporter(self.__settings, bitrix_method)
+            data_importer = DataImporter(self.__connector, bitrix_method)
             await data_importer._try_update_table()
             self.__call_counter += 1
 

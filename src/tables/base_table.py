@@ -3,19 +3,19 @@ from typing import Dict
 
 from sqlalchemy import Table, select, func
 
-
-from utils import Settings, print_error, print_success, key_dict_to_lower, get_list_keys_from_dict_of_condition
-from fields.base_config import BaseConfig
+from connectors.db_connector import DBConnector
+from entity_configs.entity_config import EntityConfig
 from tables.base_columns import BaseColumns
+from utils.mapping import print_error, print_success, key_dict_to_lower, get_list_keys_from_dict_of_condition
 
 
 class BaseTable:
     """
-    Класс генерации таблицы в БД по переданному BaseConfig
+    Класс генерации таблицы в БД по переданному EntityConfig
 
     Параметры:
-    - `settings: Settings` - класс для подключения к БД
-    - `entity_config: BaseConfig` - entity_config
+    - `connector: DBConnector` - класс для подключения к БД
+    - `entity_config: EntityConfig` - entity_config
     
     Геттеры:
     - `tablename -> str` - название таблицы
@@ -25,10 +25,10 @@ class BaseTable:
     def tablename(self):
         return self.__tablename__
 
-    def __init__(self, settings: Settings, entity_config: BaseConfig):
-        self.__metadata = settings.metadata
-        self.__engine = settings.engine
-        self.__connection = settings.connection
+    def __init__(self, connector: DBConnector, entity_config: EntityConfig):
+        self.__metadata = connector.metadata
+        self.__engine = connector.engine
+        self.__connection = connector.connection
 
         self.__entity_config = entity_config
 

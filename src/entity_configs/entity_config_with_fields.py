@@ -1,11 +1,12 @@
 from typing import Dict, List
 
 
-from utils import find_list_of_matrix, convert_list_to_dict, convert_str_to_dict_or_list, print_error
 from google_sheets.google_sheet import GoogleSheet
-from google_sheets.constants import RANGE_ENTITIES_CONFIG
-from fields.types import T_ENTITY_CONFIG, T_FIELDS, T_ENTITY_CONFIG_WITH_FIELDS
-from fields.constants import ENTITY_CONFIG_KEYS
+from google_sheets.config.constants import RANGE_ENTITIES_CONFIG
+from utils.mapping import find_list_of_matrix, convert_list_to_dict, convert_str_to_dict_or_list, print_error
+
+from data_generators.config.types import T_ENTITY_CONFIG, T_FIELDS, T_ENTITY_CONFIG_WITH_FIELDS
+from data_generators.config.constants import ENTITY_CONFIG_KEYS
 
 
 class EntityConfigWithFields:

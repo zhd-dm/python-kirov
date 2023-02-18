@@ -1,18 +1,22 @@
 from sqlalchemy import create_engine, MetaData
 
 
-from env import DEFAULT_SETTINGS, SPREADSHEET_ID
+from env import webhook, DEFAULT_SETTINGS, SPREADSHEET_ID
 
-from utils.types import T_SETTINGS
+from config.types import T_SETTINGS
 
 
-class Settings:
+class DBConnector:
     def __init__(self, settings: T_SETTINGS = DEFAULT_SETTINGS):
         self.__host = settings['host']
         self.__port = settings['port']
         self.__db = settings['db']
         self.__user = settings['user']
         self.__password = settings['password']
+
+    @property
+    def webhook(self):
+        return webhook
 
     @property
     def db_url(self):

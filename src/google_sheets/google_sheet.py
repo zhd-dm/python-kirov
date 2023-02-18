@@ -6,11 +6,11 @@ from googleapiclient.discovery import build
 from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
 
+from connectors.db_connector import DBConnector
+from utils.mapping import print_success
 
-from utils import Settings, print_success
-
-from google_sheets.constants import DEFAULT_SHEET_NAME
-from google_sheets.types import T_SHEET_VALUES_RETURN, T_SHEET_VALUES_SEND
+from google_sheets.config.constants import DEFAULT_SHEET_NAME
+from google_sheets.config.types import T_SHEET_VALUES_RETURN, T_SHEET_VALUES_SEND
 
 
 class GoogleSheet:
@@ -62,7 +62,7 @@ class GoogleSheet:
         _get_range_values('A3:C') -> [[1, 2, 3], [4, 5, 6], [7, 8, 9], ...]
         """
         range = self.__list_name + range
-        result = self.__service.spreadsheets().values().get(spreadsheetId = Settings().spreadsheet_id, range = range).execute()
+        result = self.__service.spreadsheets().values().get(spreadsheetId = DBConnector().spreadsheet_id, range = range).execute()
         values = result.get('values', [])
         return values
 
@@ -86,5 +86,5 @@ class GoogleSheet:
             'valueInputOption': 'USER_ENTERED',
             'data': data
         }
-        result = self.__service.spreadsheets().values().batchUpdate(spreadsheetId = Settings().spreadsheet_id, body = body).execute()
+        result = self.__service.spreadsheets().values().batchUpdate(spreadsheetId = DBConnector().spreadsheet_id, body = body).execute()
         print_success(f'{result.get("totalUpdatedCells")} ячеек обновлено.')

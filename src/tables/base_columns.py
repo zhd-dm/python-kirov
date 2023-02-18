@@ -4,7 +4,7 @@ from sqlalchemy import Column, Integer, String, Float, Text, Date
 from sqlalchemy.dialects.postgresql import ENUM
 
 
-from fields.base_config import BaseConfig
+from entity_configs.entity_config import EntityConfig
 
 
 class BaseColumns:
@@ -12,7 +12,7 @@ class BaseColumns:
     Класс генерации колонки по переданному entity_config
 
     Параметры:
-    - `config: BaseConfig` - entity_config
+    - `entity_config: EntityConfig` - entity_config
     
     Геттеры:
     - `column_list -> List[Column]` - список колонок Column
@@ -24,8 +24,8 @@ class BaseColumns:
         del columns[0]
         return columns
     
-    def __init__(self, config: BaseConfig):
-        self.__entity_config = config
+    def __init__(self, entity_config: EntityConfig):
+        self.__entity_config = entity_config
         self.__generate_columns()
 
     def __generate_columns(self):
