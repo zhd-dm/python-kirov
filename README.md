@@ -96,4 +96,7 @@ __getters:__
 1. `BitrixAsync`
 2. `psycopg2`
 3. `sqlalchemy`
+4. `telebot`
+5. `google_sheets API`
+6. `rainbow-print`
 

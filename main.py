@@ -22,9 +22,5 @@ async def main():
     await GenerateEntities(settings, bitrix_methods)._generate_entities()
     settings.engine.pool.dispose()
 
-    # settings = Settings(SERVER_SETTINGS)
-    # connection = settings.connection
-    # settings.engine.pool.dispose()
-
 if __name__ == '__main__':
     asyncio.run(main())
