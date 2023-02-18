@@ -21,7 +21,7 @@ class GenerateEntities:
     async def _generate_entities(self):
         for bitrix_method in self.__bitrix_methods:
             data_importer = DataImporter(self.__settings, bitrix_method)
-            await data_importer._get_generate_and_set_entity()
+            await data_importer._try_update_table()
             self.__call_counter += 1
 
             await asyncio.sleep(1)
