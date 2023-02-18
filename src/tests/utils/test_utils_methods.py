@@ -2,8 +2,8 @@ import copy
 
 import unittest
 
-from utils import key_dict_to_lower, props_list_to_lower, get_dict_by_indexes_of_matrix, find_list_of_matrix, get_list_keys_from_dict_of_condition
-from utils import convert_list_to_dict, convert_str_to_dict_or_list, replace_custom_value, get_list_by_index_of_matrix, key_and_value_dict_to_lower
+from utils.mapping import key_dict_to_lower, props_list_to_lower, get_dict_by_indexes_of_matrix, find_list_of_matrix, get_list_keys_from_dict_of_condition
+from utils.mapping import convert_list_to_dict, convert_str_to_dict_or_list, replace_custom_value, get_list_by_index_of_matrix, key_and_value_dict_to_lower
 
 from tests.utils.test_utils_methods_mock import TEST_DICTIONARY_MOCK, TEST_LIST_MOCK, TEST_MATRIX_NOT_EQUAL_LEN_MOCK, TEXT_MATRIX_EQUAL_LEN_MOCK, TEST_STR_DICT_MOCK
 from tests.utils.test_utils_methods_mock import TEST_LOWER_DICTIONARY_MOCK, TEST_GET_KEYS_OF_DICT_BY_CONDITION_MOCK
@@ -241,6 +241,7 @@ class TestUtils(unittest.TestCase):
     def test_get_list_keys_from_dict_of_condition2_valid(self):
         test_dict = copy.deepcopy(TEST_GET_KEYS_OF_DICT_BY_CONDITION_MOCK)
         result = get_list_keys_from_dict_of_condition(test_dict, True)
+        print(result)
         self.assertEqual(result, [ 2 ])
     # @unittest.skip
     def test_get_list_keys_from_dict_of_condition2_valid(self):

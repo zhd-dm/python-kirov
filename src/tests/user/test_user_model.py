@@ -3,7 +3,6 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
 
-from env import TESTING_settings
 from tests import Base, User
 from utils import Settings
 

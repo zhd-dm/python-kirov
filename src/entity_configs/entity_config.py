@@ -1,8 +1,9 @@
-from utils import key_dict_to_lower, props_list_to_lower, print_error, replace_custom_value, key_and_value_dict_to_lower
-from fields.types import T_ENTITY_CONFIG_WITH_FIELDS, T_ENTITY_CONFIG, T_PARENT_NAME, T_ENTITY_NAME, T_TYPE_METHOD, T_FULL_METHOD, T_PARAMS, T_KEYS, T_ENUMS, T_PRIMARY_KEY, T_FIELDS
+from utils.mapping import key_dict_to_lower, props_list_to_lower, print_error, replace_custom_value, key_and_value_dict_to_lower
+
+from data_generators.config.types import T_ENTITY_CONFIG_WITH_FIELDS, T_ENTITY_CONFIG, T_PARENT_NAME, T_ENTITY_NAME, T_TYPE_METHOD, T_FULL_METHOD, T_PARAMS, T_KEYS, T_ENUMS, T_PRIMARY_KEY, T_FIELDS
 
 
-class BaseConfig:
+class EntityConfig:
     """
     Класс - обертка над EntityConfigWithFields для типизации и доступа к полям
 

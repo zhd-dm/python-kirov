@@ -1,5 +1,5 @@
 #
-# Файл утилит должен быть без зависимостей от других модулей приложения !!!
+# Модуль утилит должен быть без зависимостей от других модулей приложения !!!
 #
 
 import json
@@ -167,31 +167,14 @@ def replace_custom_value(d: Dict[str, any], find_key: str, new_value: any):
 
 def print_success(message: str):
     print(colored(f"""
-        ------ SUCCESS----------------------------------------------------------- SUCCESS ------
+        ------ SUCCESS ----------------------------------------------------------- SUCCESS ------
             {message}""", 'green'
     ))
 
 def print_error(error: Exception):
     print(colored(f"""
-        ------ ERROR----------------------------------------------------------- ERROR ------
-        !!!!! {error}                                                                   !!!!!
-        ------------------------------------------------------------------------------------
+        ------ ERROR --------------------------------------------------------------- ERROR ------
+        !!!!! {error}                                                                       !!!!!
+        -----------------------------------------------------------------------------------------
         """, 'red'
     ))
-
-
-
-# def is_exist_db(db_url: str) -> bool:
-#     return database_exists(db_url)
-
-# def is_empty_table(session: Session, table) -> bool:
-#     return session.query(table).count() == 0
-
-# def is_exist_table(engine: Engine, tablename: str) -> bool:
-#     return sqlalchemy.inspect(engine).has_table(tablename)
-
-# def in_full_record_table(session: Session, table, number_of_records: int) -> bool:
-#     return session.query(table).count() == number_of_records
-
-# def records_in_table(session: Session, table) -> int:
-#     return session.query(table).count()
