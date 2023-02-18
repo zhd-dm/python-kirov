@@ -3,6 +3,17 @@ from core.pg.config.utils import _invalid_conf
 
 
 class PGTable:
+    """
+    Класс для типизации конфига PG таблицы.
+
+    В нем указан минимальный набор полей, необходимых для генерации таблицы.
+
+    Обязательно оборачивать конфиг любой таблицы (динамической, статической) в этот класс.
+
+    Параметры:
+    `table_conf: T_PG_TABLE` -> Конфиг таблицы
+    """
+
     def __init__(self, table_conf: T_PG_TABLE):
         if not _invalid_conf(table_conf):
             self.__table_conf = table_conf
