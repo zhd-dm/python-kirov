@@ -3,9 +3,13 @@
 #
 
 import json
+import datetime
 from typing import Union, List, Dict
 
 from termcolor import colored
+
+
+from config.constants import FORMAT_YYYY_MM_DD_HH_MM_SS
 
 
 def key_and_value_dict_to_lower(dict: Dict[str, str]) -> Dict[str, str]:
@@ -164,6 +168,17 @@ def replace_custom_value(d: Dict[str, any], find_key: str, new_value: any):
             replace_custom_value(v, find_key, new_value)
         elif v == find_key:
             d[k] = new_value
+
+def print_now_date(message: str):
+    now = datetime.datetime.now()
+    current_time = now.strftime(FORMAT_YYYY_MM_DD_HH_MM_SS)
+    print_info(f'{message} -> {current_time}')
+
+def print_info(message: str):
+    print(colored(
+        f"""{message}
+        """,
+        'cyan'))
 
 def print_success(message: str):
     print(colored(f"""
