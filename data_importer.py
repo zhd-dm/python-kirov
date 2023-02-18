@@ -10,7 +10,7 @@ from fields.constants import ENTITIES_WITH_CUSTOM_PARAMS
 from google_sheets.google_sheet import GoogleSheet
 from google_sheets.constants import RANGE_BITRIX_FIELDS_TO_DB_TYPES, SHEET_BITRIX_FIELD_INDEX, SHEET_PYTHON_TYPE_INDEX
 from tables.base_table import BaseTable
-from utils import Settings, get_dict_by_indexes_of_matrix
+from utils import Settings, get_dict_by_indexes_of_matrix, print_error
 
 
 class DataImporter:
@@ -47,11 +47,16 @@ class DataImporter:
         if self.config.full_method in ENTITIES_WITH_CUSTOM_PARAMS():
             self.__replace_custom_params(ENTITIES_WITH_CUSTOM_PARAMS(self.__connection))
 
-    async def _get_generate_and_set_entity(self):
-        table = BaseTable(self.__settings, self.config)
-        table._drop_and_create()
-        data: List[Dict[str, any]] = await self.__get_bx_data(self.config)
-        table._add_data(data)
+    async def _try_update_table(self):
+        data: List[Dict[str, any]] = None
+
+        try:
+            data = await self.__get_bx_data(self.config)
+        except Exception as error:
+            print_error(error)
+        
+        if data is not None:
+            self.__drop_and_insert_table(data)
 
     def __get_fields_from_sheet(self):
         return get_dict_by_indexes_of_matrix(
@@ -69,6 +74,11 @@ class DataImporter:
             method,
             params = config.params
         )
+
+    def __drop_and_insert_table(self, data):
+        table = BaseTable(self.__settings, self.config)
+        table._drop_and_create()
+        table._add_data(data)
 
     def __replace_custom_params(self, entities_with_custom_params: Dict):
         self.config._replace_custom_params(entities_with_custom_params.get(self.config.full_method))

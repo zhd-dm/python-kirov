@@ -168,9 +168,7 @@ def replace_custom_value(d: Dict[str, any], find_key: str, new_value: any):
 def print_success(message: str):
     print(colored(f"""
         ------ SUCCESS----------------------------------------------------------- SUCCESS ------
-            {message}
-        ----------------------------------------------------------------------------------------
-        """, 'green'
+            {message}""", 'green'
     ))
 
 def print_error(error: Exception):
