@@ -50,7 +50,7 @@ class DataImporter:
     async def _get_generate_and_set_entity(self):
         table = BaseTable(self.__settings, self.config)
         table._drop_and_create()
-        data: List[Dict[str, any]] = await self.__get_data(self.config)
+        data: List[Dict[str, any]] = await self.__get_bx_data(self.config)
         table._add_data(data)
 
     def __get_fields_from_sheet(self):
@@ -60,8 +60,8 @@ class DataImporter:
             GoogleSheet()._get_range_values(RANGE_BITRIX_FIELDS_TO_DB_TYPES)
         )
 
-    async def __get_data(self, config: BaseConfig) -> Union[List, Dict]:
-        bx = BitrixAsync(webhook)
+    async def __get_bx_data(self, config: BaseConfig) -> Union[List, Dict]:
+        bx = BitrixAsync(webhook, False)
         method = f'{config.parent_name}.{config.entity_name}.{config.type_method}' if config.parent_name else f'{config.entity_name}.{config.type_method}'
         print(f'Method name -> {method}')
 

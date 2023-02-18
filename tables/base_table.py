@@ -42,6 +42,7 @@ class BaseTable:
         self.__create()
 
     def _add_data(self, data: Dict[str, any]):
+        print_success(f'Добавление данных в таблицу {self.tablename}...')
         call_counter = 0
         for element in data:
             element = self.__prepare_incorrect_values(key_dict_to_lower(element))
