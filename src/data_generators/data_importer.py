@@ -67,7 +67,7 @@ class DataImporter:
         )
 
     async def __get_bx_data(self, entity_config: EntityConfig) -> Union[List, Dict]:
-        webhook = DBConnector().webhook
+        webhook = self.__connector.webhook
         bx = BitrixAsync(webhook, False)
         method = f'{entity_config.parent_name}.{entity_config.entity_name}.{entity_config.type_method}' if entity_config.parent_name else f'{entity_config.entity_name}.{entity_config.type_method}'
         print(f'Method name -> {method}')

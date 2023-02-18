@@ -4,6 +4,10 @@ from typing import Dict, List, Union
 # ================== Базовые типы конфига ==================
 #
 
+#
+# REFACTOR: Сделать более абстрактные наименования типов
+#
+
 T_PARENT_NAME = str
 T_ENTITY_NAME = str
 T_TYPE_METHOD = str
