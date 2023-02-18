@@ -1,7 +1,7 @@
 import asyncio
 from typing import List, Union
 
-from env import DATALENS_SERVER_SETTINGS
+from env import DATALENS_SERVER_CONNECTION
 from connectors.db_connector import DBConnector
 from google_sheets.google_sheet import GoogleSheet
 from google_sheets.config.constants import RANGE_METHODS_NAMES
