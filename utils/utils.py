@@ -5,6 +5,8 @@
 import json
 from typing import Union, List, Dict
 
+from termcolor import colored
+
 
 def key_and_value_dict_to_lower(dict: Dict[str, str]) -> Dict[str, str]:
     return { key.lower(): v.lower() for key, v in dict.items() if isinstance(key, str) and isinstance(v, str) }
@@ -164,20 +166,20 @@ def replace_custom_value(d: Dict[str, any], find_key: str, new_value: any):
             d[k] = new_value
 
 def print_success(message: str):
-    print(f"""
+    print(colored(f"""
         ------ SUCCESS----------------------------------------------------------- SUCCESS ------
             {message}
         ----------------------------------------------------------------------------------------
-        """
-    )
+        """, 'green'
+    ))
 
 def print_error(error: Exception):
-    print(f"""
+    print(colored(f"""
         ------ ERROR----------------------------------------------------------- ERROR ------
         !!!!! {error}                                                                   !!!!!
         ------------------------------------------------------------------------------------
-        """
-    )
+        """, 'red'
+    ))
 
 
 
