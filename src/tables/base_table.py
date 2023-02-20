@@ -6,7 +6,7 @@ from sqlalchemy import Table, select, func
 from connectors.db_connector import DBConnector
 from entity_configs.entity_config import EntityConfig
 from tables.base_columns import BaseColumns
-from utils.mapping import print_error, print_success, key_dict_to_lower, get_list_keys_from_dict_of_condition
+from utils.mapping import print_error, print_success, print_info, key_dict_to_lower, get_list_keys_from_dict_of_condition
 
 
 class BaseTable:
@@ -42,7 +42,7 @@ class BaseTable:
         self.__create()
 
     def _add_data(self, data: Dict[str, any]):
-        print_success(f'Добавление данных в таблицу {self.tablename}...')
+        print_info(f'Добавление данных в таблицу {self.tablename}...')
         call_counter = 0
         for element in data:
             element = self.__prepare_incorrect_values(key_dict_to_lower(element))
@@ -110,7 +110,8 @@ class BaseTable:
         json_field_keys = get_list_keys_from_dict_of_condition(self.__entity_config.field_keys_and_values_lower, 'json')
 
         for key in json_field_keys:
-            element[key] = {
-                'valueId': None,
-                'value': None
-            }
+            if element[key] == None:
+                element[key] = {
+                    'valueId': None,
+                    'value': None
+                }

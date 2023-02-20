@@ -2,7 +2,7 @@ import asyncio
 from typing import List
 
 
-from utils.mapping import print_error
+from utils.mapping import print_error, print_info
 from connectors.db_connector import DBConnector
 
 from data_generators.data_importer import DataImporter
@@ -32,3 +32,5 @@ class GenerateEntities:
         
         if self.__call_counter != self.__bitrix_methods.__len__():
             print_error('Не все таблицы были корректно обновлены')
+        else:
+            print_info('Все таблицы успешно обновлены')

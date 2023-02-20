@@ -2,7 +2,7 @@ import asyncio
 import time
 from typing import List, Union
 
-from env import DATALENS_SERVER_CONNECTION
+from env import DATALENS_SERVER_CONNECTION, TESTER_SERVER_CONNECTION
 from connectors.db_connector import DBConnector
 from google_sheets.google_sheet import GoogleSheet
 from google_sheets.config.constants import RANGE_METHODS_NAMES
@@ -20,7 +20,7 @@ from config.constants import HOUR
 
 async def begin():
     print_now_date('Текущее время сервера')
-    connector = DBConnector(DATALENS_SERVER_CONNECTION)
+    connector = DBConnector(TESTER_SERVER_CONNECTION)
     bitrix_methods = get_list_by_index_of_matrix(0, GoogleSheet()._get_range_values(RANGE_METHODS_NAMES))
     await GenerateEntities(connector, bitrix_methods)._generate_entities()
     connector.engine.pool.dispose()
