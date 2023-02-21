@@ -8,7 +8,7 @@ from utils.mapping import print_error
 from entity_configs.entity_config import EntityConfig
 from entity_configs.entity_config_with_fields import EntityConfigWithFields
 
-from data_generators.config.constants import ENTITIES_WITH_CUSTOM_PARAMS
+from core.data_handlers.config.constants import ENTITIES_WITH_CUSTOM_PARAMS
 
 
 class DataImporter:

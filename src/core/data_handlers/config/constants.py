@@ -1,4 +1,4 @@
-from data_generators.config.types import T_KEYS
+from core.data_handlers.config.types import T_KEYS
 
 #
 # ================== Список ключей для маппинга списка из Google Sheets в T_ENTITY_CONFIG ==================

@@ -6,7 +6,7 @@ from env import PROD_CONNECTION, TEST_CONNECTION
 from core.connectors.db_connector import DBConnector
 from features.google_sheets.google_sheet import GoogleSheet
 from features.google_sheets.config.constants import RANGE_METHODS_NAMES, SHEET_BITRIX_FIELD_INDEX, SHEET_PYTHON_TYPE_INDEX, RANGE_BITRIX_FIELDS_TO_DB_TYPES
-from data_generators.generate_entities import GenerateEntities
+from core.data_handlers.generate_entities import GenerateEntities
 from utils.mapping import get_list_by_index_of_matrix, print_now_date, get_dict_by_indexes_of_matrix
 from config.constants import HOUR
 
