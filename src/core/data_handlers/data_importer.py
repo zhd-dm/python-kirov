@@ -5,8 +5,8 @@ from core.connectors.db_connector import DBConnector
 from core.api_calls.bx_api import BXApi
 from tables.base_table import BaseTable
 from utils.mapping import print_error
-from entity_configs.entity_config import EntityConfig
-from entity_configs.entity_config_with_fields import EntityConfigWithFields
+from core.entity_configs.entity_config import EntityConfig
+from core.entity_configs.entity_config_with_fields import EntityConfigWithFields
 
 from core.data_handlers.config.constants import ENTITIES_WITH_CUSTOM_PARAMS
 

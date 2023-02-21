@@ -4,7 +4,7 @@ from sqlalchemy import Column, Integer, String, Float, Text, Date
 from sqlalchemy.dialects.postgresql import ENUM
 
 
-from entity_configs.entity_config import EntityConfig
+from core.entity_configs.entity_config import EntityConfig
 
 
 class BaseColumns:

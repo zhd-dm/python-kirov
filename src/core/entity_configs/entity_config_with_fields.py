@@ -5,8 +5,8 @@ from features.google_sheets.google_sheet import GoogleSheet
 from features.google_sheets.config.constants import RANGE_ENTITIES_CONFIG
 from utils.mapping import find_list_of_matrix, convert_list_to_dict, convert_str_to_dict_or_list, print_error
 
-from data_generators.config.types import T_ENTITY_CONFIG, T_FIELDS, T_ENTITY_CONFIG_WITH_FIELDS
-from data_generators.config.constants import ENTITY_CONFIG_KEYS
+from core.data_handlers.config.types import T_ENTITY_CONFIG, T_FIELDS, T_ENTITY_CONFIG_WITH_FIELDS
+from core.data_handlers.config.constants import ENTITY_CONFIG_KEYS
 
 
 class EntityConfigWithFields:
