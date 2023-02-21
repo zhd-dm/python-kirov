@@ -1,11 +1,11 @@
 import asyncio
-from typing import List
+from typing import List, Dict
 
 
 from utils.mapping import print_error
-from connectors.db_connector import DBConnector
+from core.connectors.db_connector import DBConnector
 
-from data_generators.data_importer import DataImporter
+from core.data_handlers.data_importer import DataImporter
 
 
 class GenerateEntities:
@@ -17,14 +17,16 @@ class GenerateEntities:
     - `bitrix_methods: List[str]` - метод(-ы) на который(-е) отправляется запрос
     """
 
-    def __init__(self, connector: DBConnector, bitrix_methods: List[str]):
+    def __init__(self, connector: DBConnector, bitrix_methods: List[str], field_to_py_type: Dict[str, str]):
         self.__connector = connector
         self.__bitrix_methods = bitrix_methods
+        self.__field_to_py_type = field_to_py_type
+
         self.__call_counter = 0
 
     async def _generate_entities(self):
         for bitrix_method in self.__bitrix_methods:
-            data_importer = DataImporter(self.__connector, bitrix_method)
+            data_importer = DataImporter(self.__connector, bitrix_method, self.__field_to_py_type)
             await data_importer._try_update_table()
             self.__call_counter += 1
 

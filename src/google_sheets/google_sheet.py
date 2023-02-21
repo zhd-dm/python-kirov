@@ -6,7 +6,8 @@ from googleapiclient.discovery import build
 from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
 
-from connectors.db_connector import DBConnector
+from core.connectors.db_connector import DBConnector
+from core.connectors.gs_connector import GSConnector
 from utils.mapping import print_success
 
 from google_sheets.config.constants import DEFAULT_SHEET_NAME
@@ -30,6 +31,8 @@ class GoogleSheet:
 
     def __init__(self, list_name: str = DEFAULT_SHEET_NAME):
         creds = None
+        self.__spreadsheet_id = GSConnector().spreadsheet_id
+        
         if os.path.exists('token.pickle'):
             with open('token.pickle', 'rb') as token:
                 creds = pickle.load(token)
@@ -62,7 +65,7 @@ class GoogleSheet:
         _get_range_values('A3:C') -> [[1, 2, 3], [4, 5, 6], [7, 8, 9], ...]
         """
         range = self.__list_name + range
-        result = self.__service.spreadsheets().values().get(spreadsheetId = DBConnector().spreadsheet_id, range = range).execute()
+        result = self.__service.spreadsheets().values().get(spreadsheetId = self.__spreadsheet_id, range = range).execute()
         values = result.get('values', [])
         return values
 
@@ -86,5 +89,5 @@ class GoogleSheet:
             'valueInputOption': 'USER_ENTERED',
             'data': data
         }
-        result = self.__service.spreadsheets().values().batchUpdate(spreadsheetId = DBConnector().spreadsheet_id, body = body).execute()
+        result = self.__service.spreadsheets().values().batchUpdate(spreadsheetId = self.__spreadsheet_id, body = body).execute()
         print_success(f'{result.get("totalUpdatedCells")} ячеек обновлено.')

@@ -3,7 +3,7 @@ from typing import Dict
 
 from sqlalchemy import Table, select, func
 
-from connectors.db_connector import DBConnector
+from core.connectors.db_connector import DBConnector
 from entity_configs.entity_config import EntityConfig
 from tables.base_columns import BaseColumns
 from utils.mapping import print_error, print_success, key_dict_to_lower, get_list_keys_from_dict_of_condition
