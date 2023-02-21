@@ -10,8 +10,8 @@ from core.connectors.db_connector import DBConnector
 from core.connectors.gs_connector import GSConnector
 from utils.mapping import print_success
 
-from google_sheets.config.constants import DEFAULT_SHEET_NAME
-from google_sheets.config.types import T_SHEET_VALUES_RETURN, T_SHEET_VALUES_SEND
+from features.google_sheets.config.constants import DEFAULT_SHEET_NAME
+from features.google_sheets.config.types import T_SHEET_VALUES_RETURN, T_SHEET_VALUES_SEND
 
 
 class GoogleSheet:

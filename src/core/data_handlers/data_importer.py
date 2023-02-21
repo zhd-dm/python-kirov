@@ -3,10 +3,8 @@ from typing import Dict, List, Union
 
 from core.connectors.db_connector import DBConnector
 from core.api_calls.bx_api import BXApi
-from google_sheets.google_sheet import GoogleSheet
-from google_sheets.config.constants import RANGE_BITRIX_FIELDS_TO_DB_TYPES, SHEET_BITRIX_FIELD_INDEX, SHEET_PYTHON_TYPE_INDEX
 from tables.base_table import BaseTable
-from utils.mapping import get_dict_by_indexes_of_matrix, print_error
+from utils.mapping import print_error
 from entity_configs.entity_config import EntityConfig
 from entity_configs.entity_config_with_fields import EntityConfigWithFields
 

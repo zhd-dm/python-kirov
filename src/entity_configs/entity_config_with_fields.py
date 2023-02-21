@@ -1,8 +1,8 @@
 from typing import Dict, List
 
 
-from google_sheets.google_sheet import GoogleSheet
-from google_sheets.config.constants import RANGE_ENTITIES_CONFIG
+from features.google_sheets.google_sheet import GoogleSheet
+from features.google_sheets.config.constants import RANGE_ENTITIES_CONFIG
 from utils.mapping import find_list_of_matrix, convert_list_to_dict, convert_str_to_dict_or_list, print_error
 
 from data_generators.config.types import T_ENTITY_CONFIG, T_FIELDS, T_ENTITY_CONFIG_WITH_FIELDS
