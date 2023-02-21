@@ -110,7 +110,8 @@ class BaseTable:
         json_field_keys = get_list_keys_from_dict_of_condition(self.__entity_config.field_keys_and_values_lower, 'json')
 
         for key in json_field_keys:
-            element[key] = {
-                'valueId': None,
-                'value': None
-            }
+            if element[key] == None:
+                element[key] = {
+                    'valueId': None,
+                    'value': None
+                }

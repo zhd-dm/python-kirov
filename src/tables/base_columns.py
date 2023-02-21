@@ -39,17 +39,16 @@ class BaseColumns:
         # Подумать над переработкой этого метода
         #
 
-            if self.__entity_config.primary_key_lower == '':
-                self.__entity_config.keys = 'pk_tech_field'
-                setattr(self, 'pk_tech_field', self.__get_column_with_props('pk_tech_field', python_type))
+        if self.__entity_config.primary_key_lower == '':
+            setattr(self, 'pk_tech_field', self.__get_column('pk_tech_field', python_type))
 
-            if python_type == 'json':
-                setattr(self, f'{key}_id', self.__get_column_with_props(f'{key}_id', python_type))
-                setattr(self, f'{key}_value', self.__get_column_with_props(f'{key}_value', python_type))
-            else:
-                setattr(self, key, self.__get_column_with_props(key, python_type))
+        if python_type == 'json':
+            setattr(self, f'{key}_id', self.__get_column(f'{key}_id', python_type))
+            setattr(self, f'{key}_value', self.__get_column(f'{key}_value', python_type))
+        else:
+            setattr(self, key, self.__get_column(key, python_type))
 
-    def __get_column_with_props(self, key: str, python_type: str) -> Column:
+    def __get_column(self, key: str, python_type: str) -> Column:
 
         #
         # REFACTOR:
