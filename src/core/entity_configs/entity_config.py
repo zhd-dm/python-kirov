@@ -126,3 +126,25 @@ class EntityConfig:
         self.__enums: T_ENUMS = self.__entity_config.get('enums')
         self.__primary_key: T_PRIMARY_KEY = self.__entity_config.get('primary_key')
         self.__fields: T_FIELDS = self.__config.get('fields')
+
+class EntityConfig2:
+
+    def entity_name(self):
+        self.__entity_config.get('entity_name')
+
+    def params(self):
+        self.__entity_config.get('params')
+
+    def enums(self):
+        self.__entity_config.get('enums')
+
+    def primary_key(self):
+        self.__entity_config.get('primary_key')
+
+    def field_to_py_type(self):
+        return self.__field_to_py_type
+
+    def __init__(self, en_conf: T_ENTITY_CONFIG_WITH_FIELDS):
+        self.__en_conf = en_conf
+        self.__entity_config = self.__en_conf.get('entity_config')
+        self.__field_to_py_type = self.__en_conf.get('field_to_py_type')

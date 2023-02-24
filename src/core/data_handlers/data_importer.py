@@ -4,11 +4,13 @@ from typing import Dict, List, Union
 from core.connectors.db_connector import DBConnector
 from core.api_calls.bx_api import BXApi
 from core.tables.base_table import BaseTable
-from utils.mapping import print_error
+from utils.mapping import print_error, print_info
 from core.entity_configs.entity_config import EntityConfig
-from core.entity_configs.entity_config_with_fields import EntityConfigWithFields
+from core.entity_configs.gs_entity_config_wrapper import GSEntityConfigWrapper
 
 from core.data_handlers.config.constants import ENTITIES_WITH_CUSTOM_PARAMS
+
+from features.google_sheets.config.types import T_SHEET_VALUES_RETURN
 
 
 class DataImporter:
@@ -25,11 +27,11 @@ class DataImporter:
     - `fields_from_sheets -> Dict[str, Any]` - словарь запрашиваемых полей из Google Sheets
     """
 
-    def __init__(self, connector: DBConnector, bitrix_method: str, field_to_py_type: Dict[str, str]):
+    def __init__(self, connector: DBConnector, field_to_py_type: Dict[str, str], entity_conf: Dict[str, any]):
         self.__connector = connector
         self.__connection = connector.connection
 
-        self.__ecwf = EntityConfigWithFields(entity_key = bitrix_method, bitrix_fields_to_db_types = field_to_py_type)
+        self.__ecwf = GSEntityConfigWrapper(field_to_py_type, entity_conf)
         self.__config = EntityConfig(self.__ecwf.entity_config_with_fields)
 
         if self.__config.full_method in ENTITIES_WITH_CUSTOM_PARAMS():

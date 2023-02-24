@@ -4,7 +4,7 @@ from core.data_handlers.config.types import T_KEYS
 # ================== Список ключей для маппинга списка из Google Sheets в T_ENTITY_CONFIG ==================
 #
 
-ENTITY_CONFIG_KEYS: T_KEYS = ['parent_name', 'entity_name', 'type_method', 'params', 'enums', 'primary_key', 'keys']
+ENTITY_CONFIG_KEYS: T_KEYS = ['entity_name', 'params', 'enums', 'primary_key', 'field_names']
 
 #
 # ================== Метод получения списка кастомных параметров запроса ==================
