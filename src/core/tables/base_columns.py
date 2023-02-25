@@ -46,7 +46,7 @@ class BaseColumns:
         # Подумать над переработкой этого метода
         #
 
-        if key == 'id' or key == 'pk_tech_field':
+        if key == self.__ent_conf.primary_key or key == 'pk_tech_field':
             return Column(Integer, primary_key = True, name = key)
             
         match python_type:
