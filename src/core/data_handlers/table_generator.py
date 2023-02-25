@@ -17,10 +17,7 @@ class TableGenerator:
     def __init__(self, connector: DBConnector):
         self.__connector = connector
 
-    async def _generate(self, ent_conf: EntityConfig):
-        data_importer = BXDataImporter(self.__connector, ent_conf)
-        data = await data_importer._get_data()
-
+    async def _generate(self, ent_conf: EntityConfig, data: List[Dict[str, any]]):
         self.__prepare_incorrect_values(data, ent_conf)
         self.__drop_and_insert_table(data, ent_conf)
 
