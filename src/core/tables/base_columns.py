@@ -66,7 +66,7 @@ class BaseColumns:
                     name = key
                 )
             case 'json':
-                if self.__ent_conf.entity_name == 'product.offer':
+                if self.__ent_conf.entity_name == 'catalog.product.offer.list':
                     if '_id' in key:
                         return Column(Integer, name = key)
                     if '_value' in key:
