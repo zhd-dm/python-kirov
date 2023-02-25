@@ -10,8 +10,9 @@ from core.entity_configs.entity_config import EntityConfig
 
 class TableGenerator:
 
-    def __init__(self, connector: DBConnector):
+    def __init__(self, connector: DBConnector, isStatic = False):
         self.__connector = connector
+        self.__isStatic = isStatic
 
     async def _generate(self, ent_conf: EntityConfig, data: List[Dict[str, any]]):
         self.__prepare_incorrect_values(data, ent_conf)
@@ -21,7 +22,8 @@ class TableGenerator:
 
     def __drop_and_insert_table(self, data: List[Dict[str,any]], ent_conf: EntityConfig):
         table = BaseTable(self.__connector, ent_conf)
-        table._drop_and_create()
+        if not self.__isStatic:
+            table._drop_and_create()
         table._add_data(data)
 
     def __prepare_incorrect_values(self, data: List[Dict[str, any]], ent_conf: EntityConfig):

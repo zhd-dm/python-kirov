@@ -63,7 +63,7 @@ async def generate_table_from_gs(connector: DBConnector, gsheet: GoogleSheet):
         print_info('Все таблицы успешно обновлены')
 
 async def generate_currencies_table(connector: DBConnector, gsheet: GoogleSheet):
-    table_gen = TableGenerator(connector)
+    table_gen = TableGenerator(connector, isStatic = True)
     field_to_py_type = FIELD_TO_PY_TYPE
     curr_entity_conf = gsheet._get_range_values('G19:K19')[0]
 
