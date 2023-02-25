@@ -1,9 +1,9 @@
-from typing import Dict, List
+from typing import Dict, List, Union
 
 
 from features.google_sheets.google_sheet import GoogleSheet
 from features.google_sheets.config.constants import RANGE_ENTITIES_CONFIG
-from utils.mapping import find_list_of_matrix, convert_list_to_dict, convert_str_to_dict_or_list, print_error, key_and_value_dict_to_lower, props_list_to_lower
+from utils.mapping import key_dict_to_lower, convert_list_to_dict, convert_str_to_dict_or_list, print_error, key_and_value_dict_to_lower, props_list_to_lower
 
 from core.data_handlers.config.types import T_ENTITY_CONFIG, T_FIELDS, T_ENTITY_CONFIG_WITH_FIELDS
 from core.data_handlers.config.constants import ENTITY_CONFIG_KEYS
@@ -30,14 +30,26 @@ class GSEntityConfigWrapper:
         return entity_config_with_fields
 
     def __get_entity(self, entity_conf: List[str]) -> T_ENTITY_CONFIG:   
-        target_list = props_list_to_lower(entity_conf)
+        target_list = entity_conf
         target_dict = convert_list_to_dict(ENTITY_CONFIG_KEYS, target_list)
 
         entity_config = {}
         for k in target_dict:
-            entity_config[k] = convert_str_to_dict_or_list(target_dict[k])
+            converted_field = convert_str_to_dict_or_list(target_dict[k])
+            converted_field = self.__field_to_lower(converted_field)
+            entity_config[k] = converted_field
 
         return entity_config
+
+    def __field_to_lower(self, field: Union[str, List[any], Dict[str, any]]):
+        if isinstance(field, str):
+            field = field.lower()
+        elif isinstance(field, list):
+            field = props_list_to_lower(field)
+        elif isinstance(field, dict):
+            field = key_dict_to_lower(field)
+        
+        return field
     
     def __get_field_to_py_type(self, field_to_py_type: Dict[str, any]) -> T_FIELDS:
         list_of_fields = self.__entity_config.get('field_names')
