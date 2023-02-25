@@ -25,8 +25,8 @@ class EntityConfig:
     def field_to_py_type(self):
         return self.__field_to_py_type
 
-    def __init__(self, en_conf: T_ENTITY_CONFIG_WITH_FIELDS):
-        self.__en_conf = en_conf
+    def __init__(self, en_conf_with_fields: T_ENTITY_CONFIG_WITH_FIELDS):
+        self.__en_conf = en_conf_with_fields
         self.__entity_config = self.__en_conf.get('entity_config')
         self.__field_to_py_type = self.__en_conf.get('field_to_py_type')
 
