@@ -9,3 +9,5 @@ FIELD_TO_PY_TYPE = {
     'value': 'double',
     'date': 'date'
 }
+
+INCLUDES_CURRENCY_CODES = ['USD', 'EUR']

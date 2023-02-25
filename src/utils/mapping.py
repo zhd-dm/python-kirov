@@ -27,12 +27,21 @@ def key_dict_in_list_to_lower(list: List[Dict[str, any]]) -> List[Dict[str, any]
 
     return new_list
 
-def get_pure_list_of_dicts(list_of_dicts: List[Dict[str, any]], keys_to_include: List[str]) -> List[Dict[str, any]]:
+def get_field_from_list_of_dicts_by_keys(list_of_dicts: List[Dict[str, any]], keys_to_include: List[str]) -> List[Dict[str, any]]:
     clone_list = copy.deepcopy(list_of_dicts)
     result = []
     
     for d in clone_list:
         result.append({ k: v for k, v in d.items() if k in list(keys_to_include) })
+
+    return result
+
+def get_dicts_from_list_of_dicts_by_codes(list_of_dicts: List[Dict[str, any]], field_key: str, codes_to_include: List[str]) -> List[Dict[str, any]]:
+    result: List[Dict[str, any]] = []
+
+    for d in list_of_dicts:
+        if d[field_key] in codes_to_include:
+            result.append(d)
 
     return result
 
