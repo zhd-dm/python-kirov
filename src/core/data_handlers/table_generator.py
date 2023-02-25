@@ -7,25 +7,18 @@ from core.connectors.db_connector import DBConnector
 from core.tables.base_table import BaseTable
 from core.entity_configs.entity_config import EntityConfig
 
-from core.data_handlers.data_importer import DataImporter
+from core.data_handlers.bx_data_importer import BXDataImporter
 
 from features.google_sheets.config.types import T_SHEET_VALUES_RETURN
 
 
 class TableGenerator:
-    """
-    Класс асинхронных вызовов обращения к DataImporter
-
-    Аргументы:
-    - `connector: DBConnector` - класс для подключения к БД
-    - `bitrix_methods: List[str]` - метод(-ы) на который(-е) отправляется запрос
-    """
 
     def __init__(self, connector: DBConnector):
         self.__connector = connector
 
     async def _generate(self, ent_conf: EntityConfig):
-        data_importer = DataImporter(self.__connector, ent_conf)
+        data_importer = BXDataImporter(self.__connector, ent_conf)
         data = await data_importer._get_data()
 
         self.__prepare_incorrect_values(data, ent_conf)

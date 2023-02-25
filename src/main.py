@@ -9,7 +9,7 @@ from features.google_sheets.config.constants import RANGE_ENTITIES_CONFIG, SHEET
 from core.data_handlers.table_generator import TableGenerator
 from features.google_sheets.gs_entity_config_wrapper import GSEntityConfigWrapper
 from core.entity_configs.entity_config import EntityConfig
-from utils.mapping import get_list_by_index_of_matrix, print_now_date, get_dict_by_indexes_of_matrix, print_info, print_error
+from utils.mapping import print_now_date, get_dict_by_indexes_of_matrix, print_info, print_error
 from config.constants import HOUR
 
 
@@ -23,7 +23,7 @@ from config.constants import HOUR
 async def begin():
     print_now_date('Текущее время сервера')
 
-    table_type = 'dynamic'
+    table_type = 'gs_table'
 
     connector = DBConnector()
     gsheet = GoogleSheet()
@@ -32,13 +32,14 @@ async def begin():
     # В будущем тянуть из PG
     field_to_py_type = get_dict_by_indexes_of_matrix(SHEET_BITRIX_FIELD_INDEX, SHEET_PYTHON_TYPE_INDEX, gsheet._get_range_values(RANGE_BITRIX_FIELDS_TO_DB_TYPES))
 
-    if table_type == 'dynamic':
-        await generate_dynamic_table(gsheet, table_gen, field_to_py_type)
+    if table_type == 'gs_table':
+        await generate_table_from_gs(gsheet, table_gen, field_to_py_type)
 
     connector.engine.pool.dispose()
 
-async def generate_dynamic_table(gsheet: GoogleSheet, table_gen: TableGenerator, field_to_py_type: Dict[str, any]):
-    bx_entity_configs = gsheet._get_range_values('G11:K11')
+async def generate_table_from_gs(gsheet: GoogleSheet, table_gen: TableGenerator, field_to_py_type: Dict[str, any]):
+    # RANGE_ENTITIES_CONFIG
+    bx_entity_configs = gsheet._get_range_values('G12:K12')
 
     call_counter = 0
     for bx_entity_conf in bx_entity_configs:

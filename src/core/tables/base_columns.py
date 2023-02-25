@@ -8,15 +8,6 @@ from core.entity_configs.entity_config import EntityConfig
 
 
 class BaseColumns:
-    """
-    Класс генерации колонки по переданному entity_config
-
-    Параметры:
-    - `entity_config: EntityConfig` - entity_config
-    
-    Геттеры:
-    - `column_list -> List[Column]` - список колонок Column
-    """
 
     @property
     def column_list(self) -> List[Column]:

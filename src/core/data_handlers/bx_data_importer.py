@@ -11,19 +11,7 @@ from core.data_handlers.config.constants import ENTITIES_WITH_CUSTOM_PARAMS
 from features.google_sheets.config.types import T_SHEET_VALUES_RETURN
 
 
-class DataImporter:
-    """
-    Связующий класс, выполняющий основную логику, связанную с получением конфига из Google Sheets,
-    генерацией по нему колонок и таблиц, получением данных из битрикса и записью в них данными
-
-    Параметры:
-    - `connector: DBConnector` - класс для подключения к БД
-    - `bitrix_method: str` - метод, на который отправляется запрос в битрикс
-    
-    Геттеры:
-    - `config -> EntityConfig` - конфиг сущности
-    - `fields_from_sheets -> Dict[str, Any]` - словарь запрашиваемых полей из Google Sheets
-    """
+class BXDataImporter:
 
     def __init__(self, connector: DBConnector, ent_conf: EntityConfig):
         self.__connection = connector.connection

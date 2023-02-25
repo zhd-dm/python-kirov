@@ -6,20 +6,10 @@ from sqlalchemy import Table, select, func
 from core.connectors.db_connector import DBConnector
 from core.entity_configs.entity_config import EntityConfig
 from core.tables.base_columns import BaseColumns
-from utils.mapping import print_error, print_success, key_dict_to_lower, get_list_keys_from_dict_of_condition
+from utils.mapping import print_error, print_success
 
 
 class BaseTable:
-    """
-    Класс генерации таблицы в БД по переданному EntityConfig
-
-    Параметры:
-    - `connector: DBConnector` - класс для подключения к БД
-    - `entity_config: EntityConfig` - entity_config
-    
-    Геттеры:
-    - `tablename -> str` - название таблицы
-    """
 
     @property
     def _tablename(self):
