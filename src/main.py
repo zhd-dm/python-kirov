@@ -4,7 +4,7 @@ from typing import List, Union, Dict
 
 # Env
 from env import PROD_CONNECTION, TEST_CONNECTION
-from features.date_transformer.config.constants import HOUR
+from features.date_transformer.config.constants import SEC_IN_HOUR
 from utils.mapping import get_dict_by_indexes_of_matrix, print_info, print_error
 # Core
 from core.connectors.db_connector import DBConnector
@@ -84,7 +84,7 @@ async def generate_currencies_table(connector: DBConnector, gsheet: GoogleSheet)
 async def main():
     # while True:
     #     await begin()
-    #     time.sleep(HOUR)
+    #     time.sleep(SEC_IN_HOUR)
     await begin()
 
 if __name__ == '__main__':
