@@ -7,7 +7,7 @@ from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
 
 from core.connectors.db_connector import DBConnector
-from core.connectors.gs_connector import GSConnector
+from features.google_sheets.gs_connector import GSConnector
 from utils.mapping import print_success
 
 from features.google_sheets.config.constants import DEFAULT_SHEET_NAME
