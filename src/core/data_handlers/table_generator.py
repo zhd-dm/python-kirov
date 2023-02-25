@@ -10,20 +10,21 @@ from core.entity_configs.entity_config import EntityConfig
 
 class TableGenerator:
 
-    def __init__(self, connector: DBConnector, isStatic = False):
+    def __init__(self, connector: DBConnector, is_static = False, is_first = False):
         self.__connector = connector
-        self.__isStatic = isStatic
+        self.__is_static = is_static
+        self.__is_first = is_first
 
     async def _generate(self, ent_conf: EntityConfig, data: List[Dict[str, any]]):
         self.__prepare_incorrect_values(data, ent_conf)
         self.__drop_and_insert_table(data, ent_conf)
 
-        await asyncio.sleep(1)
-
     def __drop_and_insert_table(self, data: List[Dict[str,any]], ent_conf: EntityConfig):
         table = BaseTable(self.__connector, ent_conf)
-        if not self.__isStatic:
+        if not self.__is_static:
             table._drop_and_create()
+        if self.__is_first:
+            table._create()
         table._add_data(data)
 
     def __prepare_incorrect_values(self, data: List[Dict[str, any]], ent_conf: EntityConfig):

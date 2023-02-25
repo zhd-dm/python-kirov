@@ -1,4 +1,5 @@
 from typing import Dict, List, Union
+import datetime
 
 
 from utils.mapping import print_error, print_info, key_dict_in_list_to_lower, get_field_from_list_of_dicts_by_keys, get_dict_keys_from_list, try_set_int_in_list_of_dicts, get_dicts_from_list_of_dicts_by_codes
@@ -39,12 +40,12 @@ class EntityDataImporter:
 
         return data
 
-    def _get_currencies_data(self) -> List[Dict[str, any]]:
+    def _get_currencies_data(self, day: datetime = None) -> List[Dict[str, any]]:
         data: List[Dict[str, any]] = None
-
+        curr = Currencies(day)
         try:
             data = get_dicts_from_list_of_dicts_by_codes(
-                try_set_int_in_list_of_dicts(key_dict_in_list_to_lower(Currencies().currencies)),
+                try_set_int_in_list_of_dicts(key_dict_in_list_to_lower(curr.currencies)),
                 'charcode',
                 INCLUDES_CURRENCY_CODES
             )
