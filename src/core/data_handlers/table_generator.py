@@ -23,7 +23,7 @@ class TableGenerator:
         table = BaseTable(self.__connector, ent_conf)
         if not self.__is_static:
             table._drop_and_create()
-        if self.__is_first:
+        elif self.__is_first:
             table._create()
         table._add_data(data)
 
