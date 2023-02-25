@@ -1,16 +1,11 @@
 import datetime
 from typing import Dict, List
 
-
 from features.currencies.currencies_api import CurrenciesApi
 from features.currencies.currencies_connector import CurrenciesConnector
 
 
 class Currencies:
-
-    # @property
-    # def current_currency(self):
-    #     return self.__current_currency
 
     @property
     def date(self) -> str:

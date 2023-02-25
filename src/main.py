@@ -4,8 +4,8 @@ from typing import List, Union, Dict
 
 # Env
 from env import PROD_CONNECTION, TEST_CONNECTION
-from config.constants import HOUR
-from utils.mapping import print_now_date, get_dict_by_indexes_of_matrix, print_info, print_error
+from features.date_transformer.config.constants import HOUR
+from utils.mapping import get_dict_by_indexes_of_matrix, print_info, print_error
 # Core
 from core.connectors.db_connector import DBConnector
 from core.data_handlers.table_generator import TableGenerator
@@ -18,6 +18,8 @@ from features.google_sheets.config.constants import RANGE_ENTITIES_CONFIG, SHEET
 from features.currencies.currencies import Currencies
 # Currencies
 from features.currencies.config.constants import FIELD_TO_PY_TYPE
+# DateTransformer
+from features.date_transformer.date_transformer import DateTransformer
 
 
 #
@@ -28,7 +30,7 @@ from features.currencies.config.constants import FIELD_TO_PY_TYPE
 #
 
 async def begin():
-    print_now_date('Текущее время сервера')
+    DateTransformer._print_now_date('Текущее время сервера')
 
     table_type = 'currencies_table'
 
@@ -73,10 +75,17 @@ async def generate_currencies_table(connector: DBConnector, gsheet: GoogleSheet)
     data = data_importer._get_currencies_data()
     await table_gen._generate(en_conf, data)
 
+    print_info('Таблица currency обновлена')
+
+def test():
+    print(DateTransformer()._get_list_of_half_year_ago())
+
 async def main():
-    while True:
-        await begin()
-        time.sleep(HOUR)
+    # while True:
+    #     await begin()
+    #     time.sleep(HOUR)
+
+    test()
 
 if __name__ == '__main__':
     asyncio.run(main())
