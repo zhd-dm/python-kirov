@@ -1,5 +1,20 @@
 # __Module fields__
 
+## <b> Core: </b>
+- ### <b> Modules: </b> 
+    - `DBConnector`
+    - `BxCall`
+    - `BaseEntity`
+    - `PGTable`
+    - `BaseTable`
+    - `BaseColumns`
+    - `DataImporter`
+    - `EntitiesGenerator`
+
+<hr>
+
+## ... Need update ...
+
 ## `class BaseConfig(config: T_ENTITY_CONFIG_WITH_FIELDS)`
 
 ### __Types:__
@@ -84,19 +99,22 @@ __methods:__
 __getters:__ 
 - `db_url -> str`
 
+## ... Need update ...
 
 <hr>
 
-### __Run tests__ -> `$ python -m unittest || $ python -m unittest tests.utils.test_utils_methods.TestUtils`
+### __Run Core tests__ 
+#### `pg.utils => $ python -m unittest core.pg.tests.test_utils_methods.TestPGUtils`
+#### `pg.entities => $ python -m unittest core.entities.tests.test_utils_methods.TestEntitiesUtils`
 
 <hr>
 
-## *__Used libraries:__*
+## *__Install libraries:__*
 
-1. `BitrixAsync`
-2. `psycopg2`
-3. `sqlalchemy`
-4. `telebot`
-5. `google_sheets API`
-6. `rainbow-print`
+1. `pip install fast_bitrix24 1.5.14`
+2. `pip install psycopg2==2.9.5`
+3. `pip install SQLAlchemy==1.4.46`
+4. `pip install SQLAlchemy-Utils==0.39.0`
+5. `pip install --upgrade google-api-python-client google-auth-httplib2 google-auth-oauthlib`
+6. `pip install termcolor==2.2.0`
 

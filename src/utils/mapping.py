@@ -198,14 +198,16 @@ def print_now_date(message: str):
 
 def print_info(message: str):
     print(colored(
-        f"""{message}
+        f"""
+        {message}
         """,
         'cyan'))
 
 def print_success(message: str):
     print(colored(f"""
         ------ SUCCESS ----------------------------------------------------------- SUCCESS ------
-            {message}""", 'green'
+            {message}
+        """, 'green'
     ))
 
 def print_error(error: Exception):

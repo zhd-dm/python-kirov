@@ -3,14 +3,14 @@ import time
 from typing import List, Union, Dict
 
 from env import PROD_CONNECTION, TEST_CONNECTION
+from config.constants import HOUR
+from utils.mapping import print_now_date, get_dict_by_indexes_of_matrix, print_info, print_error
 from core.connectors.db_connector import DBConnector
-from features.google_sheets.google_sheet import GoogleSheet
-from features.google_sheets.config.constants import RANGE_ENTITIES_CONFIG, SHEET_BITRIX_FIELD_INDEX, SHEET_PYTHON_TYPE_INDEX, RANGE_BITRIX_FIELDS_TO_DB_TYPES
 from core.data_handlers.table_generator import TableGenerator
 from features.google_sheets.gs_entity_config_wrapper import GSEntityConfigWrapper
 from core.entity_configs.entity_config import EntityConfig
-from utils.mapping import print_now_date, get_dict_by_indexes_of_matrix, print_info, print_error
-from config.constants import HOUR
+from features.google_sheets.google_sheet import GoogleSheet
+from features.google_sheets.config.constants import RANGE_ENTITIES_CONFIG, SHEET_BITRIX_FIELD_INDEX, SHEET_PYTHON_TYPE_INDEX, RANGE_BITRIX_FIELDS_TO_DB_TYPES
 
 
 #
