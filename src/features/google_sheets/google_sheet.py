@@ -8,7 +8,7 @@ from google.auth.transport.requests import Request
 
 from core.connectors.db_connector import DBConnector
 from features.google_sheets.gs_connector import GSConnector
-from utils.mapping import print_success
+from features.print.print import Print
 
 from features.google_sheets.config.constants import DEFAULT_SHEET_NAME
 from features.google_sheets.config.types import T_SHEET_VALUES_RETURN, T_SHEET_VALUES_SEND
@@ -90,4 +90,4 @@ class GoogleSheet:
             'data': data
         }
         result = self.__service.spreadsheets().values().batchUpdate(spreadsheetId = self.__spreadsheet_id, body = body).execute()
-        print_success(f'{result.get("totalUpdatedCells")} ячеек обновлено.')
+        Print().print_success(f'{result.get("totalUpdatedCells")} ячеек обновлено.')

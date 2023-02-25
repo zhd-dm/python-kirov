@@ -2,10 +2,12 @@ import asyncio
 from typing import List, Dict
 
 
-from utils.mapping import get_list_keys_from_dict_of_condition, print_error
+from utils.mapping import get_list_keys_from_dict_of_condition
+
 from core.connectors.db_connector import DBConnector
 from core.tables.base_table import BaseTable
 from core.entity_configs.entity_config import EntityConfig
+from features.print.print import Print
 
 
 class TableGenerator:
@@ -47,7 +49,7 @@ class TableGenerator:
                 if element[key] == '':
                     element[key] = None
             except Exception as error:
-                print_error(f'BaseTable.__set_empty_str_to_none() {error}')
+                Print().print_error(f'BaseTable.__set_empty_str_to_none() {error}')
 
     def __separate_json_fields(self, element: Dict[str, any], ent_conf: EntityConfig):
         json_field_keys = get_list_keys_from_dict_of_condition(ent_conf.field_to_py_type, 'json')

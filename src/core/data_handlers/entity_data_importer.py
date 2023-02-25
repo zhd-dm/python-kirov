@@ -2,7 +2,7 @@ from typing import Dict, List, Union
 import datetime
 
 
-from utils.mapping import print_error, print_info, key_dict_in_list_to_lower, get_field_from_list_of_dicts_by_keys, get_dict_keys_from_list, try_set_int_in_list_of_dicts, get_dicts_from_list_of_dicts_by_codes
+from utils.mapping import key_dict_in_list_to_lower, get_field_from_list_of_dicts_by_keys, get_dict_keys_from_list, try_set_int_in_list_of_dicts, get_dicts_from_list_of_dicts_by_codes
 
 from core.connectors.db_connector import DBConnector
 from features.bitrix.bx_api import BXApi
@@ -11,6 +11,7 @@ from core.data_handlers.config.constants import ENTITIES_WITH_CUSTOM_PARAMS
 
 from features.currencies.currencies import Currencies
 from features.currencies.config.constants import INCLUDES_CURRENCY_CODES
+from features.print.print import Print
 
 
 class EntityDataImporter:
@@ -20,9 +21,9 @@ class EntityDataImporter:
         self.__ent_conf = ent_conf
 
         if ent_conf.params != '':
-            print_info('Генерация динамической таблицы...')
+            Print().print_info('Генерация динамической таблицы...')
         else:
-            print_info('Генерация статической таблицы...')
+            Print().print_info('Генерация статической таблицы...')
 
         if ent_conf.entity_name in ENTITIES_WITH_CUSTOM_PARAMS():
             self.__replace_custom_params(ENTITIES_WITH_CUSTOM_PARAMS(self.__connection))
@@ -36,7 +37,7 @@ class EntityDataImporter:
                 get_dict_keys_from_list(self.__ent_conf.field_to_py_type)
             )
         except Exception as error:
-            print_error(f'DataImporter._get_bx_data() {error}')
+            Print().print_error(f'DataImporter._get_bx_data() {error}')
 
         return data
 
@@ -50,7 +51,7 @@ class EntityDataImporter:
                 INCLUDES_CURRENCY_CODES
             )
         except Exception as error:
-            print_error(f'DataImporter._get_curr_data() {error}')
+            Print().print_error(f'DataImporter._get_curr_data() {error}')
 
         return data
 
