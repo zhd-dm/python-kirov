@@ -5,7 +5,7 @@ from typing import List, Union, Dict
 # Env
 from env import PROD_CONNECTION, TEST_CONNECTION
 from features.date_transformer.config.constants import SEC_IN_HOUR
-from utils.mapping import get_dict_by_indexes_of_matrix, print_info, print_error
+from utils.mapping import get_dict_by_indexes_of_matrix
 # Core
 from core.connectors.db_connector import DBConnector
 from core.data_handlers.table_generator import TableGenerator
@@ -15,11 +15,12 @@ from core.entity_configs.entity_config_wrapper import EntityConfigWrapper
 # GoogleSheets
 from features.google_sheets.google_sheet import GoogleSheet
 from features.google_sheets.config.constants import RANGE_ENTITIES_CONFIG, SHEET_BITRIX_FIELD_INDEX, SHEET_PYTHON_TYPE_INDEX, RANGE_BITRIX_FIELDS_TO_DB_TYPES
-from features.currencies.currencies import Currencies
 # Currencies
 from features.currencies.config.constants import FIELD_TO_PY_TYPE
 # DateTransformer
 from features.date_transformer.date_transformer import DateTransformer
+# Print
+from features.print.print import Print
 
 
 #
@@ -32,7 +33,7 @@ from features.date_transformer.date_transformer import DateTransformer
 async def begin():
     DateTransformer._print_now_date('Текущее время сервера')
 
-    table_type = 'currencies_table'
+    table_type = 'gs_table'
 
     connector = DBConnector()
     gsheet = GoogleSheet()
@@ -61,9 +62,9 @@ async def generate_table_from_gs(connector: DBConnector, gsheet: GoogleSheet):
         await asyncio.sleep(1)
 
     if call_counter != bx_entity_configs.__len__():
-        print_error('Не все таблицы были корректно обновлены')
+        Print().print_error('Не все таблицы были корректно обновлены')
     else:
-        print_info('Все таблицы успешно обновлены')
+        Print().print_info('Все таблицы успешно обновлены')
 
 async def generate_currencies_table(connector: DBConnector, gsheet: GoogleSheet):
     table_gen = TableGenerator(connector, is_static = True, is_first = True)
@@ -79,7 +80,7 @@ async def generate_currencies_table(connector: DBConnector, gsheet: GoogleSheet)
         await table_gen._generate(en_conf, data)
         await asyncio.sleep(0.3)
 
-    print_info('Таблица currency обновлена')
+    Print().print_info('Таблица currency обновлена')
 
 async def main():
     # while True:

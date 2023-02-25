@@ -1,10 +1,11 @@
 from typing import Dict, List, Union
 
 
-from utils.mapping import key_dict_to_lower, convert_list_to_dict, convert_str_to_dict_or_list, print_error, key_and_value_dict_to_lower, props_list_to_lower
+from utils.mapping import key_dict_to_lower, convert_list_to_dict, convert_str_to_dict_or_list, key_and_value_dict_to_lower, props_list_to_lower
 
 from core.data_handlers.config.types import T_ENTITY_CONFIG, T_FIELDS, T_ENTITY_CONFIG_WITH_FIELDS
 from core.data_handlers.config.constants import ENTITY_CONFIG_KEYS
+from features.print.print import Print
 
 
 class EntityConfigWrapper:
@@ -55,7 +56,7 @@ class EntityConfigWrapper:
         list_of_fields_to_py_type = [field_to_py_type[i] for i in filter(lambda x: x in field_to_py_type, list_of_fields)]
 
         if list_of_fields.__len__() != list_of_fields_to_py_type.__len__():
-            print_error('Не указан py_type для некоторых полей')
+            Print().print_error('Не указан py_type для некоторых полей')
 
         entity_fields = {
             list_of_fields[i]: list_of_fields_to_py_type[i] for i in range(len(list_of_fields))

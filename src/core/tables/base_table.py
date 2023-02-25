@@ -6,7 +6,7 @@ from sqlalchemy import Table, select, func
 from core.connectors.db_connector import DBConnector
 from core.entity_configs.entity_config import EntityConfig
 from core.tables.base_columns import BaseColumns
-from utils.mapping import print_error, print_success
+from features.print.print import Print
 
 
 class BaseTable:
@@ -33,7 +33,7 @@ class BaseTable:
         self._create()
 
     def _add_data(self, data: Dict[str, any]):
-        print_success(f'Добавление данных в таблицу {self._tablename}...')
+        Print().print_success(f'Добавление данных в таблицу {self._tablename}...')
         call_counter = 0
         for element in data:
             try:
@@ -50,16 +50,16 @@ class BaseTable:
                 call_counter += 1
 
             except Exception as error:
-                print_error(f'Не удалось добавить запись в таблицу {self._tablename}. Ошибка: {error}')
+                Print().print_error(f'Не удалось добавить запись в таблицу {self._tablename}. Ошибка: {error}')
 
         query = select([func.count()]).select_from(self.__table)
         count_query = self.__connection.execute(query).scalar()
 
         if call_counter == count_query:
             # TelegramBot._send_success_message(f'Все записи успешно добавлены в таблицу {self.tablename} - {count_query}')
-            print_success(f'Все записи успешно добавлены в таблицу {self._tablename} - {count_query}')
+            Print().print_success(f'Все записи успешно добавлены в таблицу {self._tablename} - {count_query}')
         else:
-            print_error(f'Не все записи добавлены в таблицу {self._tablename}. Добавлено {count_query}, а пришло {call_counter}')
+            Print().print_error(f'Не все записи добавлены в таблицу {self._tablename}. Добавлено {count_query}, а пришло {call_counter}')
             # TelegramBot._send_error_message(f'Не все записи добавлены в таблицу {self.tablename}. Добавлено {count_query}, а пришло {call_counter}')
 
         self.__connection.close()
@@ -67,10 +67,10 @@ class BaseTable:
     def _create(self):
         try:
             self.__metadata.create_all(bind = self.__engine)
-            print_success(f'Таблица {self._tablename} успешно создана')
+            Print().print_success(f'Таблица {self._tablename} успешно создана')
         except Exception as error:
-            print_error(error)
+            Print().print_error(error)
 
     def __drop(self):
         self.__metadata.drop_all(bind = self.__engine)
-        print_success(f'Таблица {self._tablename} успешно удалена')
+        Print().print_success(f'Таблица {self._tablename} успешно удалена')

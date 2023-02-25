@@ -6,7 +6,7 @@ import json
 import copy
 from typing import Union, List, Dict
 
-from termcolor import colored
+from features.print.print import Print
 
 
 def key_and_value_dict_to_lower(dict: Dict[str, str]) -> Dict[str, str]:
@@ -87,15 +87,15 @@ def get_list_by_index_of_matrix(index: int, matrix: List[List[any]]) -> List[any
     """
 
     if not isinstance(matrix, list):
-        print_error(f'get_list_by_index_of_matrix() => Тип матрицы должен быть list')
+        Print().print_error(f'get_list_by_index_of_matrix() => Тип матрицы должен быть list')
         return matrix
 
     if index > matrix[0].__len__():
-        print_error(f'get_list_by_index_of_matrix() => Индекс не может быть больше чем длина списка внутри матрицы')
+        Print().print_error(f'get_list_by_index_of_matrix() => Индекс не может быть больше чем длина списка внутри матрицы')
         return matrix
 
     if not all(len(list) == len(matrix[0]) for list in matrix):
-        print_error(f'get_list_by_index_of_matrix() => Не все списки в матрице равной длины')
+        Print().print_error(f'get_list_by_index_of_matrix() => Не все списки в матрице равной длины')
         return matrix
 
     return [list[index] for list in matrix]
@@ -134,12 +134,12 @@ def find_list_of_matrix(from_index: int, condition: str, matrix: List[List[any]]
     """
 
     if from_index >= matrix[0].__len__():
-        print_error('find_list_of_matrix() => Индекс поиска не может быть больше или равен длине списков в матрице')
+        Print().print_error('find_list_of_matrix() => Индекс поиска не может быть больше или равен длине списков в матрице')
 
     try:
         return next(item for item in matrix if item[from_index] == condition)
     except Exception as error:
-        print_error(f'find_list_of_matrix() => Ничего не найдено. Ошибка при передаче {condition}')
+        Print().print_error(f'find_list_of_matrix() => Ничего не найдено. Ошибка при передаче {condition}')
 
 def convert_list_to_dict(keys: List[str], list: List[any]) -> Dict[str, any]:
     """
@@ -157,12 +157,12 @@ def convert_list_to_dict(keys: List[str], list: List[any]) -> Dict[str, any]:
     """
 
     if keys.__len__() != list.__len__():
-        print_error('convert_list_to_dict() => длина списка ключей должна совпадать длине списка значений')
+        Print().print_error('convert_list_to_dict() => длина списка ключей должна совпадать длине списка значений')
         return {}
 
     for v in keys:
         if isinstance(v, dict):
-            print_error('convert_list_to_dict() => ключом не может быть словарь')
+            Print().print_error('convert_list_to_dict() => ключом не может быть словарь')
             return {}
 
     return dict(zip(keys, list))
@@ -187,14 +187,14 @@ def convert_str_to_dict_or_list(string: str) -> Union[List[any], Dict[str, any]]
                 dict = json.loads(string.replace("'", '"'))
                 return dict
             except json.decoder.JSONDecodeError as error:
-                print_error(f'convert_str_to_dict_or_list() => {error}')
+                Print().print_error(f'convert_str_to_dict_or_list() => {error}')
 
         elif string.startswith('['):
             return list(map(str, string[1:-1].replace(' ', '').split(', ')))
         elif ',' in string:
             return string.replace(' ', '').split(",")
     else:
-        print_error('convert_str_to_dict_or_list() => Передаваемый аргумент должен быть строкой')
+        Print().print_error('convert_str_to_dict_or_list() => Передаваемый аргумент должен быть строкой')
 
     return string
 
@@ -213,25 +213,3 @@ def replace_custom_value(d: Dict[str, any], find_key: str, new_value: any):
             replace_custom_value(v, find_key, new_value)
         elif v == find_key:
             d[k] = new_value
-
-def print_info(message: str):
-    print(colored(
-        f"""
-        {message}
-        """,
-        'cyan'))
-
-def print_success(message: str):
-    print(colored(f"""
-        ------ SUCCESS ----------------------------------------------------------- SUCCESS ------
-            {message}
-        """, 'green'
-    ))
-
-def print_error(error: Exception):
-    print(colored(f"""
-        ------ ERROR --------------------------------------------------------------- ERROR ------
-        !!!!! {error}                                                                       !!!!!
-        -----------------------------------------------------------------------------------------
-        """, 'red'
-    ))

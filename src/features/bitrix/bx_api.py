@@ -5,7 +5,7 @@ from fast_bitrix24 import BitrixAsync
 
 from core.entity_configs.entity_config import EntityConfig
 from features.bitrix.bx_connector import BXConnector
-from utils.mapping import print_info
+from features.print.print import Print
 
 
 class BXApi:
@@ -14,7 +14,7 @@ class BXApi:
         webhook = BXConnector().webhook
         bx = BitrixAsync(webhook, False)
         method = req_obj.entity_name
-        print_info(f'Method name -> {method}')
+        Print().print_info(f'Method name -> {method}')
 
         return await bx.get_all(
             method,
