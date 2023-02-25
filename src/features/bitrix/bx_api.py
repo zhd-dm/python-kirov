@@ -4,7 +4,7 @@ from fast_bitrix24 import BitrixAsync
 
 
 from core.entity_configs.entity_config import EntityConfig
-from core.connectors.bx_connector import BXConnector
+from features.bitrix.bx_connector import BXConnector
 from utils.mapping import print_info
 
 
