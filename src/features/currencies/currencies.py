@@ -1,16 +1,11 @@
 import datetime
 from typing import Dict, List
 
-
 from features.currencies.currencies_api import CurrenciesApi
 from features.currencies.currencies_connector import CurrenciesConnector
 
 
 class Currencies:
-
-    # @property
-    # def current_currency(self):
-    #     return self.__current_currency
 
     @property
     def date(self) -> str:
@@ -21,9 +16,10 @@ class Currencies:
         return self.__currencies
 
     def __init__(self, requested_date: datetime = None):
+        self.__connector = CurrenciesConnector()
         self.__currency: Dict[str, any] = None
         self.__currencies: List[Dict[str, any]] = None
-        self.__connector = CurrenciesConnector()
+        self.__requested_date = requested_date
 
         if requested_date is not None:
             self.__currency = CurrenciesApi()._get_currencies(f'{self.__connector.api_url}?date_req={requested_date}')
@@ -37,4 +33,4 @@ class Currencies:
         self.__currencies = self.__currency.get('Valute')
 
         for currency in self.__currencies:
-            currency['date'] = self.date
+            currency['date'] = self.__requested_date if self.__requested_date is not None else self.date

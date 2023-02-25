@@ -30,7 +30,7 @@ class BaseTable:
 
     def _drop_and_create(self):
         self.__drop()
-        self.__create()
+        self._create()
 
     def _add_data(self, data: Dict[str, any]):
         print_success(f'Добавление данных в таблицу {self._tablename}...')
@@ -64,7 +64,7 @@ class BaseTable:
 
         self.__connection.close()
 
-    def __create(self):
+    def _create(self):
         try:
             self.__metadata.create_all(bind = self.__engine)
             print_success(f'Таблица {self._tablename} успешно создана')

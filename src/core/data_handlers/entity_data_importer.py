@@ -1,7 +1,8 @@
 from typing import Dict, List, Union
+import datetime
 
 
-from utils.mapping import print_error, print_info, key_dict_in_list_to_lower, get_pure_list_of_dicts, get_dict_keys_from_list, try_set_int_in_list_of_dicts
+from utils.mapping import print_error, print_info, key_dict_in_list_to_lower, get_field_from_list_of_dicts_by_keys, get_dict_keys_from_list, try_set_int_in_list_of_dicts, get_dicts_from_list_of_dicts_by_codes
 
 from core.connectors.db_connector import DBConnector
 from core.api_calls.bx_api import BXApi
@@ -9,7 +10,7 @@ from core.entity_configs.entity_config import EntityConfig
 from core.data_handlers.config.constants import ENTITIES_WITH_CUSTOM_PARAMS
 
 from features.currencies.currencies import Currencies
-
+from features.currencies.config.constants import INCLUDES_CURRENCY_CODES
 
 
 class EntityDataImporter:
@@ -30,7 +31,7 @@ class EntityDataImporter:
         data: List[Dict[str, any]] = None
 
         try:
-            data = get_pure_list_of_dicts(
+            data = get_field_from_list_of_dicts_by_keys(
                 key_dict_in_list_to_lower(await BXApi()._get_bx_data(self.__ent_conf)),
                 get_dict_keys_from_list(self.__ent_conf.field_to_py_type)
             )
@@ -39,12 +40,14 @@ class EntityDataImporter:
 
         return data
 
-    def _get_currencies_data(self) -> List[Dict[str, any]]:
+    def _get_currencies_data(self, day: datetime = None) -> List[Dict[str, any]]:
         data: List[Dict[str, any]] = None
-
+        curr = Currencies(day)
         try:
-            data = try_set_int_in_list_of_dicts(
-                key_dict_in_list_to_lower(Currencies().currencies)
+            data = get_dicts_from_list_of_dicts_by_codes(
+                try_set_int_in_list_of_dicts(key_dict_in_list_to_lower(curr.currencies)),
+                'charcode',
+                INCLUDES_CURRENCY_CODES
             )
         except Exception as error:
             print_error(f'DataImporter._get_curr_data() {error}')

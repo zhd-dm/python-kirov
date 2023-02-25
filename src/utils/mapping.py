@@ -3,14 +3,10 @@
 #
 
 import json
-import datetime
 import copy
 from typing import Union, List, Dict
 
 from termcolor import colored
-
-
-from config.constants import FORMAT_YYYY_MM_DD_HH_MM_SS
 
 
 def key_and_value_dict_to_lower(dict: Dict[str, str]) -> Dict[str, str]:
@@ -31,12 +27,21 @@ def key_dict_in_list_to_lower(list: List[Dict[str, any]]) -> List[Dict[str, any]
 
     return new_list
 
-def get_pure_list_of_dicts(list_of_dicts: List[Dict[str, any]], keys_to_include: List[str]) -> List[Dict[str, any]]:
+def get_field_from_list_of_dicts_by_keys(list_of_dicts: List[Dict[str, any]], keys_to_include: List[str]) -> List[Dict[str, any]]:
     clone_list = copy.deepcopy(list_of_dicts)
     result = []
     
     for d in clone_list:
         result.append({ k: v for k, v in d.items() if k in list(keys_to_include) })
+
+    return result
+
+def get_dicts_from_list_of_dicts_by_codes(list_of_dicts: List[Dict[str, any]], field_key: str, codes_to_include: List[str]) -> List[Dict[str, any]]:
+    result: List[Dict[str, any]] = []
+
+    for d in list_of_dicts:
+        if d[field_key] in codes_to_include:
+            result.append(d)
 
     return result
 
@@ -208,11 +213,6 @@ def replace_custom_value(d: Dict[str, any], find_key: str, new_value: any):
             replace_custom_value(v, find_key, new_value)
         elif v == find_key:
             d[k] = new_value
-
-def print_now_date(message: str):
-    now = datetime.datetime.now()
-    current_time = now.strftime(FORMAT_YYYY_MM_DD_HH_MM_SS)
-    print_info(f'{message} -> {current_time}')
 
 def print_info(message: str):
     print(colored(
