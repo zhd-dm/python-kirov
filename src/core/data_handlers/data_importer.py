@@ -3,10 +3,8 @@ from typing import Dict, List, Union
 
 from core.connectors.db_connector import DBConnector
 from core.api_calls.bx_api import BXApi
-from core.tables.base_table import BaseTable
-from utils.mapping import print_error, print_info
+from utils.mapping import print_error, print_info, key_dict_in_list_to_lower, get_pure_list_of_dicts, get_dict_keys_from_list
 from core.entity_configs.entity_config import EntityConfig
-from core.entity_configs.gs_entity_config_wrapper import GSEntityConfigWrapper
 
 from core.data_handlers.config.constants import ENTITIES_WITH_CUSTOM_PARAMS
 
@@ -27,31 +25,28 @@ class DataImporter:
     - `fields_from_sheets -> Dict[str, Any]` - словарь запрашиваемых полей из Google Sheets
     """
 
-    def __init__(self, connector: DBConnector, field_to_py_type: Dict[str, str], entity_conf: Dict[str, any]):
-        self.__connector = connector
+    def __init__(self, connector: DBConnector, ent_conf: EntityConfig):
         self.__connection = connector.connection
+        self.__ent_conf = ent_conf
 
-        self.__ecwf = GSEntityConfigWrapper(field_to_py_type, entity_conf)
-        self.__config = EntityConfig(self.__ecwf.entity_config_with_fields)
+        # if ent_conf.params is not None:
+        #     print_info('Генерация динамической таблицы...')
 
-        if self.__config.full_method in ENTITIES_WITH_CUSTOM_PARAMS():
+        if ent_conf.entity_name in ENTITIES_WITH_CUSTOM_PARAMS():
             self.__replace_custom_params(ENTITIES_WITH_CUSTOM_PARAMS(self.__connection))
 
-    async def _try_update_table(self):
+    async def _get_data(self) -> List[Dict[str, any]]:
         data: List[Dict[str, any]] = None
 
         try:
-            data = await BXApi()._get_bx_data(self.__config)
+            data = get_pure_list_of_dicts(
+                key_dict_in_list_to_lower(await BXApi()._get_bx_data(self.__ent_conf)),
+                get_dict_keys_from_list(self.__ent_conf.field_to_py_type)
+            )
         except Exception as error:
-            print_error(error)
-        
-        if data is not None:
-            self.__drop_and_insert_table(data)
+            print_error(f'DataImporter._get_data() {error}')
 
-    def __drop_and_insert_table(self, data):
-        table = BaseTable(self.__connector, self.__config)
-        table._drop_and_create()
-        table._add_data(data)
+        return data
 
     def __replace_custom_params(self, entities_with_custom_params: Dict):
-        self.__config._replace_custom_params(entities_with_custom_params.get(self.__config.full_method))
+        self.__ent_conf._replace_custom_params(entities_with_custom_params.get(self.__ent_conf.entity_name))

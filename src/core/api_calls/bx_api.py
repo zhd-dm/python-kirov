@@ -13,7 +13,7 @@ class BXApi:
     async def _get_bx_data(self, req_obj: EntityConfig) -> Union[List, Dict]:
         webhook = BXConnector().webhook
         bx = BitrixAsync(webhook, False)
-        method = f'{req_obj.parent_name}.{req_obj.entity_name}.{req_obj.type_method}' if req_obj.parent_name else f'{req_obj.entity_name}.{req_obj.type_method}'
+        method = req_obj.entity_name
         print_info(f'Method name -> {method}')
 
         return await bx.get_all(

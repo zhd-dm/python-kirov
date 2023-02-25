@@ -18,6 +18,6 @@ def ENTITIES_WITH_CUSTOM_PARAMS(conn = None):
     if not conn:
         return entities_with_custom_params.keys()
     else:
-        entities_with_custom_params['crm.productrow.list'] = [row[0] for row in conn.execute('SELECT id FROM deal').fetchall()]
+        entities_with_custom_params['crm.productrow.list'] = [row[0] for row in conn.execute('SELECT id FROM crm_deal_list').fetchall()]
 
     return entities_with_custom_params

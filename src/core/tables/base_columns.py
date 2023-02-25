@@ -24,12 +24,12 @@ class BaseColumns:
         del columns[0]
         return columns
     
-    def __init__(self, entity_config: EntityConfig):
-        self.__entity_config = entity_config
+    def __init__(self, ent_conf: EntityConfig):
+        self.__ent_conf = ent_conf
         self.__generate_columns()
 
     def __generate_columns(self):
-        for key, value in self.__entity_config.field_keys_lower.items():
+        for key, value in self.__ent_conf.field_to_py_type.items():
             self.__set_column_to_class(key, value)
 
     def __set_column_to_class(self, key: str, python_type: str):
@@ -39,7 +39,7 @@ class BaseColumns:
         # Подумать над переработкой этого метода
         #
 
-        if self.__entity_config.primary_key_lower == '':
+        if self.__ent_conf.primary_key == '':
             setattr(self, 'pk_tech_field', self.__get_column('pk_tech_field', python_type))
 
         if python_type == 'json':
@@ -71,11 +71,11 @@ class BaseColumns:
                 return Column(String, name = key)
             case 'enum':
                 return Column(
-                    ENUM(*self.__entity_config.enums_lower[next(iter(self.__entity_config.enums_lower))], name = f'enum_{key}'),
+                    ENUM(*self.__ent_conf.enums[next(iter(self.__ent_conf.enums))], name = f'enum_{key}'),
                     name = key
                 )
             case 'json':
-                if self.__entity_config.entity_name == 'product.offer':
+                if self.__ent_conf.entity_name == 'product.offer':
                     if '_id' in key:
                         return Column(Integer, name = key)
                     if '_value' in key:

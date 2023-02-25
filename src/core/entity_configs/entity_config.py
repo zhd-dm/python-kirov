@@ -3,7 +3,7 @@ from utils.mapping import key_dict_to_lower, props_list_to_lower, print_error, r
 from core.data_handlers.config.types import T_ENTITY_CONFIG_WITH_FIELDS, T_ENTITY_CONFIG, T_PARENT_NAME, T_ENTITY_NAME, T_TYPE_METHOD, T_FULL_METHOD, T_PARAMS, T_KEYS, T_ENUMS, T_PRIMARY_KEY, T_FIELDS
 
 
-class EntityConfig:
+class EntityConfigOld:
     """
     Класс - обертка над EntityConfigWithFields для типизации и доступа к полям
 
@@ -127,20 +127,25 @@ class EntityConfig:
         self.__primary_key: T_PRIMARY_KEY = self.__entity_config.get('primary_key')
         self.__fields: T_FIELDS = self.__config.get('fields')
 
-class EntityConfig2:
+class EntityConfig:
 
+    @property
     def entity_name(self):
-        self.__entity_config.get('entity_name')
+        return self.__entity_config.get('entity_name')
 
+    @property
     def params(self):
-        self.__entity_config.get('params')
+        return self.__entity_config.get('params')
 
+    @property
     def enums(self):
-        self.__entity_config.get('enums')
+        return self.__entity_config.get('enums')
 
+    @property
     def primary_key(self):
-        self.__entity_config.get('primary_key')
+        return self.__entity_config.get('primary_key')
 
+    @property
     def field_to_py_type(self):
         return self.__field_to_py_type
 
@@ -148,3 +153,6 @@ class EntityConfig2:
         self.__en_conf = en_conf
         self.__entity_config = self.__en_conf.get('entity_config')
         self.__field_to_py_type = self.__en_conf.get('field_to_py_type')
+
+    def _replace_custom_params(self, custom_value: any):
+        replace_custom_value(self.params, 'custom', custom_value)
