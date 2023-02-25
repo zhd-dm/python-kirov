@@ -4,6 +4,7 @@
 
 import json
 import datetime
+import copy
 from typing import Union, List, Dict
 
 from termcolor import colored
@@ -20,6 +21,27 @@ def key_dict_to_lower(dict: Dict[str, any]) -> Dict[str, any]:
 
 def props_list_to_lower(list: List[str]) -> List[str]:
     return [ value.lower() for value in list if isinstance(value, str) ]
+
+def key_dict_in_list_to_lower(list: List[Dict[str, any]]) -> List[Dict[str, any]]:
+    new_list = []
+
+    for dict in list:
+        dict = key_dict_to_lower(dict)
+        new_list.append(dict)
+
+    return new_list
+
+def get_pure_list_of_dicts(list_of_dicts: List[Dict[str, any]], keys_to_include: List[str]) -> List[Dict[str, any]]:
+    clone_list = copy.deepcopy(list_of_dicts)
+    result = []
+    
+    for d in clone_list:
+        result.append({ k: v for k, v in d.items() if k in list(keys_to_include) })
+
+    return result
+
+def get_dict_keys_from_list(dict: Dict[str, any]) -> List[str]:
+    return list(dict.keys())
 
 def get_list_keys_from_dict_of_condition(dict: Dict[str, any], condition: str) -> List[str]:
     """
