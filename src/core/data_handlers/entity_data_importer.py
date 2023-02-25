@@ -1,29 +1,32 @@
 from typing import Dict, List, Union
 
 
+from utils.mapping import print_error, print_info, key_dict_in_list_to_lower, get_pure_list_of_dicts, get_dict_keys_from_list, try_set_int_in_list_of_dicts
+
 from core.connectors.db_connector import DBConnector
 from core.api_calls.bx_api import BXApi
-from utils.mapping import print_error, print_info, key_dict_in_list_to_lower, get_pure_list_of_dicts, get_dict_keys_from_list
 from core.entity_configs.entity_config import EntityConfig
-
 from core.data_handlers.config.constants import ENTITIES_WITH_CUSTOM_PARAMS
 
-from features.google_sheets.config.types import T_SHEET_VALUES_RETURN
+from features.currencies.currencies import Currencies
 
 
-class BXDataImporter:
+
+class EntityDataImporter:
 
     def __init__(self, connector: DBConnector, ent_conf: EntityConfig):
         self.__connection = connector.connection
         self.__ent_conf = ent_conf
 
-        if ent_conf.params is not None:
+        if ent_conf.params != '':
             print_info('Генерация динамической таблицы...')
+        else:
+            print_info('Генерация статической таблицы...')
 
         if ent_conf.entity_name in ENTITIES_WITH_CUSTOM_PARAMS():
             self.__replace_custom_params(ENTITIES_WITH_CUSTOM_PARAMS(self.__connection))
 
-    async def _get_data(self) -> List[Dict[str, any]]:
+    async def _get_bx_data(self) -> List[Dict[str, any]]:
         data: List[Dict[str, any]] = None
 
         try:
@@ -32,7 +35,19 @@ class BXDataImporter:
                 get_dict_keys_from_list(self.__ent_conf.field_to_py_type)
             )
         except Exception as error:
-            print_error(f'DataImporter._get_data() {error}')
+            print_error(f'DataImporter._get_bx_data() {error}')
+
+        return data
+
+    def _get_currencies_data(self) -> List[Dict[str, any]]:
+        data: List[Dict[str, any]] = None
+
+        try:
+            data = try_set_int_in_list_of_dicts(
+                key_dict_in_list_to_lower(Currencies().currencies)
+            )
+        except Exception as error:
+            print_error(f'DataImporter._get_curr_data() {error}')
 
         return data
 

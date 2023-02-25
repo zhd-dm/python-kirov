@@ -7,10 +7,6 @@ from core.connectors.db_connector import DBConnector
 from core.tables.base_table import BaseTable
 from core.entity_configs.entity_config import EntityConfig
 
-from core.data_handlers.bx_data_importer import BXDataImporter
-
-from features.google_sheets.config.types import T_SHEET_VALUES_RETURN
-
 
 class TableGenerator:
 

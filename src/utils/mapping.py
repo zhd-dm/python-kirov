@@ -43,6 +43,24 @@ def get_pure_list_of_dicts(list_of_dicts: List[Dict[str, any]], keys_to_include:
 def get_dict_keys_from_list(dict: Dict[str, any]) -> List[str]:
     return list(dict.keys())
 
+def try_set_int_in_list_of_dicts(list: List[Dict[str, str]]) -> List[Dict[str, Union[str, int, float]]]:
+    result: List[Dict[str, Union[str, int, float]]] = []
+    
+    for dict in list:
+        output_dict: Dict[str, Union[str, int, float]] = {}
+        for key, value in dict.items():
+            try:
+                output_dict[key] = int(value)
+            except ValueError:
+                try:
+                    output_dict[key] = float(value.replace(',', '.'))
+                except ValueError:
+                    output_dict[key] = value
+
+        result.append(output_dict)
+
+    return result
+
 def get_list_keys_from_dict_of_condition(dict: Dict[str, any], condition: str) -> List[str]:
     """
     Метод получения списка ключей из словаря по условию

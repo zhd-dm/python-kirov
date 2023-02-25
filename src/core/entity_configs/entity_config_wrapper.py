@@ -13,9 +13,9 @@ class EntityConfigWrapper:
     def entity_config_with_fields(self):
         return self.__entity_config_with_fields
 
-    def __init__(self, field_to_py_type: Dict[str, any], entity_conf: List[str]):
+    def __init__(self, field_to_py_type: Dict[str, any], entity_conf_list: List[str]):
         field_to_py_type = key_and_value_dict_to_lower(field_to_py_type)
-        self.__entity_config = self.__get_entity(entity_conf)
+        self.__entity_config = self.__get_entity(entity_conf_list)
 
         self.__entity_config_with_fields = self.__get_entity_config_with_fields(field_to_py_type)
 
