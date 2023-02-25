@@ -29,8 +29,8 @@ class DataImporter:
         self.__connection = connector.connection
         self.__ent_conf = ent_conf
 
-        # if ent_conf.params is not None:
-        #     print_info('Генерация динамической таблицы...')
+        if ent_conf.params is not None:
+            print_info('Генерация динамической таблицы...')
 
         if ent_conf.entity_name in ENTITIES_WITH_CUSTOM_PARAMS():
             self.__replace_custom_params(ENTITIES_WITH_CUSTOM_PARAMS(self.__connection))

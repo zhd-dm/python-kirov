@@ -23,20 +23,15 @@ class TableGenerator:
 
     def __init__(self, connector: DBConnector):
         self.__connector = connector
-        # self.__call_counter = 0
 
     async def _generate(self, ent_conf: EntityConfig):
         data_importer = DataImporter(self.__connector, ent_conf)
-        pure_data = await data_importer._get_data()
+        data = await data_importer._get_data()
 
-        self.__prepare_incorrect_values(pure_data, ent_conf)
-        self.__drop_and_insert_table(pure_data, ent_conf)
+        self.__prepare_incorrect_values(data, ent_conf)
+        self.__drop_and_insert_table(data, ent_conf)
 
-        # self.__call_counter += 1
         await asyncio.sleep(1)
-        
-        # if self.__call_counter != db_table_name.__len__():
-        #     print_error('Не все таблицы были корректно обновлены')
 
     def __drop_and_insert_table(self, data: List[Dict[str,any]], ent_conf: EntityConfig):
         table = BaseTable(self.__connector, ent_conf)
