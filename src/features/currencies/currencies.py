@@ -35,3 +35,6 @@ class Currencies:
     def __prepare_response(self):
         self.__currency = self.__currency.get('ValCurs')
         self.__currencies = self.__currency.get('Valute')
+
+        for currency in self.__currencies:
+            currency['date'] = self.date

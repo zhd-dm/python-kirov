@@ -6,5 +6,6 @@ FIELD_TO_PY_TYPE = {
     'charcode': 'char',
     'nominal': 'int',
     'name': 'char',
-    'value': 'double'
+    'value': 'double',
+    'date': 'date'
 }
