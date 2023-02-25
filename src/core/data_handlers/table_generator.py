@@ -24,6 +24,7 @@ class TableGenerator:
         if not self.__is_static:
             table._drop_and_create()
         elif self.__is_first:
+            self.__is_first = False
             table._create()
         table._add_data(data)
 
