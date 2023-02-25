@@ -5,7 +5,7 @@ import datetime
 from utils.mapping import print_error, print_info, key_dict_in_list_to_lower, get_field_from_list_of_dicts_by_keys, get_dict_keys_from_list, try_set_int_in_list_of_dicts, get_dicts_from_list_of_dicts_by_codes
 
 from core.connectors.db_connector import DBConnector
-from core.api_calls.bx_api import BXApi
+from features.bitrix.bx_api import BXApi
 from core.entity_configs.entity_config import EntityConfig
 from core.data_handlers.config.constants import ENTITIES_WITH_CUSTOM_PARAMS
 
