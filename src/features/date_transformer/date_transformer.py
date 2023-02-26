@@ -24,3 +24,11 @@ class DateTransformer:
             today -= timedelta(days = 1)
 
         return date_list
+
+    def _get_count_difference_days(self,
+        now: datetime,
+        max_date: datetime
+    ) -> int:
+        last_date = datetime.combine(max_date, datetime.min.time())
+        difference_days = (now.date() - last_date.date()).days
+        return difference_days

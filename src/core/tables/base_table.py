@@ -12,6 +12,10 @@ from features.print.print import Print
 class BaseTable:
 
     @property
+    def orm_table(self):
+        return self.__table
+
+    @property
     def _tablename(self):
         return self.__tablename__
 

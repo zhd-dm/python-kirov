@@ -3,6 +3,8 @@ import datetime
 from datetime import datetime
 from typing import Dict, List
 
+from sqlalchemy import Table, select, func
+
 from utils.mapping import get_dicts_from_list_of_dicts_by_codes, try_set_int_in_list_of_dicts, key_dict_in_list_to_lower
 from core.connectors.db_connector import DBConnector
 from core.data_handlers.table_generator import TableGenerator
@@ -29,7 +31,7 @@ class Currencies:
 
         match is_first:
             case False:
-                pass
+                await self.__update_currencies_table()
             case True:
                 await self.__create_currencies_table(db_conn, curr_conn, field_to_py_type, curr_entity_conf)
 
@@ -52,6 +54,35 @@ class Currencies:
 
         Print().print_info('Таблица currency обновлена')
 
+    async def __update_currencies_table(self,
+        db_conn: DBConnector,
+        curr_conn: CurrenciesConnector,
+        field_to_py_type: Dict[str, str],
+        curr_entity_conf: List[str]
+    ):
+        table_gen = TableGenerator(db_conn, is_first = False, is_static = True)
+        list_of_dates: List[datetime] = DateTransformer()._get_list_of_dates(DAYS_IN_HALF_YEAR)
+
+        for day in list_of_dates:
+            en_conf_with_fields = EntityConfigWrapper(field_to_py_type, curr_entity_conf).entity_config_with_fields
+            en_conf = EntityConfig(en_conf_with_fields)
+            data = self.__get_currencies_data_by_day(curr_conn, day)
+
+            await table_gen._generate(en_conf, data)
+            await asyncio.sleep(0.3)
+
+        Print().print_info('Таблица currency обновлена')
+
+    def __get_number_of_missing_days(self,
+        db_conn: DBConnector,
+        orm_table: Table
+    ) -> datetime:
+        query = select([func.max(orm_table.columns.date)]).select_from(orm_table)
+        max_date = db_conn.connection.execute(query).scalar()
+        now = datetime.now()
+        orm_last_date = datetime.combine(max_date, datetime.min.time())
+        return DateTransformer()._get_count_difference_days(now, orm_last_date)
+
     def __get_currencies_data_by_day(self, curr_conn: CurrenciesConnector, day: datetime = None) -> List[Dict[str, any]]:
         data: List[Dict[str, any]] = None
         try:
@@ -61,6 +92,6 @@ class Currencies:
                 curr_conn.includes_corr_codes
             )
         except Exception as error:
-            Print().print_error(f'Currencies._get_curr_data() {error}')
+            Print().print_error(f'Currencies.__get_currencies_data_by_day() {error}')
 
         return data
