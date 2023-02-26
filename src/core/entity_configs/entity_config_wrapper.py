@@ -35,17 +35,17 @@ class EntityConfigWrapper:
         entity_config = {}
         for k in target_dict:
             converted_field = convert_str_to_dict_or_list(target_dict[k])
-            converted_field = self.__field_to_lower(converted_field)
+            converted_field = self.__field_to_lower(converted_field, k)
             entity_config[k] = converted_field
 
         return entity_config
 
-    def __field_to_lower(self, field: Union[str, List[any], Dict[str, any]]):
+    def __field_to_lower(self, field: Union[str, List[any], Dict[str, any]], key: str):
         if isinstance(field, str):
             field = field.lower()
         elif isinstance(field, list):
             field = props_list_to_lower(field)
-        elif isinstance(field, dict):
+        elif isinstance(field, dict) and not key == 'params':
             field = key_dict_to_lower(field)
         
         return field
@@ -55,6 +55,8 @@ class EntityConfigWrapper:
 
         list_of_fields_to_py_type = [field_to_py_type[i] for i in filter(lambda x: x in field_to_py_type, list_of_fields)]
 
+        if not isinstance(list_of_fields, list):
+            Print().print_error('list_of_fields должен быть списком')
         if list_of_fields.__len__() != list_of_fields_to_py_type.__len__():
             Print().print_error('Не указан py_type для некоторых полей')
 

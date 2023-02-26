@@ -14,7 +14,7 @@ class BXApi:
         webhook = BXConnector().webhook
         bx = BitrixAsync(webhook, False)
         method = req_obj.entity_name
-        Print().print_info(f'Method name -> {method}')
+        Print().print_info(f'BX method -> {method}')
 
         return await bx.get_all(
             method,
