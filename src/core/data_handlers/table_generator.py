@@ -12,10 +12,10 @@ from features.print.print import Print
 
 class TableGenerator:
 
-    def __init__(self, connector: DBConnector, is_static = False, is_first = False):
+    def __init__(self, connector: DBConnector, is_first = False, is_static = False):
         self.__connector = connector
-        self.__is_static = is_static
         self.__is_first = is_first
+        self.__is_static = is_static
 
     async def _generate(self, ent_conf: EntityConfig, data: List[Dict[str, any]]):
         self.__prepare_incorrect_values(data, ent_conf)

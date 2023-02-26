@@ -1,6 +1,8 @@
 API_URL = 'https://www.cbr.ru/scripts/XML_daily.asp'
 
-FIELD_TO_PY_TYPE = {
+CURR_ENTITY_CONF_LIST = ['currencies', '', '{}', '', '@id, numcode, charcode, nominal, name, value, date']
+
+CURR_FIELD_TO_PY_TYPE = {
     '@id': 'char',
     'numcode': 'int',
     'charcode': 'char',

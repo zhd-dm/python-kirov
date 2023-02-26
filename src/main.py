@@ -16,7 +16,7 @@ from core.entity_configs.entity_config_wrapper import EntityConfigWrapper
 from features.google_sheets.google_sheet import GoogleSheet
 from features.google_sheets.config.constants import RANGE_ENTITIES_CONFIG, SHEET_BITRIX_FIELD_INDEX, SHEET_PYTHON_TYPE_INDEX, RANGE_BITRIX_FIELDS_TO_DB_TYPES
 # Currencies
-from features.currencies.config.constants import FIELD_TO_PY_TYPE
+from features.currencies.currencies_connector import CurrenciesConnector
 # DateTransformer
 from features.date_transformer.date_transformer import DateTransformer
 # Print
@@ -33,7 +33,7 @@ from features.print.print import Print
 async def begin():
     DateTransformer._print_now_date('Текущее время сервера')
 
-    table_type = 'gs_table'
+    table_type = 'currencies_table'
 
     connector = DBConnector()
     gsheet = GoogleSheet()
@@ -42,7 +42,7 @@ async def begin():
         case 'gs_table':
             await generate_table_from_gs(connector, gsheet)
         case 'currencies_table':
-            await generate_currencies_table(connector, gsheet)
+            await generate_currencies_table(connector, is_first = True)
 
     connector.engine.pool.dispose()
 
@@ -66,10 +66,11 @@ async def generate_table_from_gs(connector: DBConnector, gsheet: GoogleSheet):
     else:
         Print().print_info('Все таблицы успешно обновлены')
 
-async def generate_currencies_table(connector: DBConnector, gsheet: GoogleSheet):
-    table_gen = TableGenerator(connector, is_static = True, is_first = True)
-    field_to_py_type = FIELD_TO_PY_TYPE
-    curr_entity_conf = gsheet._get_range_values('G19:K19')[0]
+async def generate_currencies_table(connector: DBConnector, is_first: bool):
+    table_gen = TableGenerator(connector, is_first, is_static = True)
+    curr_conn = CurrenciesConnector()
+    field_to_py_type = curr_conn.field_to_py_type
+    curr_entity_conf = curr_conn.entity_conf_list
     list_of_half_year_ago = DateTransformer()._get_list_of_half_year_ago()
 
     for day in list_of_half_year_ago:

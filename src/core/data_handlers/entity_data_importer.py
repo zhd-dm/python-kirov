@@ -10,7 +10,7 @@ from core.entity_configs.entity_config import EntityConfig
 from core.data_handlers.config.constants import ENTITIES_WITH_CUSTOM_PARAMS
 
 from features.currencies.currencies import Currencies
-from features.currencies.config.constants import INCLUDES_CURRENCY_CODES
+from features.currencies.currencies_connector import CurrenciesConnector
 from features.print.print import Print
 
 
@@ -37,21 +37,22 @@ class EntityDataImporter:
                 get_dict_keys_from_list(self.__ent_conf.field_to_py_type)
             )
         except Exception as error:
-            Print().print_error(f'DataImporter._get_bx_data() {error}')
+            Print().print_error(f'EntityDataImporter._get_bx_data() {error}')
 
         return data
 
     def _get_currencies_data(self, day: datetime = None) -> List[Dict[str, any]]:
         data: List[Dict[str, any]] = None
         curr = Currencies(day)
+        curr_conn = CurrenciesConnector()
         try:
             data = get_dicts_from_list_of_dicts_by_codes(
                 try_set_int_in_list_of_dicts(key_dict_in_list_to_lower(curr.currencies)),
                 'charcode',
-                INCLUDES_CURRENCY_CODES
+                curr_conn.includes_corr_codes
             )
         except Exception as error:
-            Print().print_error(f'DataImporter._get_curr_data() {error}')
+            Print().print_error(f'EntityDataImporter._get_curr_data() {error}')
 
         return data
 
