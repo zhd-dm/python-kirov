@@ -12,13 +12,8 @@ from features.print.print import Print
 
 class TableGenerator:
 
-    @property
-    def orm_table(self):
-        return self.__orm_table
-
     def __init__(self, connector: DBConnector, is_first = False, is_static = False):
         self.__connector = connector
-        self.__orm_table = None
         self.__is_first = is_first
         self.__is_static = is_static
 
@@ -28,7 +23,6 @@ class TableGenerator:
 
     def __drop_and_insert_table(self, data: List[Dict[str,any]], ent_conf: EntityConfig):
         table = BaseTable(self.__connector, ent_conf)
-        self.__orm_table = table.orm_table
         if not self.__is_static:
             table._drop_and_create()
         elif self.__is_first:

@@ -1,5 +1,4 @@
 import asyncio
-import datetime
 from datetime import datetime
 from typing import Dict, List
 
@@ -30,17 +29,17 @@ class Currencies:
         self.__curr_api = CurrenciesApi()
         self.__table_gen = TableGeneratorNew(self.__db_conn, self.__get_en_conf())
 
-    async def _generate_currencies_table(self):
+    async def _generate(self):
         dates_interval = DAYS_IN_WEEK
         count_dates = dates_interval if self.is_first else self.__get_count_of_missing_days()
         list_of_dates: List[datetime] = DateTransformer()._get_list_of_dates(count_dates) 
 
         for day in list_of_dates:
             if not self.is_first:
-                self.__update_currencies_table(day)
+                self.__update_table(day)
             else:
-                self.__create_currencies_table()
-                self.__update_currencies_table(day)
+                self.__create_table()
+                self.__update_table(day)
 
             await asyncio.sleep(0.3)
 
@@ -54,10 +53,10 @@ class Currencies:
         en_conf_with_fields = EntityConfigWrapper(field_to_py_type, curr_entity_conf).entity_config_with_fields
         return EntityConfig(en_conf_with_fields)
 
-    def __create_currencies_table(self):
+    def __create_table(self):
         self.__table_gen._create()
 
-    def __update_currencies_table(self, day: datetime):
+    def __update_table(self, day: datetime):
         data = self.__get_currencies_data_by_day(day)
         self.__table_gen._add_data(data)
         Print().print_info(f'Таблица {self.__table_gen.orm_table.name} обновлена')
