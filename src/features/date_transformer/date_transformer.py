@@ -3,7 +3,7 @@ from datetime import timedelta, datetime
 from typing import List
 
 from features.print.print import Print
-from features.date_transformer.config.constants import FORMAT_DD_MM_YYYY, FORMAT_YYYY_MM_DD_HH_MM_SS, DAYS_IN_HALF_YEAR, DAYS_IN_WEEK
+from features.date_transformer.config.constants import FORMAT_DD_MM_YYYY, FORMAT_YYYY_MM_DD_HH_MM_SS
 
 
 class DateTransformer:
@@ -13,9 +13,9 @@ class DateTransformer:
         current_time = now.strftime(format)
         Print().print_info(f'{message} -> {current_time}')
 
-    def _get_list_of_half_year_ago(self, format = FORMAT_DD_MM_YYYY):
+    def _get_list_of_dates(self, days: int, format = FORMAT_DD_MM_YYYY):
         today = datetime.today()
-        half_year_ago = today - timedelta(days = DAYS_IN_HALF_YEAR)
+        half_year_ago = today - timedelta(days = days)
 
         date_list: List[datetime] = []
 
