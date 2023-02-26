@@ -60,7 +60,6 @@ class Currencies:
     def __update_table(self, day: datetime):
         data = self.__get_currencies_data_by_day(day)
         self.__table_gen._add_data(data)
-        Print().print_info(f'Таблица {self.__table_gen.orm_table.name} обновлена')
 
     def __get_count_of_missing_days(self) -> int:
         orm_table = self.__table_gen.orm_table

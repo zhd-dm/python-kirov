@@ -33,7 +33,7 @@ from features.print.print import Print
 async def begin():
     DateTransformer._print_now_date('Текущее время сервера')
 
-    table_type = 'gs_table'
+    table_type = 'currencies_table'
 
     connector = DBConnector()
     gsheet = GoogleSheet()
@@ -48,7 +48,7 @@ async def begin():
 
 async def generate_table_from_gs(connector: DBConnector, gsheet: GoogleSheet):
     field_to_py_type = get_dict_by_indexes_of_matrix(SHEET_BITRIX_FIELD_INDEX, SHEET_PYTHON_TYPE_INDEX, gsheet._get_range_values(RANGE_BITRIX_FIELDS_TO_DB_TYPES))
-    bx_entity_configs = gsheet._get_range_values('G12:K12')
+    bx_entity_configs = gsheet._get_range_values('G3:K4')
 
     call_counter = 0
     for bx_entity_conf in bx_entity_configs:
@@ -58,10 +58,15 @@ async def generate_table_from_gs(connector: DBConnector, gsheet: GoogleSheet):
         data_importer = EntityDataImporter(connector, en_conf)
 
         data = await data_importer._get_bx_data()
-        table_gen._create()
-        table_gen._add_data(data)
-        call_counter += 1
+        try:
+            table_gen._create()
+            table_gen._add_data(data)
+            call_counter += 1
+        except Exception as error:
+            Print().print_error(error)
+
         await asyncio.sleep(1)
+        table_gen._check_add_status(data.__len__())
 
     if call_counter != bx_entity_configs.__len__():
         Print().print_error('Не все таблицы были корректно обновлены')

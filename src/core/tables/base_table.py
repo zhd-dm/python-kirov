@@ -38,7 +38,8 @@ class BaseTable:
         self.__tablename__ = self.__ent_conf.entity_name.replace('.', '_')
         self.__table = Table(self._tablename, self.__metadata, *self.__columns)
 
-        self.__old_recs_len = self.__get_count_query() if is_static and self.is_exist else 0
+        self.__is_static = is_static
+        self.__old_recs_len = self.__get_count_query() if self.__is_static and self.is_exist else 0
 
     # DEPRECATED
     def _drop_and_create(self):
@@ -62,6 +63,9 @@ class BaseTable:
 
             except Exception as error:
                 Print().print_error(f'Не удалось добавить запись в таблицу {self._tablename}. Ошибка: {error}')
+
+            if self.__is_static:
+                Print().print_info(f'Таблица {self._tablename} обновлена')
 
     def _create(self):
         if self.is_exist:
