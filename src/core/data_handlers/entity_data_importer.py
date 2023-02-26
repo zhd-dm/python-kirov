@@ -41,20 +41,20 @@ class EntityDataImporter:
 
         return data
 
-    def _get_currencies_data(self, day: datetime = None) -> List[Dict[str, any]]:
-        data: List[Dict[str, any]] = None
-        curr = Currencies(day)
-        curr_conn = CurrenciesConnector()
-        try:
-            data = get_dicts_from_list_of_dicts_by_codes(
-                try_set_int_in_list_of_dicts(key_dict_in_list_to_lower(curr.currencies)),
-                'charcode',
-                curr_conn.includes_corr_codes
-            )
-        except Exception as error:
-            Print().print_error(f'EntityDataImporter._get_curr_data() {error}')
+    # def _get_currencies_data(self, day: datetime = None) -> List[Dict[str, any]]:
+    #     data: List[Dict[str, any]] = None
+    #     curr = Currencies(day)
+    #     curr_conn = CurrenciesConnector()
+    #     try:
+    #         data = get_dicts_from_list_of_dicts_by_codes(
+    #             try_set_int_in_list_of_dicts(key_dict_in_list_to_lower(curr.currencies)),
+    #             'charcode',
+    #             curr_conn.includes_corr_codes
+    #         )
+    #     except Exception as error:
+    #         Print().print_error(f'EntityDataImporter._get_curr_data() {error}')
 
-        return data
+    #     return data
 
     def __replace_custom_params(self, entities_with_custom_params: Dict):
         self.__ent_conf._replace_custom_params(entities_with_custom_params.get(self.__ent_conf.entity_name))
