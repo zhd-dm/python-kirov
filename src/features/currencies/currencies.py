@@ -43,6 +43,9 @@ class Currencies:
                 self.__update_currencies_table(day)
 
             await asyncio.sleep(0.3)
+
+        if list_of_dates.__len__() == 0:
+            Print().print_info(f'Нечего обновлять в таблице {self.__table_gen.orm_table.name}')
     
     def __get_en_conf(self):
         curr_conn = self.__curr_conn
@@ -57,7 +60,7 @@ class Currencies:
     def __update_currencies_table(self, day: datetime):
         data = self.__get_currencies_data_by_day(day)
         self.__table_gen._add_data(data)
-        Print().print_info('Таблица currency обновлена')
+        Print().print_info(f'Таблица {self.__table_gen.orm_table.name} обновлена')
 
     def __get_count_of_missing_days(self) -> int:
         orm_table = self.__table_gen.orm_table
@@ -68,14 +71,16 @@ class Currencies:
         return DateTransformer()._get_count_difference_days(now, orm_last_date)
 
     def __get_currencies_data_by_day(self, day: datetime = None) -> List[Dict[str, any]]:
-        data: List[Dict[str, any]] = None
+        pure_data: List[Dict[str, any]] = None
+
         try:
-            data = get_dicts_from_list_of_dicts_by_codes(
-                try_set_int_in_list_of_dicts(key_dict_in_list_to_lower(self.__curr_api._get_currencies(day))),
+            data = self.__curr_api._get_currencies(day)
+            pure_data = get_dicts_from_list_of_dicts_by_codes(
+                try_set_int_in_list_of_dicts(key_dict_in_list_to_lower(data)),
                 'charcode',
                 self.__curr_conn.includes_corr_codes
             )
         except Exception as error:
             Print().print_error(f'Currencies.__get_currencies_data_by_day() {error}')
 
-        return data
+        return pure_data

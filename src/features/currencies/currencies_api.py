@@ -18,7 +18,7 @@ class CurrenciesApi:
         self.__currency = None
         self.__currencies = None
 
-    def _get_currencies(self, requested_date: datetime = None):
+    def _get_currencies(self, requested_date: datetime = None) -> List[Dict[str, any]]:
         data = None
         self.__requested_date = requested_date
 
