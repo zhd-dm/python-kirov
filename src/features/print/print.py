@@ -4,9 +4,7 @@ from termcolor import colored
 class Print:
     def print_info(self, message: str):
         print(colored(
-            f"""
-            {message}
-            """,
+            f"""                                {message}""",
             'cyan'))
 
     def print_success(self, message: str):
@@ -19,7 +17,7 @@ class Print:
     def print_error(self, error: Exception):
         print(colored(f"""
             ------ ERROR --------------------------------------------------------------- ERROR ------
-            !!!!! {error}                                                                       !!!!!
+            !!!!! {error} !!!!!
             -----------------------------------------------------------------------------------------
             """, 'red'
         ))

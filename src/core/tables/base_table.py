@@ -28,27 +28,26 @@ class BaseTable:
     def _tablename(self):
         return self.__tablename__
 
-    def __init__(self, connector: DBConnector, ent_conf: EntityConfig):
+    def __init__(self, connector: DBConnector, ent_conf: EntityConfig, is_static: bool):
         self.__metadata = connector.metadata
         self.__engine = connector.engine
         self.__connection = connector.connection
 
         self.__ent_conf = ent_conf
-
         self.__columns = BaseColumns(self.__ent_conf).column_list
-
         self.__tablename__ = self.__ent_conf.entity_name.replace('.', '_')
-
         self.__table = Table(self._tablename, self.__metadata, *self.__columns)
+
+        self.__is_static = is_static
+        self.__old_recs_len = self.__get_count_query() if self.__is_static and self.is_exist else 0
 
     # DEPRECATED
     def _drop_and_create(self):
-        self.__drop()
+        self._drop()
         self._create()
 
     def _add_data(self, data: Dict[str, any]):
-        Print().print_success(f'Добавление данных в таблицу {self._tablename}...')
-        call_counter = 0
+        Print().print_info(f'Добавление данных в таблицу {self._tablename}...')
         for element in data:
             try:
                 element_copy = copy.deepcopy(element)
@@ -61,28 +60,39 @@ class BaseTable:
                         del element[k]
 
                 self.__connection.execute(self.__table.insert().values(**element))
-                call_counter += 1
 
             except Exception as error:
                 Print().print_error(f'Не удалось добавить запись в таблицу {self._tablename}. Ошибка: {error}')
 
-        query = select([func.count()]).select_from(self.__table)
-        count_query = self.__connection.execute(query).scalar()
-
-        if call_counter == count_query:
-            Print().print_success(f'Все записи успешно добавлены в таблицу {self._tablename} - {count_query}')
-        else:
-            Print().print_error(f'Не все записи добавлены в таблицу {self._tablename}. Добавлено {count_query}, а пришло {call_counter}')
+            if self.__is_static:
+                Print().print_info(f'Таблица {self._tablename} обновлена')
 
     def _create(self):
         if self.is_exist:
-            self.__drop()
+            self._drop()
         try:
             self.__metadata.create_all(bind = self.__engine)
             Print().print_success(f'Таблица {self._tablename} успешно создана')
         except Exception as error:
             Print().print_error(error)
 
-    def __drop(self):
+    def _drop(self):
         self.__metadata.drop_all(bind = self.__engine)
         Print().print_success(f'Таблица {self._tablename} успешно удалена')
+
+    def _check_add_status(self, records_len: int):
+        now_count_recs = self.__get_count_query()
+        self.__print_add_status(now_count_recs, records_len)
+
+    def __get_count_query(self):
+        query = select([func.count()]).select_from(self.__table)
+        count: int = self.__connection.execute(query).scalar()
+        return count
+
+    def __print_add_status(self, now_count: int, records_len: int):
+        if records_len == 0:
+            Print().print_info(f'Нечего обновлять в таблице {self._tablename}')
+        elif now_count == records_len or now_count - self.__old_recs_len == records_len:
+            Print().print_success(f'Все записи успешно добавлены в таблицу {self._tablename} - {records_len}')
+        else:
+            Print().print_error(f'Не все записи добавлены в таблицу {self._tablename}. Добавлено {now_count}, а пришло {records_len}')

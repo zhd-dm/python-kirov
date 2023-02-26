@@ -12,8 +12,10 @@ from features.print.print import Print
 def key_and_value_dict_to_lower(dict: Dict[str, str]) -> Dict[str, str]:
     return { key.lower(): v.lower() for key, v in dict.items() if isinstance(key, str) and isinstance(v, str) }
 
-def key_dict_to_lower(dict: Dict[str, any]) -> Dict[str, any]:
-    return { key.lower(): value for key, value in dict.items() if isinstance(key, str) }
+def key_dict_to_lower(d: Dict[str, any]) -> Dict[str, any]:
+    if not isinstance(d, dict):
+        Print().print_error('key_dict_to_lower() -> d должен быть словарем') 
+    return { key.lower(): value for key, value in d.items() if isinstance(key, str) }
 
 def props_list_to_lower(list: List[str]) -> List[str]:
     return [ value.lower() for value in list if isinstance(value, str) ]
