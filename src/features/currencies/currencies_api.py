@@ -18,11 +18,12 @@ class CurrenciesApi:
         self.__currency = None
         self.__currencies = None
 
-    def _get_currencies(self, requested_date: datetime):
+    def _get_currencies(self, requested_date: datetime = None):
         data = None
+        self.__requested_date = requested_date
 
-        if requested_date is not None:
-            data = requests.get(f'{self.__curr_conn.api_url}?date_req={requested_date}')
+        if self.__requested_date is not None:
+            data = requests.get(f'{self.__curr_conn.api_url}?date_req={self.__requested_date}')
         else:
             data = requests.get(self.__curr_conn.api_url)
 
@@ -37,4 +38,4 @@ class CurrenciesApi:
 
     def __set_date_to_curr(self):
         for curr in self.__currencies:
-            curr['date'] = self.date
+            curr['date'] = self.__requested_date if self.__requested_date is not None else self.date

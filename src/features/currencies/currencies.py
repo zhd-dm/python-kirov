@@ -3,11 +3,11 @@ import datetime
 from datetime import datetime
 from typing import Dict, List
 
-from sqlalchemy import Table, select, func
+from sqlalchemy import select, func
 
 from utils.mapping import get_dicts_from_list_of_dicts_by_codes, try_set_int_in_list_of_dicts, key_dict_in_list_to_lower
 from core.connectors.db_connector import DBConnector
-from core.data_handlers.table_generator import TableGenerator
+from core.data_handlers.table_generator import TableGeneratorNew
 from core.entity_configs.entity_config import EntityConfig
 from core.entity_configs.entity_config_wrapper import EntityConfigWrapper
 
@@ -20,76 +20,60 @@ from features.print.print import Print
 
 class Currencies:
 
-    def __init__(self):
+    @property
+    def is_first(self):
+        return not self.__table_gen.is_exist or self.__table_gen.is_empty
+
+    def __init__(self, db_conn: DBConnector):
+        self.__db_conn = db_conn
         self.__curr_conn = CurrenciesConnector()
         self.__curr_api = CurrenciesApi()
+        self.__table_gen = TableGeneratorNew(self.__db_conn, self.__get_en_conf())
 
-    async def _generate_currencies_table(self, db_conn: DBConnector, is_first: bool):
+    async def _generate_currencies_table(self):
+        dates_interval = DAYS_IN_WEEK
+        count_dates = dates_interval if self.is_first else self.__get_count_of_missing_days()
+        list_of_dates: List[datetime] = DateTransformer()._get_list_of_dates(count_dates) 
+
+        for day in list_of_dates:
+            if not self.is_first:
+                self.__update_currencies_table(day)
+            else:
+                self.__create_currencies_table()
+                self.__update_currencies_table(day)
+
+            await asyncio.sleep(0.3)
+    
+    def __get_en_conf(self):
         curr_conn = self.__curr_conn
         field_to_py_type = curr_conn.field_to_py_type
         curr_entity_conf = curr_conn.entity_conf_list
+        en_conf_with_fields = EntityConfigWrapper(field_to_py_type, curr_entity_conf).entity_config_with_fields
+        return EntityConfig(en_conf_with_fields)
 
-        match is_first:
-            case False:
-                await self.__update_currencies_table()
-            case True:
-                await self.__create_currencies_table(db_conn, curr_conn, field_to_py_type, curr_entity_conf)
+    def __create_currencies_table(self):
+        self.__table_gen._create()
 
-    async def __create_currencies_table(self,
-        db_conn: DBConnector,
-        curr_conn: CurrenciesConnector,
-        field_to_py_type: Dict[str, str],
-        curr_entity_conf: List[str]
-    ):
-        table_gen = TableGenerator(db_conn, is_first = True, is_static = True)
-        list_of_dates: List[datetime] = DateTransformer()._get_list_of_dates(DAYS_IN_HALF_YEAR)
-
-        for day in list_of_dates:
-            en_conf_with_fields = EntityConfigWrapper(field_to_py_type, curr_entity_conf).entity_config_with_fields
-            en_conf = EntityConfig(en_conf_with_fields)
-            data = self.__get_currencies_data_by_day(curr_conn, day)
-
-            await table_gen._generate(en_conf, data)
-            await asyncio.sleep(0.3)
-
+    def __update_currencies_table(self, day: datetime):
+        data = self.__get_currencies_data_by_day(day)
+        self.__table_gen._add_data(data)
         Print().print_info('Таблица currency обновлена')
 
-    async def __update_currencies_table(self,
-        db_conn: DBConnector,
-        curr_conn: CurrenciesConnector,
-        field_to_py_type: Dict[str, str],
-        curr_entity_conf: List[str]
-    ):
-        table_gen = TableGenerator(db_conn, is_first = False, is_static = True)
-        list_of_dates: List[datetime] = DateTransformer()._get_list_of_dates(DAYS_IN_HALF_YEAR)
-
-        for day in list_of_dates:
-            en_conf_with_fields = EntityConfigWrapper(field_to_py_type, curr_entity_conf).entity_config_with_fields
-            en_conf = EntityConfig(en_conf_with_fields)
-            data = self.__get_currencies_data_by_day(curr_conn, day)
-
-            await table_gen._generate(en_conf, data)
-            await asyncio.sleep(0.3)
-
-        Print().print_info('Таблица currency обновлена')
-
-    def __get_number_of_missing_days(self,
-        db_conn: DBConnector,
-        orm_table: Table
-    ) -> datetime:
+    def __get_count_of_missing_days(self) -> int:
+        orm_table = self.__table_gen.orm_table
         query = select([func.max(orm_table.columns.date)]).select_from(orm_table)
-        max_date = db_conn.connection.execute(query).scalar()
+        max_date: datetime = self.__db_conn.connection.execute(query).scalar()
         now = datetime.now()
         orm_last_date = datetime.combine(max_date, datetime.min.time())
         return DateTransformer()._get_count_difference_days(now, orm_last_date)
 
-    def __get_currencies_data_by_day(self, curr_conn: CurrenciesConnector, day: datetime = None) -> List[Dict[str, any]]:
+    def __get_currencies_data_by_day(self, day: datetime = None) -> List[Dict[str, any]]:
         data: List[Dict[str, any]] = None
         try:
             data = get_dicts_from_list_of_dicts_by_codes(
                 try_set_int_in_list_of_dicts(key_dict_in_list_to_lower(self.__curr_api._get_currencies(day))),
                 'charcode',
-                curr_conn.includes_corr_codes
+                self.__curr_conn.includes_corr_codes
             )
         except Exception as error:
             Print().print_error(f'Currencies.__get_currencies_data_by_day() {error}')

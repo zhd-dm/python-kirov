@@ -12,8 +12,17 @@ from features.print.print import Print
 class BaseTable:
 
     @property
-    def orm_table(self):
+    def table(self):
         return self.__table
+
+    @property
+    def is_exist(self):
+        return self.__table.exists(bind = self.__engine)
+
+    @property
+    def is_empty(self):
+        query = select(self.__table)
+        return self.__engine.execute(query).fetchall().__len__() == 0
 
     @property
     def _tablename(self):
@@ -65,8 +74,6 @@ class BaseTable:
         else:
             Print().print_error(f'Не все записи добавлены в таблицу {self._tablename}. Добавлено {count_query}, а пришло {call_counter}')
             # TelegramBot._send_error_message(f'Не все записи добавлены в таблицу {self.tablename}. Добавлено {count_query}, а пришло {call_counter}')
-
-        self.__connection.close()
 
     def _create(self):
         try:
