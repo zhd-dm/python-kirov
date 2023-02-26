@@ -24,8 +24,8 @@ class TableGenerator:
     def is_empty(self):
         return self.__table.is_empty
 
-    def __init__(self, connector: DBConnector, en_conf: EntityConfig):
-        self.__table = BaseTable(connector, en_conf)
+    def __init__(self, connector: DBConnector, en_conf: EntityConfig, is_static = False):
+        self.__table = BaseTable(connector, en_conf, is_static)
         self.__en_conf = en_conf
 
     # DEPRECATED
@@ -39,6 +39,9 @@ class TableGenerator:
     def _add_data(self, data: List[Dict[str,any]]):
         self.__prepare_incorrect_values(data)
         self.__table._add_data(data)
+
+    def _check_add_status(self, records_len: int):
+        self.__table._check_add_status(records_len)
 
     # DEPRECATED
     def __drop_and_insert_table(self, data: List[Dict[str,any]]):

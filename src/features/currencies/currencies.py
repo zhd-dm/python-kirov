@@ -27,7 +27,7 @@ class Currencies:
         self.__db_conn = db_conn
         self.__curr_conn = CurrenciesConnector()
         self.__curr_api = CurrenciesApi()
-        self.__table_gen = TableGenerator(self.__db_conn, self.__get_en_conf())
+        self.__table_gen = TableGenerator(self.__db_conn, self.__get_en_conf(), is_static = True)
 
     async def _generate(self):
         dates_interval = DAYS_IN_WEEK
@@ -43,9 +43,10 @@ class Currencies:
 
             await asyncio.sleep(0.3)
 
-        if list_of_dates.__len__() == 0:
-            Print().print_info(f'Нечего обновлять в таблице {self.__table_gen.orm_table.name}')
-    
+        # Умножаем на количество доставаемых полей (n), потому что при каждом запросе будет n записей
+        records_len = list_of_dates.__len__() * self.__curr_conn.includes_corr_codes.__len__()
+        self.__table_gen._check_add_status(records_len)
+
     def __get_en_conf(self):
         curr_conn = self.__curr_conn
         field_to_py_type = curr_conn.field_to_py_type
