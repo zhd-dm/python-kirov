@@ -15,12 +15,12 @@ class DateTransformer:
 
     def _get_list_of_half_year_ago(self, format = FORMAT_DD_MM_YYYY):
         today = datetime.today()
-        half_year_ago = today - timedelta(days = DAYS_IN_WEEK)
+        half_year_ago = today - timedelta(days = DAYS_IN_HALF_YEAR)
 
         date_list: List[datetime] = []
 
         while today > half_year_ago:
-            date_list.append(today.strftime(format))
+            date_list.insert(0, today.strftime(format))
             today -= timedelta(days = 1)
 
         return date_list
