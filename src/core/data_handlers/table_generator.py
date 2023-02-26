@@ -28,11 +28,6 @@ class TableGenerator:
         self.__table = BaseTable(connector, en_conf, is_static)
         self.__en_conf = en_conf
 
-    # DEPRECATED
-    def _gen_dynamic(self, data: List[Dict[str, any]]):
-        self.__prepare_incorrect_values(data)
-        self.__drop_and_insert_table(data)
-
     def _create(self):
         self.__table._create()
 
@@ -42,11 +37,6 @@ class TableGenerator:
 
     def _check_add_status(self, records_len: int):
         self.__table._check_add_status(records_len)
-
-    # DEPRECATED
-    def __drop_and_insert_table(self, data: List[Dict[str,any]]):
-        self.__table._drop_and_create()
-        self._add_data(data)
 
     def __prepare_incorrect_values(self, data: List[Dict[str, any]]):
         for element in data:

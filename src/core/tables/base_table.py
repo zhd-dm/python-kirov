@@ -1,5 +1,5 @@
 import copy
-from typing import Dict
+from typing import Dict, List
 
 from sqlalchemy import Table, select, func
 
@@ -41,12 +41,7 @@ class BaseTable:
         self.__is_static = is_static
         self.__old_recs_len = self.__get_count_query() if self.__is_static and self.is_exist else 0
 
-    # DEPRECATED
-    def _drop_and_create(self):
-        self._drop()
-        self._create()
-
-    def _add_data(self, data: Dict[str, any]):
+    def _add_data(self, data: List[Dict[str, any]]):
         Print().print_info(f'Добавление данных в таблицу {self._tablename}...')
         for element in data:
             try:
