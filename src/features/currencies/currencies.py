@@ -6,7 +6,7 @@ from sqlalchemy import select, func
 
 from utils.mapping import get_dicts_from_list_of_dicts_by_codes, try_set_int_in_list_of_dicts, key_dict_in_list_to_lower
 from core.connectors.db_connector import DBConnector
-from core.data_handlers.table_generator import TableGeneratorNew
+from core.data_handlers.table_generator import TableGenerator
 from core.entity_configs.entity_config import EntityConfig
 from core.entity_configs.entity_config_wrapper import EntityConfigWrapper
 
@@ -27,7 +27,7 @@ class Currencies:
         self.__db_conn = db_conn
         self.__curr_conn = CurrenciesConnector()
         self.__curr_api = CurrenciesApi()
-        self.__table_gen = TableGeneratorNew(self.__db_conn, self.__get_en_conf())
+        self.__table_gen = TableGenerator(self.__db_conn, self.__get_en_conf())
 
     async def _generate(self):
         dates_interval = DAYS_IN_WEEK

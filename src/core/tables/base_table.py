@@ -41,6 +41,7 @@ class BaseTable:
 
         self.__table = Table(self._tablename, self.__metadata, *self.__columns)
 
+    # DEPRECATED
     def _drop_and_create(self):
         self.__drop()
         self._create()
@@ -69,13 +70,13 @@ class BaseTable:
         count_query = self.__connection.execute(query).scalar()
 
         if call_counter == count_query:
-            # TelegramBot._send_success_message(f'Все записи успешно добавлены в таблицу {self.tablename} - {count_query}')
             Print().print_success(f'Все записи успешно добавлены в таблицу {self._tablename} - {count_query}')
         else:
             Print().print_error(f'Не все записи добавлены в таблицу {self._tablename}. Добавлено {count_query}, а пришло {call_counter}')
-            # TelegramBot._send_error_message(f'Не все записи добавлены в таблицу {self.tablename}. Добавлено {count_query}, а пришло {call_counter}')
 
     def _create(self):
+        if self.is_exist:
+            self.__drop()
         try:
             self.__metadata.create_all(bind = self.__engine)
             Print().print_success(f'Таблица {self._tablename} успешно создана')

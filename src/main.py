@@ -33,7 +33,7 @@ from features.print.print import Print
 async def begin():
     DateTransformer._print_now_date('Текущее время сервера')
 
-    table_type = 'currencies_table'
+    table_type = 'gs_table'
 
     connector = DBConnector()
     gsheet = GoogleSheet()
@@ -47,17 +47,19 @@ async def begin():
     connector.engine.pool.dispose()
 
 async def generate_table_from_gs(connector: DBConnector, gsheet: GoogleSheet):
-    table_gen = TableGenerator(connector)
     field_to_py_type = get_dict_by_indexes_of_matrix(SHEET_BITRIX_FIELD_INDEX, SHEET_PYTHON_TYPE_INDEX, gsheet._get_range_values(RANGE_BITRIX_FIELDS_TO_DB_TYPES))
-    bx_entity_configs = gsheet._get_range_values(RANGE_ENTITIES_CONFIG)
+    bx_entity_configs = gsheet._get_range_values('G12:K12')
 
     call_counter = 0
     for bx_entity_conf in bx_entity_configs:
         en_conf_with_fields = EntityConfigWrapper(field_to_py_type, bx_entity_conf).entity_config_with_fields
         en_conf = EntityConfig(en_conf_with_fields)
+        table_gen = TableGenerator(connector, en_conf)
         data_importer = EntityDataImporter(connector, en_conf)
+
         data = await data_importer._get_bx_data()
-        await table_gen._generate(en_conf, data)
+        table_gen._create()
+        table_gen._add_data(data)
         call_counter += 1
         await asyncio.sleep(1)
 
