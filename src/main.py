@@ -16,7 +16,7 @@ from core.entity_configs.entity_config_wrapper import EntityConfigWrapper
 from features.google_sheets.google_sheet import GoogleSheet
 from features.google_sheets.config.constants import RANGE_ENTITIES_CONFIG, SHEET_BITRIX_FIELD_INDEX, SHEET_PYTHON_TYPE_INDEX, RANGE_BITRIX_FIELDS_TO_DB_TYPES
 # Currencies
-from features.currencies.currencies import Currencies
+from features.currencies.currencies_table import CurrenciesTable
 # DateTransformer
 from features.date_transformer.date_transformer import DateTransformer
 # Print
@@ -33,7 +33,7 @@ from features.print.print import Print
 async def begin():
     DateTransformer._print_now_date('Текущее время сервера')
 
-    table_type = 'currencies_table'
+    table_type = 'gs_table'
 
     connector = DBConnector()
     gsheet = GoogleSheet()
@@ -42,13 +42,13 @@ async def begin():
         case 'gs_table':
             await generate_table_from_gs(connector, gsheet)
         case 'currencies_table':
-            await Currencies(connector)._generate()
+            await CurrenciesTable(connector)._generate()
 
     connector.engine.pool.dispose()
 
 async def generate_table_from_gs(connector: DBConnector, gsheet: GoogleSheet):
     field_to_py_type = get_dict_by_indexes_of_matrix(SHEET_BITRIX_FIELD_INDEX, SHEET_PYTHON_TYPE_INDEX, gsheet._get_range_values(RANGE_BITRIX_FIELDS_TO_DB_TYPES))
-    bx_entity_configs = gsheet._get_range_values('G3:K4')
+    bx_entity_configs = gsheet._get_range_values('G17:K17')
 
     call_counter = 0
     for bx_entity_conf in bx_entity_configs:

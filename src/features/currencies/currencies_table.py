@@ -17,7 +17,7 @@ from features.currencies.currencies_connector import CurrenciesConnector
 from features.print.print import Print
 
 
-class Currencies:
+class CurrenciesTable:
 
     @property
     def is_first(self):
