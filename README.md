@@ -109,12 +109,15 @@ __getters:__
 
 <hr>
 
-## *__Install libraries:__*
+## *__Install core libraries:__*
 
-1. `pip install fast_bitrix24 1.5.14`
+1. `pip install fast_bitrix24==1.5.14`
 2. `pip install psycopg2==2.9.5`
 3. `pip install SQLAlchemy==1.4.46`
 4. `pip install SQLAlchemy-Utils==0.39.0`
 5. `pip install --upgrade google-api-python-client google-auth-httplib2 google-auth-oauthlib`
 6. `pip install termcolor==2.2.0`
 
+## *__Install feature libraries:__*
+
+1. `pip install xmltodict==0.13.0`
